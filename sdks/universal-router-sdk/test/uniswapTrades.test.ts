@@ -31,7 +31,7 @@ import {
   TradeType,
 } from '@kittycorn-labs/sdk-core'
 import { registerFixture } from './forge/writeInterop'
-import { buildTrade, getUniswapPools, swapOptions, ETHER, DAI, USDC, WETH } from './utils/uniswapData'
+import { buildTrade, getUniswapPools, swapOptions, getPoolTokenize, ETHER, DAI, USDC, WETH } from './utils/uniswapData'
 import { hexToDecimalString } from './utils/hexToDecimalString'
 import {
   FORGE_V4_POSITION_MANAGER,
@@ -56,7 +56,12 @@ import {
   ZERO_ADDRESS,
 } from '../src/utils/constants'
 import { splitSignature } from 'ethers/lib/utils'
-import { TUSDC_SEPOLIA, TUSDT_SEPOLIA, getSupportUnderlyingByTokenize } from '@kittycorn-labs/smart-order-router'
+import {
+  TUSDC_SEPOLIA,
+  TUSDT_SEPOLIA,
+  TWETH_SEPOLIA,
+  getSupportUnderlyingByTokenize,
+} from '@kittycorn-labs/smart-order-router'
 
 const FORK_BLOCK = 16075500
 const KITTYCORN_V4_CHAIN_ID = 11155111 // Using Sepolia for test tokenize token
@@ -80,7 +85,9 @@ describe('Uniswap', () => {
 
   const TUSDC = TUSDC_SEPOLIA
   const TUSDT = TUSDT_SEPOLIA
+  const TWETH = TWETH_SEPOLIA
   let TUSDT_TUSDC_V4: V4Pool
+  let USDC_WETH_V4_SEPOLIA: V4Pool
 
   before(async () => {
     ;({ WETH_USDC_V2, USDC_DAI_V2, WETH_USDC_V3, USDC_DAI_V3, WETH_USDC_V3_LOW_FEE } = await getUniswapPools(
@@ -184,6 +191,32 @@ describe('Uniswap', () => {
       liquidity,
       0,
       tickProviderMock
+    )
+
+    const usdc_sepolia = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)!
+    const weth_sepolia = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TWETH)!
+    const tickSpacing_usdc_weth_sepolia = 200
+    USDC_WETH_V4_SEPOLIA = new V4Pool(
+      usdc_sepolia,
+      weth_sepolia,
+      FeeAmount.HIGH,
+      tickSpacing_usdc_weth_sepolia,
+      ZERO_ADDRESS,
+      encodeSqrtRatioX96(1, 1),
+      liquidity,
+      0,
+      [
+        {
+          index: nearestUsableTick(TickMath.MIN_TICK, tickSpacing_usdc_weth_sepolia),
+          liquidityNet: liquidity,
+          liquidityGross: liquidity,
+        },
+        {
+          index: nearestUsableTick(TickMath.MAX_TICK, tickSpacing_usdc_weth_sepolia),
+          liquidityNet: JSBI.multiply(liquidity, JSBI.BigInt('-1')),
+          liquidityGross: liquidity,
+        },
+      ]
     )
   })
 
@@ -810,10 +843,68 @@ describe('Uniswap', () => {
         CurrencyAmount.fromRawAmount(usdc, inputUSDC),
         TradeType.EXACT_INPUT
       )
+
       const opts = swapOptions({})
       const methodParameters = SwapRouter.swapCallParameters(buildTrade([trade]), opts)
-      registerFixture('_UNISWAP_V4_KITTYCRON_1_TUSDC_FOR_TUSDT', methodParameters)
+      registerFixture('_UNISWAP_V4_KITTYCRON_1000_TUSDC_FOR_TUSDT', methodParameters)
       expect(hexToDecimalString(methodParameters.value)).to.eq('0')
+    })
+
+    it('encodes an exactInput USDC->TUSDC->TUSDT->USDT swap (reducePools: first and last)', async () => {
+      const usdc = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)!
+      const usdt = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)!
+      const USDC_TUSDC_V4 = getPoolTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)
+      const USDT_TUSDT_V4 = getPoolTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)
+
+      const inputUSDC = utils.parseUnits('1000', 6).toString()
+      const trade = await V4Trade.fromRoute(
+        new V4Route([USDC_TUSDC_V4, TUSDT_TUSDC_V4, USDT_TUSDT_V4], usdc, usdt),
+        CurrencyAmount.fromRawAmount(usdc, inputUSDC),
+        TradeType.EXACT_INPUT
+      )
+
+      const opts = swapOptions({})
+      const methodParameters = SwapRouter.swapCallParameters(buildTrade([trade]), opts)
+      registerFixture('_UNISWAP_V4_KITTYCRON_1000_USDC_FOR_TUSDC_TUSDT_USDT', methodParameters)
+      expect(hexToDecimalString(methodParameters.value)).to.equal('0')
+    })
+
+    it('encodes an exactInput USDT->TUSDT->TUSDC->USDC swap revert order (reducePools: first and last)', async () => {
+      const usdc = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)!
+      const usdt = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)!
+      const USDC_TUSDC_V4 = getPoolTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)
+      const USDT_TUSDT_V4 = getPoolTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)
+
+      const inputUSDT = utils.parseUnits('1000', 6).toString()
+      const trade = await V4Trade.fromRoute(
+        new V4Route([USDT_TUSDT_V4, TUSDT_TUSDC_V4, USDC_TUSDC_V4], usdt, usdc),
+        CurrencyAmount.fromRawAmount(usdt, inputUSDT),
+        TradeType.EXACT_INPUT
+      )
+
+      const opts = swapOptions({})
+      const methodParameters = SwapRouter.swapCallParameters(buildTrade([trade]), opts)
+      registerFixture('_UNISWAP_V4_KITTYCRON_1000_USDT_FOR_TUSDT_TUSDC_USDC', methodParameters)
+      expect(hexToDecimalString(methodParameters.value)).to.equal('0')
+    })
+
+    it('encodes an exactInput USDC->TUSDC->TUSDT->USDT->WETH swap (hybrid: tokenize pool + v4 pool)', async () => {
+      const usdt = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)!
+      const weth = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TWETH)!
+      const USDC_TUSDC_V4 = getPoolTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)
+      const USDT_TUSDT_V4 = getPoolTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)
+
+      const inputUSDT = utils.parseUnits('100000', 6).toString()
+      const trade = await V4Trade.fromRoute(
+        new V4Route([USDT_TUSDT_V4, TUSDT_TUSDC_V4, USDC_TUSDC_V4, USDC_WETH_V4_SEPOLIA], usdt, weth),
+        CurrencyAmount.fromRawAmount(usdt, inputUSDT),
+        TradeType.EXACT_INPUT
+      )
+
+      const opts = swapOptions({})
+      const methodParameters = SwapRouter.swapCallParameters(buildTrade([trade]), opts)
+      registerFixture('_UNISWAP_V4_KITTYCRON_100000_USDT_FOR_TUSDT_TUSDC_USDC_WETH', methodParameters)
+      expect(hexToDecimalString(methodParameters.value)).to.equal('0')
     })
   })
 
