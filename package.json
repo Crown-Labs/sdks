@@ -29,7 +29,8 @@
     "g:test": "turbo run test",
     "g:typecheck": "turbo run typecheck",
     "sdk": "yarn workspace",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "prettier": "yarn prettier:fix"
   },
   "workspaces": [
     "sdks/*",
