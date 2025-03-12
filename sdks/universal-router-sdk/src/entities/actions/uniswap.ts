@@ -32,6 +32,7 @@ import { getCurrencyAddress } from '../../utils/getCurrencyAddress'
 import { encodeFeeBips } from '../../utils/numbers'
 import { BigNumber, BigNumberish } from 'ethers'
 import { TPool } from '@kittycorn-labs/router-sdk'
+import { getSupportUnderlyingByTokenize, getSupportTokenizeByUnderlying } from '@kittycorn-labs/smart-order-router'
 
 export type FlatFeeOptions = {
   amount: BigNumberish
@@ -317,6 +318,108 @@ function addV3Swap<TInput extends Currency, TOutput extends Currency>(
   }
 }
 
+function getReducePools(pools: V4Pool[], tokenIn: Currency, tokenOut: Currency): V4Pool[] {
+  if (pools.length < 3) {
+    return pools
+  }
+
+  const chainId = pools[0].chainId
+  const token0 = getSupportUnderlyingByTokenize(chainId, tokenIn as Token) // assume tokenIn is tokenize
+  const token1 = getSupportUnderlyingByTokenize(chainId, tokenOut as Token) // assume tokenOut is tokenize
+  const isSupport0 = token0 !== undefined
+  const isSupport1 = token1 !== undefined
+  const underlyingIn = isSupport0 ? (token0 as Currency) : tokenIn
+  const underlyingOut = isSupport1 ? (token1 as Currency) : tokenOut
+
+  // Find reduce pool for
+  // - first pool is underlying and tokenize for tokenIn
+  // - last pool is underlying and previous tokenize for tokenOut
+  if (!isSupport0) {
+    const tokenizeIn = getSupportTokenizeByUnderlying(chainId, underlyingIn as Token) as Currency
+    if (tokenizeIn !== undefined) {
+      const reduceFirst =
+        (pools[0].token0.equals(underlyingIn) && pools[0].token1.equals(tokenizeIn)) ||
+        (pools[0].token0.equals(tokenizeIn) && pools[0].token1.equals(underlyingIn))
+      if (reduceFirst) {
+        pools.shift()
+      }
+    }
+  }
+  if (!isSupport1) {
+    const tokenizeOut = getSupportTokenizeByUnderlying(chainId, underlyingOut as Token) as Currency
+    if (tokenizeOut !== undefined) {
+      const lastIndex = pools.length - 1
+      const reduceLast =
+        (pools[lastIndex].token0.equals(underlyingOut) && pools[lastIndex].token1.equals(tokenizeOut)) ||
+        (pools[lastIndex].token0.equals(tokenizeOut) && pools[lastIndex].token1.equals(underlyingOut))
+      if (reduceLast) {
+        pools.pop()
+      }
+    }
+  }
+  return pools
+}
+
+function buildV4Planner(
+  trade: any,
+  tradeType: TradeType,
+  options: SwapOptions,
+  payerIsUser: boolean,
+  routerMustCustody: boolean
+): V4Planner {
+  const chainId = trade.route.chainId
+  const currencyIn = trade.route.pathInput
+  const currencyOut = trade.route.pathOutput
+  const slippageToleranceOnSwap =
+    routerMustCustody && tradeType == TradeType.EXACT_INPUT ? undefined : options.slippageTolerance
+
+  // Make tokens path from pools
+  let path: Currency[] = []
+  let nextToken = currencyIn
+  trade.route.pools.forEach((pool: V4Pool) => {
+    if (nextToken.equals(pool.token0)) {
+      path.push(pool.token0)
+      nextToken = pool.token1
+    } else {
+      path.push(pool.token1)
+      nextToken = pool.token0
+    }
+  })
+
+  const v4Planner = new V4Planner()
+
+  // Add trade swap type with encode pathKeys
+  v4Planner.addTrade(trade, slippageToleranceOnSwap)
+
+  // Pay currency in
+  v4Planner.addSettle(currencyIn, payerIsUser)
+
+  let token0 = getSupportUnderlyingByTokenize(chainId, currencyIn as Token) as Currency
+  let isSupport0 = token0 !== undefined
+
+  // Build action planner for path
+  for (let i = 1; i < path.length; i++) {
+    const token1 = getSupportUnderlyingByTokenize(chainId, path[i] as Token) as Currency
+    const isSupport1 = token1 !== undefined
+
+    if (isSupport0 && path[i].equals(token0)) {
+      v4Planner.addTake(path[i - 1], ROUTER_AS_RECIPIENT)
+      v4Planner.addSettle(token0, false)
+    } else if (isSupport1 && path[i - 1].equals(token1)) {
+      v4Planner.addTake(token1, ROUTER_AS_RECIPIENT)
+      v4Planner.addSettle(path[i], false)
+    }
+
+    isSupport0 = isSupport1
+    token0 = token1
+  }
+
+  // Take currency out
+  v4Planner.addTake(currencyOut, routerMustCustody ? ROUTER_AS_RECIPIENT : options.recipient ?? SENDER_AS_RECIPIENT)
+
+  return v4Planner
+}
+
 function addV4Swap<TInput extends Currency, TOutput extends Currency>(
   planner: RoutePlanner,
   { inputAmount, outputAmount, route }: Swap<TInput, TOutput>,
@@ -326,7 +429,11 @@ function addV4Swap<TInput extends Currency, TOutput extends Currency>(
   routerMustCustody: boolean
 ): void {
   // create a deep copy of pools since v4Planner encoding tampers with array
-  const pools = route.pools.map((p) => p) as V4Pool[]
+  let pools = route.pools.map((p) => p) as V4Pool[]
+
+  // reduce pools for tokenize
+  pools = getReducePools(pools, inputAmount.currency, outputAmount.currency)
+
   const v4Route = new V4Route(pools, inputAmount.currency, outputAmount.currency)
   const trade = V4Trade.createUncheckedTrade({
     route: v4Route,
@@ -335,16 +442,8 @@ function addV4Swap<TInput extends Currency, TOutput extends Currency>(
     tradeType,
   })
 
-  const slippageToleranceOnSwap =
-    routerMustCustody && tradeType == TradeType.EXACT_INPUT ? undefined : options.slippageTolerance
-
-  const v4Planner = new V4Planner()
-  v4Planner.addTrade(trade, slippageToleranceOnSwap)
-  v4Planner.addSettle(trade.route.pathInput, payerIsUser)
-  v4Planner.addTake(
-    trade.route.pathOutput,
-    routerMustCustody ? ROUTER_AS_RECIPIENT : options.recipient ?? SENDER_AS_RECIPIENT
-  )
+  // build planner
+  const v4Planner = buildV4Planner(trade, tradeType, options, payerIsUser, routerMustCustody)
   planner.addCommand(CommandType.V4_SWAP, [v4Planner.finalize()])
 }
 
