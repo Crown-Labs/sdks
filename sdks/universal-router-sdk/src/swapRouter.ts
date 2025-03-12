@@ -8,7 +8,7 @@ import {
   Position as V3Position,
   NonfungiblePositionManager as V3PositionManager,
   RemoveLiquidityOptions as V3RemoveLiquidityOptions,
-} from '@uniswap/v3-sdk'
+} from '@kittycorn-labs/v3-sdk'
 import {
   Position as V4Position,
   V4PositionManager,
@@ -18,7 +18,7 @@ import {
   PoolKey,
 } from '@kittycorn-labs/v4-sdk'
 import { Trade as RouterTrade } from '@kittycorn-labs/router-sdk'
-import { Currency, TradeType, Percent, CHAIN_TO_ADDRESSES_MAP, SupportedChainsType } from '@uniswap/sdk-core'
+import { Currency, TradeType, Percent, CHAIN_TO_ADDRESSES_MAP, SupportedChainsType } from '@kittycorn-labs/sdk-core'
 import { UniswapTrade, SwapOptions } from './entities/actions/uniswap'
 import { RoutePlanner, CommandType } from './utils/routerCommands'
 import { encodePermit, encodeV3PositionPermit } from './utils/inputTokens'

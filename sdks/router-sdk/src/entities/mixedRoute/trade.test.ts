@@ -1,5 +1,15 @@
-import { Percent, Price, sqrt, Token, CurrencyAmount, TradeType, WETH9, Ether, Currency } from '@uniswap/sdk-core'
-import { Pair } from '@uniswap/v2-sdk'
+import {
+  Percent,
+  Price,
+  sqrt,
+  Token,
+  CurrencyAmount,
+  TradeType,
+  WETH9,
+  Ether,
+  Currency,
+} from '@kittycorn-labs/sdk-core'
+import { Pair } from '@kittycorn-labs/v2-sdk'
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -7,7 +17,7 @@ import {
   Pool as V3Pool,
   TickMath,
   TICK_SPACINGS,
-} from '@uniswap/v3-sdk'
+} from '@kittycorn-labs/v3-sdk'
 import { Pool as V4Pool } from '@kittycorn-labs/v4-sdk'
 import JSBI from 'jsbi'
 import { MixedRouteSDK } from './route'

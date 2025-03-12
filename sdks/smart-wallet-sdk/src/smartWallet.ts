@@ -1,4 +1,4 @@
-import { ChainId } from '@uniswap/sdk-core'
+import { ChainId } from '@kittycorn-labs/sdk-core'
 import { encodeAbiParameters, encodeFunctionData } from 'viem'
 
 import { abi } from '../abis/MinimalDelegation.json'
@@ -19,21 +19,25 @@ export class SmartWallet {
    */
   public static encodeCalls(calls: Call[], options: ExecuteOptions = {}): MethodParameters {
     const mode = this.getModeFromOptions(options)
-    if(mode != ModeType.BATCHED_CALL && mode != ModeType.BATCHED_CALL_CAN_REVERT) {
+    if (mode != ModeType.BATCHED_CALL && mode != ModeType.BATCHED_CALL_CAN_REVERT) {
       throw new Error(`Invalid mode: ${mode}`)
     }
     const planner = new CallPlanner(calls)
-    
+
     const executionData = planner.encode()
     const encoded = this._encodeExecute(mode, executionData)
     return {
       calldata: encoded,
-      value: planner.value
+      value: planner.value,
     }
   }
 
   /// To be implemented
-  public static encodeAdvancedCalls(calls: AdvancedCall[], opData: string, _options: ExecuteOptions = {}): MethodParameters {
+  public static encodeAdvancedCalls(
+    calls: AdvancedCall[],
+    opData: string,
+    _options: ExecuteOptions = {}
+  ): MethodParameters {
     throw new Error('Not implemented')
   }
 
@@ -44,15 +48,15 @@ export class SmartWallet {
    * @param chainId The chain ID for the smart wallet
    * @returns The call to execute
    */
-  public static createExecute(methodParameters: MethodParameters, chainId: ChainId ): Call {
+  public static createExecute(methodParameters: MethodParameters, chainId: ChainId): Call {
     const address = SMART_WALLET_ADDRESSES[chainId]
-    if(!address) {
+    if (!address) {
       throw new Error(`Smart wallet not found for chainId: ${chainId}`)
     }
     return {
       to: address,
       data: methodParameters.calldata,
-      value: methodParameters.value
+      value: methodParameters.value,
     }
   }
 
@@ -60,7 +64,7 @@ export class SmartWallet {
    * Get the mode type from the options
    */
   public static getModeFromOptions(options: ExecuteOptions): ModeType {
-    if(options.revertOnFailure) {
+    if (options.revertOnFailure) {
       return ModeType.BATCHED_CALL_CAN_REVERT
     }
 
@@ -68,25 +72,19 @@ export class SmartWallet {
   }
 
   /** Internal methods */
-  
+
   protected static _encodeExecute(mode: ModeType, data: `0x${string}`): `0x${string}` {
     return encodeFunctionData({
       abi,
       functionName: 'execute',
-      args: [
-        mode,
-        data
-      ]
+      args: [mode, data],
     })
   }
 
-  protected static _encodeBatchedCallSupportsOpdata(
-    planner: CallPlanner,
-    opData: `0x${string}`
-  ): `0x${string}` {
-    return encodeAbiParameters(
-      MODE_TYPE_ABI_PARAMETERS[ModeType.BATCHED_CALL_SUPPORTS_OPDATA],
-      [planner.encode(), opData]
-    )
+  protected static _encodeBatchedCallSupportsOpdata(planner: CallPlanner, opData: `0x${string}`): `0x${string}` {
+    return encodeAbiParameters(MODE_TYPE_ABI_PARAMETERS[ModeType.BATCHED_CALL_SUPPORTS_OPDATA], [
+      planner.encode(),
+      opData,
+    ])
   }
 }
