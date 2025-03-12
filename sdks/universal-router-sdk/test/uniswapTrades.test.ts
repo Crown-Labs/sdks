@@ -56,8 +56,10 @@ import {
   ZERO_ADDRESS,
 } from '../src/utils/constants'
 import { splitSignature } from 'ethers/lib/utils'
+import { TUSDC_SEPOLIA, TUSDT_SEPOLIA, getSupportUnderlyingByTokenize } from '@kittycorn-labs/smart-order-router'
 
 const FORK_BLOCK = 16075500
+const KITTYCORN_V4_CHAIN_ID = 11155111 // Using Sepolia for test tokenize token
 
 // note: these tests aren't testing much but registering calldata to interop file
 // for use in forge fork tests
@@ -75,6 +77,10 @@ describe('Uniswap', () => {
   let WETH_USDC_V4_LOW_FEE: V4Pool
   let ETH_USDC_V4_LOW_FEE: V4Pool
   let USDC_DAI_V4: V4Pool
+
+  const TUSDC = TUSDC_SEPOLIA
+  const TUSDT = TUSDT_SEPOLIA
+  let TUSDT_TUSDC_V4: V4Pool
 
   before(async () => {
     ;({ WETH_USDC_V2, USDC_DAI_V2, WETH_USDC_V3, USDC_DAI_V3, WETH_USDC_V3_LOW_FEE } = await getUniswapPools(
@@ -159,6 +165,18 @@ describe('Uniswap', () => {
     ETH_DAI_V4 = new V4Pool(
       DAI,
       ETHER,
+      FeeAmount.MEDIUM,
+      tickSpacing,
+      ZERO_ADDRESS,
+      encodeSqrtRatioX96(1, 1),
+      liquidity,
+      0,
+      tickProviderMock
+    )
+
+    TUSDT_TUSDC_V4 = new V4Pool(
+      TUSDT,
+      TUSDC,
       FeeAmount.MEDIUM,
       tickSpacing,
       ZERO_ADDRESS,
@@ -779,6 +797,23 @@ describe('Uniswap', () => {
       const methodParameters = SwapRouter.swapCallParameters(buildTrade([trade]), opts)
       registerFixture('_UNISWAP_V4_WRAP_ETH_FOR_1_DAI', methodParameters)
       expect(hexToDecimalString(methodParameters.value)).to.not.equal('0')
+    })
+  })
+
+  describe('v4 Kittycorn', () => {
+    it('encodes a single exactInput TUSDC->TUSDT swap', async () => {
+      const usdc = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDC)!
+      const usdt = getSupportUnderlyingByTokenize(KITTYCORN_V4_CHAIN_ID, TUSDT)!
+      const inputUSDC = utils.parseUnits('1000', 6).toString()
+      const trade = await V4Trade.fromRoute(
+        new V4Route([TUSDT_TUSDC_V4], usdc, usdt),
+        CurrencyAmount.fromRawAmount(usdc, inputUSDC),
+        TradeType.EXACT_INPUT
+      )
+      const opts = swapOptions({})
+      const methodParameters = SwapRouter.swapCallParameters(buildTrade([trade]), opts)
+      registerFixture('_UNISWAP_V4_KITTYCRON_1_TUSDC_FOR_TUSDT', methodParameters)
+      expect(hexToDecimalString(methodParameters.value)).to.eq('0')
     })
   })
 
