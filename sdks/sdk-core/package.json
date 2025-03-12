@@ -81,6 +81,12 @@
           "failCmd": "git restore yarn.lock && yarn",
           "execCwd": "../.."
         }
+      ],
+      [
+        "semantic-release-workspace-dependency",
+        {
+          "prefix": "^"
+        }
       ]
     ]
   }

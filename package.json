@@ -12,6 +12,7 @@
     "husky": "^8.0.3",
     "semantic-release": "^20.1.0",
     "semantic-release-monorepo": "7.0.5",
+    "semantic-release-workspace-dependency": "1.0.1",
     "syncpack": "^8.5.14",
     "turbo": "1.10.16"
   },
@@ -23,13 +24,14 @@
   "private": true,
   "scripts": {
     "g:check:deps:mismatch": "manypkg check",
-    "g:build": "turbo run build --filter=universal-router-sdk --filter=v4-sdk --filter=router-sdk --filter=sdk-core",
+    "g:build": "turbo run build",
     "g:lint": "turbo run lint",
     "g:release": "turbo run release --concurrency=1 --continue --filter=universal-router-sdk --filter=v4-sdk --filter=router-sdk --filter=sdk-core",
     "g:test": "turbo run test",
     "g:typecheck": "turbo run typecheck",
     "sdk": "yarn workspace",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "prettier": "yarn prettier:fix"
   },
   "workspaces": [
     "sdks/*",

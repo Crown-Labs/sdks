@@ -4,7 +4,7 @@ import { BigNumber, ethers, utils, Wallet, Signature } from 'ethers'
 import { expandTo18Decimals } from '../src/utils/numbers'
 import { SwapRouter, UniswapTrade, FlatFeeOptions } from '../src'
 import { MixedRouteTrade, MixedRouteSDK } from '@kittycorn-labs/router-sdk'
-import { Trade as V2Trade, Pair, Route as RouteV2 } from '@uniswap/v2-sdk'
+import { Trade as V2Trade, Pair, Route as RouteV2 } from '@kittycorn-labs/v2-sdk'
 import {
   Trade as V3Trade,
   Route as V3Route,
@@ -16,7 +16,7 @@ import {
   TickMath,
   FeeAmount,
   NonfungiblePositionManager,
-} from '@uniswap/v3-sdk'
+} from '@kittycorn-labs/v3-sdk'
 import { Pool as V4Pool, Route as V4Route, Trade as V4Trade, Position as V4Position } from '@kittycorn-labs/v4-sdk'
 import { generatePermitSignature, toInputPermit, makePermit, generateEip2098PermitSignature } from './utils/permit2'
 import {
@@ -29,7 +29,7 @@ import {
   Percent,
   Token,
   TradeType,
-} from '@uniswap/sdk-core'
+} from '@kittycorn-labs/sdk-core'
 import { registerFixture } from './forge/writeInterop'
 import { buildTrade, getUniswapPools, swapOptions, ETHER, DAI, USDC, WETH } from './utils/uniswapData'
 import { hexToDecimalString } from './utils/hexToDecimalString'
