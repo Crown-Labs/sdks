@@ -1,35 +1,58 @@
 {
+  "tasks": {
+    "v2-sdk#build": {
+      "dependsOn": ["sdk-core#build"]
+    },
+    "v4-sdk#build": {
+      "dependsOn": ["sdk-core#build", "v3-sdk#build"]
+    },
+    "v3-sdk#build": {
+      "dependsOn": ["sdk-core#build"]
+    },
+    "smart-wallet-sdk#build": {
+      "dependsOn": ["sdk-core#build"]
+    },
+    "uniswapx-sdk#build": {
+      "dependsOn": ["permit2-sdk#build", "universal-router-sdk#build"]
+    },
+    "router-sdk#build": {
+      "dependsOn": ["v2-sdk#build"]
+    },
+    "universal-router-sdk#build": {
+      "dependsOn": [
+        "sdk-core#build",
+        "v4-sdk#build",
+        "v3-sdk#build",
+        "v2-sdk#build",
+        "router-sdk#build",
+        "permit2-sdk#build"
+      ]
+    }
+  },
   "pipeline": {
     "lint": {
-      "inputs": [
-        "sdks/*/src/**.ts",
-        "sdks/*/src/**.tsx"
-      ]
+      "inputs": ["sdks/*/src/**.ts", "sdks/*/src/**.tsx"]
     },
     "build": {
+      "dependsOn": ["^build"],
       "inputs": [
         "yarn.lock",
         "**/package.json",
         "sdks/*/src/**.ts",
         "sdks/*/src/**.tsx"
       ],
-      "outputs": [
-        "sdks/*/dist/**"
-      ]
+      "outputs": ["sdks/*/dist/**"]
     },
     "test": {
-      "dependsOn": [
-        "build"
-      ],
-      "inputs": [
-        "sdks/*/dist/**"
-      ]
+      "dependsOn": ["build"],
+      "inputs": ["sdks/*/dist/**"]
     },
     "release": {
       "dependsOn": []
     },
     "typecheck": {
       "dependsOn": []
-    }
+    },
+    "clean": {}
   }
 }

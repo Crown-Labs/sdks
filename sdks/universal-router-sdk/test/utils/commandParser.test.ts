@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import { Token, WETH9 } from '@uniswap/sdk-core'
-import { encodeSqrtRatioX96, nearestUsableTick, TickMath } from '@uniswap/v3-sdk'
+import { Token, WETH9 } from '@kittycorn-labs/sdk-core'
+import { encodeSqrtRatioX96, nearestUsableTick, TickMath } from '@kittycorn-labs/v3-sdk'
 import { ethers, BigNumber } from 'ethers'
 import { CommandParser, UniversalRouterCall } from '../../src/utils/commandParser'
 import { RoutePlanner, CommandType } from '../../src/utils/routerCommands'
@@ -323,7 +323,7 @@ describe('Command Parser', () => {
             ],
           },
         ],
-      },
+      } as UniversalRouterCall,
     },
     {
       input: new RoutePlanner().addCommand(CommandType.V4_POSITION_MANAGER_CALL, [
@@ -386,9 +386,8 @@ describe('Command Parser', () => {
       const { commands, inputs } = test.input
       const functionSignature = 'execute(bytes,bytes[])'
       const calldata = SwapRouter.INTERFACE.encodeFunctionData(functionSignature, [commands, inputs])
-
       const result = CommandParser.parseCalldata(calldata)
-      expect(result).to.deep.equal(test.result)
+      expect(JSON.stringify(result)).to.deep.equal(JSON.stringify(test.result))
     })
   }
 })

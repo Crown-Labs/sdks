@@ -1,4 +1,4 @@
-import { Currency } from '@uniswap/sdk-core'
+import { Currency } from '@kittycorn-labs/sdk-core'
 import { Route } from '../entities/route'
 import { ADDRESS_ZERO } from '../internalConstants'
 
