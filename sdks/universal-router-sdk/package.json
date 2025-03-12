@@ -32,7 +32,7 @@
     "@kittycorn-labs/permit2-sdk": "workspace:*",
     "@kittycorn-labs/router-sdk": "workspace:*",
     "@kittycorn-labs/sdk-core": "workspace:*",
-    "@kittycorn-labs/smart-order-router": "4.17.12-7",
+    "@kittycorn-labs/smart-order-router": "4.17.12-8",
     "@kittycorn-labs/v2-sdk": "workspace:*",
     "@kittycorn-labs/v3-sdk": "workspace:*",
     "@kittycorn-labs/v4-sdk": "workspace:*",

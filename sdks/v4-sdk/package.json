@@ -27,7 +27,7 @@
   "dependencies": {
     "@ethersproject/solidity": "^5.0.9",
     "@kittycorn-labs/sdk-core": "workspace:*",
-    "@kittycorn-labs/smart-order-router": "4.17.12-7",
+    "@kittycorn-labs/smart-order-router": "4.17.12-8",
     "@kittycorn-labs/v3-sdk": "workspace:*",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"
