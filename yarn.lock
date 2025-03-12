@@ -2524,17 +2524,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kittycorn-labs/router-sdk@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@kittycorn-labs/router-sdk@npm:1.0.0"
+"@kittycorn-labs/router-sdk@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@kittycorn-labs/router-sdk@npm:1.1.0"
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@kittycorn-labs/v4-sdk": ^1.0.0
-    "@uniswap/sdk-core": ^7.7.2
+    "@uniswap/sdk-core": ^7.7.1
     "@uniswap/swap-router-contracts": ^1.3.0
     "@uniswap/v2-sdk": ^4.15.2
     "@uniswap/v3-sdk": ^3.25.2
-  checksum: 34feeb18d7cc213235396df9bc66d93b307b1df1477628f56d6d2e8aa1e60636353c2a5e2cba546fb85801a5fff0cb61da7adea204ff54726222d1bf6f03f712
+  checksum: 074284cd36b21b5078cd79d2289892ae6760169034c05c67a19b1b80b183ef93d49d71c45de14704ce2b3b4f30b93490711c289af9306152c9d27a239d657879
   languageName: node
   linkType: hard
 
@@ -2544,7 +2544,7 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@kittycorn-labs/sdk-core": ^1.0.0
-    "@kittycorn-labs/v4-sdk": ^1.0.0
+    "@kittycorn-labs/v4-sdk": ^1.1.0
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     "@uniswap/v2-sdk": ^4.15.2
@@ -2596,6 +2596,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@kittycorn-labs/smart-order-router@npm:4.17.12-7":
+  version: 4.17.12-7
+  resolution: "@kittycorn-labs/smart-order-router@npm:4.17.12-7"
+  dependencies:
+    "@eth-optimism/sdk": ^3.2.2
+    "@types/brotli": ^1.3.4
+    "@uniswap/default-token-list": ^11.13.0
+    "@uniswap/permit2-sdk": ^1.3.0
+    "@uniswap/router-sdk": ^1.18.0
+    "@uniswap/sdk-core": ^7.1.0
+    "@uniswap/swap-router-contracts": ^1.3.1
+    "@uniswap/token-lists": ^1.0.0-beta.31
+    "@uniswap/universal-router": ^1.6.0
+    "@uniswap/universal-router-sdk": ^4.10.0
+    "@uniswap/v2-sdk": ^4.9.0
+    "@uniswap/v3-sdk": ^3.21.0
+    "@uniswap/v4-sdk": ^1.15.0
+    async-retry: ^1.3.1
+    await-timeout: ^1.1.1
+    axios: ^0.21.1
+    brotli: ^1.3.3
+    bunyan: ^1.8.15
+    bunyan-blackhole: ^1.1.1
+    ethers: ^5.7.2
+    graphql: ^15.5.0
+    graphql-request: ^3.4.0
+    lodash: ^4.17.21
+    mnemonist: ^0.38.3
+    node-cache: ^5.1.2
+    stats-lite: ^2.2.0
+  peerDependencies:
+    jsbi: ^3.2.0
+  checksum: f5d4ad9ca9deb7a9265366a8b84ba0606e330e24396ebbab8747b55cdfa8960cd1b58a9bcb16f64bbea1cc66f4f186a898df8484091739d61e2c8da53a9d48e8
+  languageName: node
+  linkType: hard
+
 "@kittycorn-labs/smart-order-router@npm:4.17.12-8":
   version: 4.17.12-8
   resolution: "@kittycorn-labs/smart-order-router@npm:4.17.12-8"
@@ -2636,10 +2672,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@kittycorn-labs/universal-router-sdk@workspace:sdks/universal-router-sdk"
   dependencies:
-    "@kittycorn-labs/router-sdk": ^1.0.0
+    "@kittycorn-labs/router-sdk": ^1.1.0
     "@kittycorn-labs/sdk-core": ^1.0.0
     "@kittycorn-labs/smart-order-router": 4.17.12-8
-    "@kittycorn-labs/v4-sdk": ^1.0.0
+    "@kittycorn-labs/v4-sdk": ^1.1.0
     "@openzeppelin/contracts": 4.7.0
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
@@ -2676,6 +2712,20 @@ __metadata:
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
   checksum: ec8c8613b11b797b5cc658aaa7265e1cf42765fd185664f5644f2867bc12f114a4d251b98447db54d9eca60fae4546b0c5c9afa38f0752b7889034955a17dcef
+  languageName: node
+  linkType: hard
+
+"@kittycorn-labs/v4-sdk@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.0"
+  dependencies:
+    "@ethersproject/solidity": ^5.0.9
+    "@kittycorn-labs/smart-order-router": 4.17.12-7
+    "@uniswap/sdk-core": ^7.7.1
+    "@uniswap/v3-sdk": 3.25.2
+    tiny-invariant: ^1.1.0
+    tiny-warning: ^1.0.3
+  checksum: 25e61bc25774beb441566e843a51c8c0d539f6a8c06cba7a99a109196b6d403b1b6f4cd89b6ef2331696b5e8d9b65f8498e15720b4895a2bdcf744ac8fb9e7cc
   languageName: node
   linkType: hard
 
