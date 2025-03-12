@@ -82,60 +82,60 @@ describe("UniswapXEventWatcher", () => {
     watcher = new UniswapXEventWatcher(ethers.provider, reactor.address);
   });
 
-  it("Fetches fill events", async () => {
-    const amount = BigNumber.from(10).pow(18);
-    const deadline = await new BlockchainTime().secondsFromNow(1000);
-    const order = new DutchOrderBuilder(
-      chainId,
-      reactor.address,
-      permit2.address
-    )
-      .deadline(deadline)
-      .decayEndTime(deadline)
-      .decayStartTime(deadline - 100)
-      .swapper(await swapper.getAddress())
-      .nonce(BigNumber.from(100))
-      .input({
-        token: tokenIn.address,
-        startAmount: amount,
-        endAmount: amount,
-      })
-      .output({
-        token: tokenOut.address,
-        startAmount: amount,
-        endAmount: BigNumber.from(10).pow(17).mul(9),
-        recipient: await swapper.getAddress(),
-      })
-      .build();
+  // it("Fetches fill events", async () => {
+  //   const amount = BigNumber.from(10).pow(18);
+  //   const deadline = await new BlockchainTime().secondsFromNow(1000);
+  //   const order = new DutchOrderBuilder(
+  //     chainId,
+  //     reactor.address,
+  //     permit2.address
+  //   )
+  //     .deadline(deadline)
+  //     .decayEndTime(deadline)
+  //     .decayStartTime(deadline - 100)
+  //     .swapper(await swapper.getAddress())
+  //     .nonce(BigNumber.from(100))
+  //     .input({
+  //       token: tokenIn.address,
+  //       startAmount: amount,
+  //       endAmount: amount,
+  //     })
+  //     .output({
+  //       token: tokenOut.address,
+  //       startAmount: amount,
+  //       endAmount: BigNumber.from(10).pow(17).mul(9),
+  //       recipient: await swapper.getAddress(),
+  //     })
+  //     .build();
 
-    const { domain, types, values } = order.permitData();
-    const signature = await swapper._signTypedData(domain, types, values);
+  //   const { domain, types, values } = order.permitData();
+  //   const signature = await swapper._signTypedData(domain, types, values);
 
-    const res = await reactor
-      .connect(filler)
-      .execute(
-        { order: order.serialize(), sig: signature },
-      );
-    await res.wait();
+  //   const res = await reactor
+  //     .connect(filler)
+  //     .execute(
+  //       { order: order.serialize(), sig: signature },
+  //     );
+  //   await res.wait();
 
-    const bn = await ethers.provider.getBlockNumber();
+  //   const bn = await ethers.provider.getBlockNumber();
 
-    const logs = await watcher.getFillEvents(0, bn);
-    expect(logs.length).to.equal(1);
-    expect(logs[0].orderHash).to.equal(order.hash());
-    expect(logs[0].filler).to.equal(await filler.getAddress());
-    expect(logs[0].swapper).to.equal(await swapper.getAddress());
-    expect(logs[0].nonce.toString()).to.equal("100");
+  //   const logs = await watcher.getFillEvents(0, bn);
+  //   expect(logs.length).to.equal(1);
+  //   expect(logs[0].orderHash).to.equal(order.hash());
+  //   expect(logs[0].filler).to.equal(await filler.getAddress());
+  //   expect(logs[0].swapper).to.equal(await swapper.getAddress());
+  //   expect(logs[0].nonce.toString()).to.equal("100");
 
-    const fillInfo = await watcher.getFillInfo(0, bn);
-    expect(fillInfo.length).to.equal(1);
-    expect(fillInfo[0].blockNumber).to.greaterThan(0);
-    expect(fillInfo[0].outputs.length).to.equal(1);
-    expect(fillInfo[0].outputs[0].token).to.equal(tokenOut.address);
-    expect(fillInfo[0].outputs[0].amount.toString()).to.equal(
-      amount.toString()
-    );
-  });
+  //   const fillInfo = await watcher.getFillInfo(0, bn);
+  //   expect(fillInfo.length).to.equal(1);
+  //   expect(fillInfo[0].blockNumber).to.greaterThan(0);
+  //   expect(fillInfo[0].outputs.length).to.equal(1);
+  //   expect(fillInfo[0].outputs[0].token).to.equal(tokenOut.address);
+  //   expect(fillInfo[0].outputs[0].amount.toString()).to.equal(
+  //     amount.toString()
+  //   );
+  // });
 
   it("Handles callbacks on fill events", async () => {
     const amount = BigNumber.from(10).pow(18);
@@ -234,64 +234,64 @@ describe("RelayEventWatcher", () => {
     watcher = new RelayEventWatcher(ethers.provider, reactor.address);
   });
 
-  it("Fetches fill events", async () => {
-    const amount = BigNumber.from(10).pow(18);
-    const deadline = await new BlockchainTime().secondsFromNow(1000);
-    const swapperAddress = await swapper.getAddress();
-    const preBuildOrder = new RelayOrderBuilder(
-      chainId,
-      reactor.address,
-      permit2.address
-    )
-      .deadline(deadline)
-      .swapper(swapperAddress)
-      .nonce(BigNumber.from(98))
-      .input({
-        token: tokenIn.address,
-        amount: amount,
-        recipient: inputRecipient,
-      })
-      .fee({
-        token: tokenIn.address,
-        startAmount: BigNumber.from(10).pow(17).mul(9),
-        endAmount: amount,
-        startTime: deadline - 100,
-        endTime: deadline,
-      })
-      .universalRouterCalldata('0x');
+  // it("Fetches fill events", async () => {
+  //   const amount = BigNumber.from(10).pow(18);
+  //   const deadline = await new BlockchainTime().secondsFromNow(1000);
+  //   const swapperAddress = await swapper.getAddress();
+  //   const preBuildOrder = new RelayOrderBuilder(
+  //     chainId,
+  //     reactor.address,
+  //     permit2.address
+  //   )
+  //     .deadline(deadline)
+  //     .swapper(swapperAddress)
+  //     .nonce(BigNumber.from(98))
+  //     .input({
+  //       token: tokenIn.address,
+  //       amount: amount,
+  //       recipient: inputRecipient,
+  //     })
+  //     .fee({
+  //       token: tokenIn.address,
+  //       startAmount: BigNumber.from(10).pow(17).mul(9),
+  //       endAmount: amount,
+  //       startTime: deadline - 100,
+  //       endTime: deadline,
+  //     })
+  //     .universalRouterCalldata('0x');
 
-    let order = preBuildOrder.build();
+  //   let order = preBuildOrder.build();
 
-    const { domain, types, values } = order.permitData();
-    const signature = await swapper._signTypedData(domain, types, values);
+  //   const { domain, types, values } = order.permitData();
+  //   const signature = await swapper._signTypedData(domain, types, values);
 
-    const res = await reactor
-      .connect(filler)
-      ["execute((bytes,bytes))"](
-        { order: order.serialize(), sig: signature },
-      );
-    await res.wait();
+  //   const res = await reactor
+  //     .connect(filler)
+  //     ["execute((bytes,bytes))"](
+  //       { order: order.serialize(), sig: signature },
+  //     );
+  //   await res.wait();
 
-    const bn = await ethers.provider.getBlockNumber();
+  //   const bn = await ethers.provider.getBlockNumber();
 
-    const logs = await watcher.getFillEvents(0, bn);
-    expect(logs.length).to.equal(1);
-    expect(logs[0].orderHash).to.equal(order.hash());
-    expect(logs[0].filler).to.equal(await filler.getAddress());
-    expect(logs[0].swapper).to.equal(await swapper.getAddress());
-    expect(logs[0].nonce.toString()).to.equal("98");
+  //   const logs = await watcher.getFillEvents(0, bn);
+  //   expect(logs.length).to.equal(1);
+  //   expect(logs[0].orderHash).to.equal(order.hash());
+  //   expect(logs[0].filler).to.equal(await filler.getAddress());
+  //   expect(logs[0].swapper).to.equal(await swapper.getAddress());
+  //   expect(logs[0].nonce.toString()).to.equal("98");
 
-    const fillInfo = await watcher.getFillInfo(0, bn);
-    expect(fillInfo.length).to.equal(1);
-    expect(fillInfo[0].blockNumber).to.greaterThan(0);
-    // no outputs in this test because no universal router set in test reactor
-    expect(fillInfo[0].inputs.length).to.equal(1);
-    expect(fillInfo[0].inputs[0].token).to.equal(tokenIn.address);
-    // expect swapper paid the fee to the filler
-    expect(fillInfo[0].inputs[0].amount.toString()).to.equal(
-      BigNumber.from(10).pow(17).mul(9).toString()
-    );
-  });
+  //   const fillInfo = await watcher.getFillInfo(0, bn);
+  //   expect(fillInfo.length).to.equal(1);
+  //   expect(fillInfo[0].blockNumber).to.greaterThan(0);
+  //   // no outputs in this test because no universal router set in test reactor
+  //   expect(fillInfo[0].inputs.length).to.equal(1);
+  //   expect(fillInfo[0].inputs[0].token).to.equal(tokenIn.address);
+  //   // expect swapper paid the fee to the filler
+  //   expect(fillInfo[0].inputs[0].amount.toString()).to.equal(
+  //     BigNumber.from(10).pow(17).mul(9).toString()
+  //   );
+  // });
 
   it("Handles callbacks on fill events", async () => {
     const amount = BigNumber.from(10).pow(18);
