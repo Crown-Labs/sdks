@@ -29,7 +29,7 @@
     "test:hardhat": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' hardhat test"
   },
   "dependencies": {
-    "@kittycorn-labs/router-sdk": "^1.0.0",
+    "@kittycorn-labs/router-sdk": "^1.2.0",
     "@kittycorn-labs/sdk-core": "^1.0.0",
     "@kittycorn-labs/smart-order-router": "4.17.12-10",
     "@kittycorn-labs/v4-sdk": "^1.1.1",
