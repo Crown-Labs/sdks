@@ -30,7 +30,8 @@
     "g:typecheck": "turbo run typecheck",
     "sdk": "yarn workspace",
     "postinstall": "husky",
-    "prettier": "yarn prettier:fix"
+    "prettier": "yarn prettier:fix",
+    "g:upgrade": "manypkg upgrade"
   },
   "workspaces": [
     "sdks/*",
