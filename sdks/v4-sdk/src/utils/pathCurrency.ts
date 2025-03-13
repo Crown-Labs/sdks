@@ -26,6 +26,7 @@ export function getPathCurrency(currency: Currency, pool: Pool): Currency {
       // Recursively try to find the path currency for the tokenize token
       return getPathCurrency(tokenize as Currency, pool)
     }
+
     throw new Error(
       `Expected currency ${currency.symbol} to be either ${pool.currency0.symbol} or ${pool.currency1.symbol}`
     )

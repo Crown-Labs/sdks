@@ -388,7 +388,7 @@ describe('Command Parser', () => {
       const calldata = SwapRouter.INTERFACE.encodeFunctionData(functionSignature, [commands, inputs])
 
       const result = CommandParser.parseCalldata(calldata)
-      expect(result).to.deep.equal(test.result)
+      expect(JSON.stringify(result)).to.deep.equal(JSON.stringify(test.result))
     })
   }
 })
