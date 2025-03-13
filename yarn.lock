@@ -2680,6 +2680,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kittycorn-labs/v4-sdk@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.1"
+  dependencies:
+    "@ethersproject/solidity": ^5.0.9
+    "@kittycorn-labs/sdk-core": ^1.0.0
+    "@kittycorn-labs/smart-order-router": 4.17.12-10
+    "@uniswap/v3-sdk": 3.25.2
+    tiny-invariant: ^1.1.0
+    tiny-warning: ^1.0.3
+  checksum: e63e2699f0859940947a1561b721cbe5364146e6bb3d0efef22ac5e454324dd17fd8c987a9ce374977f5a2b2dd765c90829f3c47508620350141bc9f16c91b16
+  languageName: node
+  linkType: hard
+
 "@kittycorn-labs/v4-sdk@workspace:sdks/v4-sdk":
   version: 0.0.0-use.local
   resolution: "@kittycorn-labs/v4-sdk@workspace:sdks/v4-sdk"
