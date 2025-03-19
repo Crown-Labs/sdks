@@ -8,6 +8,8 @@ import {
   V4Planner,
   encodeRouteToPath as encodeV4RouteToPath,
   Actions,
+  getSupportUnderlyingByTokenize,
+  getSupportTokenizeByUnderlying,
 } from '@kittycorn-labs/v4-sdk'
 import {
   Trade as RouterTrade,
@@ -32,7 +34,6 @@ import { getCurrencyAddress } from '../../utils/getCurrencyAddress'
 import { encodeFeeBips } from '../../utils/numbers'
 import { BigNumber, BigNumberish } from 'ethers'
 import { TPool } from '@kittycorn-labs/router-sdk'
-import { getSupportUnderlyingByTokenize, getSupportTokenizeByUnderlying } from '@kittycorn-labs/smart-order-router'
 
 export type FlatFeeOptions = {
   amount: BigNumberish

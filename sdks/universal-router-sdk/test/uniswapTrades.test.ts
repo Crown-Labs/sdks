@@ -3,7 +3,7 @@ import JSBI from 'jsbi'
 import { BigNumber, ethers, utils, Wallet, Signature } from 'ethers'
 import { expandTo18Decimals } from '../src/utils/numbers'
 import { SwapRouter, UniswapTrade, FlatFeeOptions } from '../src'
-import { MixedRouteTrade, MixedRouteSDK } from '@uniswap/router-sdk'
+import { MixedRouteTrade, MixedRouteSDK } from '@kittycorn-labs/router-sdk'
 import { Trade as V2Trade, Pair, Route as RouteV2 } from '@kittycorn-labs/v2-sdk'
 import {
   Trade as V3Trade,
@@ -17,7 +17,16 @@ import {
   FeeAmount,
   NonfungiblePositionManager,
 } from '@kittycorn-labs/v3-sdk'
-import { Pool as V4Pool, Route as V4Route, Trade as V4Trade, Position as V4Position } from '@kittycorn-labs/v4-sdk'
+import {
+  Pool as V4Pool,
+  Route as V4Route,
+  Trade as V4Trade,
+  Position as V4Position,
+  TUSDC_SEPOLIA,
+  TUSDT_SEPOLIA,
+  TWETH_SEPOLIA,
+  getSupportUnderlyingByTokenize,
+} from '@kittycorn-labs/v4-sdk'
 import { generatePermitSignature, toInputPermit, makePermit, generateEip2098PermitSignature } from './utils/permit2'
 import {
   CHAIN_TO_ADDRESSES_MAP,
@@ -56,12 +65,6 @@ import {
   ZERO_ADDRESS,
 } from '../src/utils/constants'
 import { splitSignature } from 'ethers/lib/utils'
-import {
-  TUSDC_SEPOLIA,
-  TUSDT_SEPOLIA,
-  TWETH_SEPOLIA,
-  getSupportUnderlyingByTokenize,
-} from '@kittycorn-labs/smart-order-router'
 
 const FORK_BLOCK = 16075500
 const KITTYCORN_V4_CHAIN_ID = 11155111 // Using Sepolia for test tokenize token

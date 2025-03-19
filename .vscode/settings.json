@@ -16,5 +16,22 @@
   ],
   "testing.openTesting": "neverOpen",
   "testing.automaticallyOpenTestResults": "neverOpen",
-  "wake.compiler.solc.remappings": []
+  "wake.compiler.solc.remappings": [
+    "@eth-optimism/=node_modules/@eth-optimism/",
+    "@openzeppelin/=node_modules/@openzeppelin/",
+    "@uniswap/=node_modules/@uniswap/",
+    "base64-sol/=node_modules/base64-sol/",
+    "ds-test/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/forge-std/lib/ds-test/",
+    "erc4626-tests/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/v4-periphery/lib/v4-core/lib/openzeppelin-contracts/lib/erc4626-tests/",
+    "forge-gas-snapshot/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/permit2/lib/forge-gas-snapshot/",
+    "forge-std/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/forge-std/",
+    "hardhat/=node_modules/hardhat/",
+    "openzeppelin-contracts/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/permit2/lib/openzeppelin-contracts/",
+    "permit2/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/permit2/",
+    "solmate/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/solmate/",
+    "uniswapx-integration/=node_modules/uniswapx-integration/",
+    "v3-periphery/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/v3-periphery/",
+    "v4-core/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/v4-periphery/lib/v4-core/",
+    "v4-periphery/=node_modules/@kittycorn-labs/universal-router-sdk/node_modules/@uniswap/universal-router/lib/v4-periphery/"
+  ]
 }
