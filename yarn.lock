@@ -1599,13 +1599,13 @@ __metadata:
   linkType: hard
 
 "@eslint-community/eslint-utils@npm:^4.2.0":
-  version: 4.5.0
-  resolution: "@eslint-community/eslint-utils@npm:4.5.0"
+  version: 4.5.1
+  resolution: "@eslint-community/eslint-utils@npm:4.5.1"
   dependencies:
     eslint-visitor-keys: ^3.4.3
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-  checksum: b05ca7881b1db4ac4f29131d4ca07ace219d497f44eafc434331d3d30d2f6452436d96f6fd3fc77761254a79e62f53967e3dd2741678ef3dfe99ad6c01065201
+  checksum: 853e681fd134e96ce88066b0cfb3ce8b7a87afc9ea207139059f51e302eb9e6de4ab73c9eeb3995407bd6c08f836aade9fce47e91124c254a4eea24a5465c2ac
   languageName: node
   linkType: hard
 
@@ -2524,7 +2524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kittycorn-labs/router-sdk@npm:^1.2.0, @kittycorn-labs/router-sdk@npm:^1.2.1, @kittycorn-labs/router-sdk@npm:^1.2.2":
+"@kittycorn-labs/router-sdk@npm:^1.2.1, @kittycorn-labs/router-sdk@npm:^1.2.2":
   version: 1.2.2
   resolution: "@kittycorn-labs/router-sdk@npm:1.2.2"
   dependencies:
@@ -2596,42 +2596,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/smart-order-router@npm:4.20.4-0":
-  version: 4.20.4-0
-  resolution: "@kittycorn-labs/smart-order-router@npm:4.20.4-0"
-  dependencies:
-    "@eth-optimism/sdk": ^3.2.2
-    "@types/brotli": ^1.3.4
-    "@uniswap/default-token-list": ^11.13.0
-    "@uniswap/permit2-sdk": ^1.3.0
-    "@uniswap/router-sdk": ^1.18.0
-    "@uniswap/sdk-core": ^7.1.0
-    "@uniswap/swap-router-contracts": ^1.3.1
-    "@uniswap/token-lists": ^1.0.0-beta.31
-    "@uniswap/universal-router": ^1.6.0
-    "@uniswap/universal-router-sdk": ^4.10.0
-    "@uniswap/v2-sdk": ^4.9.0
-    "@uniswap/v3-sdk": ^3.21.0
-    "@uniswap/v4-sdk": ^1.15.0
-    async-retry: ^1.3.1
-    await-timeout: ^1.1.1
-    axios: ^0.21.1
-    brotli: ^1.3.3
-    bunyan: ^1.8.15
-    bunyan-blackhole: ^1.1.1
-    ethers: ^5.7.2
-    graphql: ^15.5.0
-    graphql-request: ^3.4.0
-    lodash: ^4.17.21
-    mnemonist: ^0.38.3
-    node-cache: ^5.1.2
-    stats-lite: ^2.2.0
-  peerDependencies:
-    jsbi: ^3.2.0
-  checksum: 03c88caf0feadcc4b15d6364cedc4e9b27e2d52b61bfe48129eaa888383466ce5b593ee2c711dd53add7a1ca18e0c921dddcc15a8c1670fbb4077ceefbfd0ba5
-  languageName: node
-  linkType: hard
-
 "@kittycorn-labs/smart-order-router@npm:^4.20.4-4, @kittycorn-labs/smart-order-router@npm:^4.20.4-5":
   version: 4.20.4-5
   resolution: "@kittycorn-labs/smart-order-router@npm:4.20.4-5"
@@ -2669,23 +2633,23 @@ __metadata:
   linkType: hard
 
 "@kittycorn-labs/universal-router-sdk@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@kittycorn-labs/universal-router-sdk@npm:1.4.2"
+  version: 1.4.3
+  resolution: "@kittycorn-labs/universal-router-sdk@npm:1.4.3"
   dependencies:
-    "@kittycorn-labs/router-sdk": ^1.2.0
+    "@kittycorn-labs/router-sdk": ^1.2.1
     "@kittycorn-labs/sdk-core": ^1.0.0
-    "@kittycorn-labs/smart-order-router": 4.20.4-0
+    "@kittycorn-labs/smart-order-router": ^4.20.4-4
+    "@kittycorn-labs/v2-sdk": ^1.0.0
+    "@kittycorn-labs/v3-sdk": ^1.0.0
     "@kittycorn-labs/v4-sdk": ^1.1.1
     "@openzeppelin/contracts": 4.7.0
     "@uniswap/permit2-sdk": ^1.3.0
     "@uniswap/universal-router": 2.0.0-beta.2
     "@uniswap/v2-core": ^1.0.1
-    "@uniswap/v2-sdk": ^4.15.2
     "@uniswap/v3-core": 1.0.0
-    "@uniswap/v3-sdk": ^3.25.2
     bignumber.js: ^9.0.2
     ethers: ^5.7.0
-  checksum: bdb5bd7d3c28e756658c3b0c30c34b5a86bbda62dd91f811ef02b2f88b94791ad30cc1bbcc6bb60a3a9bcbd3b3eb591fdbc3c7dbc9f333bef4d9a160495b45d0
+  checksum: e4332ed98cbef9c7113636aab8bbc31f5b30ef668ea0c2e2c71966d5fa653abf118aa2898c1548cc578c4be15dc50df15a15ee0feb5ced3af6cfcb618686e4a7
   languageName: node
   linkType: hard
 
@@ -3627,21 +3591,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/openapi-types@npm:^23.0.1":
-  version: 23.0.1
-  resolution: "@octokit/openapi-types@npm:23.0.1"
-  checksum: 1e6766c60375375d85ecabded67d9ee313cf9401c18a44534b942717cf840d41b5a9d42035522efffe6b811ee2204d4615f72c333e984e81b25545926eb77989
+"@octokit/openapi-types@npm:^24.2.0":
+  version: 24.2.0
+  resolution: "@octokit/openapi-types@npm:24.2.0"
+  checksum: 3c2d2f4cafd21c8a1e6a6fe6b56df6a3c09bc52ab6f829c151f9397694d028aa183ae856f08e006ee7ecaa7bd7eb413a903fbc0ffa6403e7b284ddcda20b1294
   languageName: node
   linkType: hard
 
 "@octokit/plugin-paginate-rest@npm:^11.4.2":
-  version: 11.4.3
-  resolution: "@octokit/plugin-paginate-rest@npm:11.4.3"
+  version: 11.6.0
+  resolution: "@octokit/plugin-paginate-rest@npm:11.6.0"
   dependencies:
-    "@octokit/types": ^13.7.0
+    "@octokit/types": ^13.10.0
   peerDependencies:
     "@octokit/core": ">=6"
-  checksum: 71647c793eab9cdff07a3a680d07367fcdc586020d517a769b64c7e35e0fc9d89a0cf1cfa69c66888196d3907f970b03573a533ad65de23c871d1bb84c360cb0
+  checksum: b7b1fb9b5d02688d89f936a4ec1a46142d942fb72fe889bd6317488ca9fbdc3c34bd06c46ec10b91715d35250efb67977207408626734ad4702ee58522090455
   languageName: node
   linkType: hard
 
@@ -3687,13 +3651,13 @@ __metadata:
   linkType: hard
 
 "@octokit/plugin-rest-endpoint-methods@npm:^13.3.0":
-  version: 13.3.1
-  resolution: "@octokit/plugin-rest-endpoint-methods@npm:13.3.1"
+  version: 13.5.0
+  resolution: "@octokit/plugin-rest-endpoint-methods@npm:13.5.0"
   dependencies:
-    "@octokit/types": ^13.8.0
+    "@octokit/types": ^13.10.0
   peerDependencies:
     "@octokit/core": ">=6"
-  checksum: b164534a1df6cd5f27a4d9dbd9b50607c5a57f2930e8793ac6124cd5cd78745338c7da7230f77a7049cf73b03a0247fef10d195e26c6c619f57d4a1ef39d5ebf
+  checksum: 495545a05cba9c9d61ec52521230ae0cb21dec0e663b663cdb55a9deb7f84fb38b611f28e4eae9fa0fc35e05f3bd5a25fedd2896b318fde72309dd63a284b978
   languageName: node
   linkType: hard
 
@@ -3836,12 +3800,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/types@npm:^13.6.2, @octokit/types@npm:^13.7.0, @octokit/types@npm:^13.8.0":
-  version: 13.8.0
-  resolution: "@octokit/types@npm:13.8.0"
+"@octokit/types@npm:^13.10.0, @octokit/types@npm:^13.6.2, @octokit/types@npm:^13.8.0":
+  version: 13.10.0
+  resolution: "@octokit/types@npm:13.10.0"
   dependencies:
-    "@octokit/openapi-types": ^23.0.1
-  checksum: be5fb327d0e39765e06f5a314556a273ff2bfb9ce4fd5a6e52c237d2f20a4c329493a8bde2c595cb82a5022f07ee6495dfff07ce24e3de4660c9ead913e3db0d
+    "@octokit/openapi-types": ^24.2.0
+  checksum: fca3764548d5872535b9025c3b5fe6373fe588b287cb5b5259364796c1931bbe5e9ab8a86a5274ce43bb2b3e43b730067c3b86b6b1ade12a98cd59b2e8b3610d
   languageName: node
   linkType: hard
 
@@ -5089,35 +5053,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@uniswap/router-sdk@npm:^1.18.0":
-  version: 1.23.0
-  resolution: "@uniswap/router-sdk@npm:1.23.0"
-  dependencies:
-    "@ethersproject/abi": ^5.5.0
-    "@uniswap/sdk-core": ^7.6.0
-    "@uniswap/swap-router-contracts": ^1.3.0
-    "@uniswap/v2-sdk": ^4.14.0
-    "@uniswap/v3-sdk": ^3.24.1
-    "@uniswap/v4-sdk": ^1.20.0
-  checksum: 979c8ec291c4945992bc5f8d34bfc0ed5e11711719be8d9cb6dbf09b12f25e370325eb243d4d04d7b102b3fd132df0a5c837c6e992617d39d6f65c558a7544d6
-  languageName: node
-  linkType: hard
-
-"@uniswap/router-sdk@npm:^2.0.2":
-  version: 2.0.3
-  resolution: "@uniswap/router-sdk@npm:2.0.3"
-  dependencies:
-    "@ethersproject/abi": ^5.5.0
-    "@uniswap/sdk-core": ^7.7.2
-    "@uniswap/swap-router-contracts": ^1.3.0
-    "@uniswap/v2-sdk": ^4.15.2
-    "@uniswap/v3-sdk": ^3.25.2
-    "@uniswap/v4-sdk": ^1.21.2
-  checksum: 6971fc50dc5968ef57ae01a18364356abfc333848287b68f505b629841a9a6a79bb660fde32f833cf0f9ad0e19fe9e62716be72bd2f3c59644db7dc0285262c2
-  languageName: node
-  linkType: hard
-
-"@uniswap/sdk-core@npm:^7.1.0, @uniswap/sdk-core@npm:^7.6.0, @uniswap/sdk-core@npm:^7.7.1, @uniswap/sdk-core@npm:^7.7.2":
+"@uniswap/sdk-core@npm:^7.7.1":
   version: 7.7.2
   resolution: "@uniswap/sdk-core@npm:7.7.2"
   dependencies:
@@ -5208,26 +5144,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@uniswap/universal-router-sdk@npm:^4.10.0":
-  version: 4.19.5
-  resolution: "@uniswap/universal-router-sdk@npm:4.19.5"
-  dependencies:
-    "@openzeppelin/contracts": 4.7.0
-    "@uniswap/permit2-sdk": ^1.3.0
-    "@uniswap/router-sdk": ^2.0.2
-    "@uniswap/sdk-core": ^7.7.1
-    "@uniswap/universal-router": 2.0.0-beta.2
-    "@uniswap/v2-core": ^1.0.1
-    "@uniswap/v2-sdk": ^4.15.2
-    "@uniswap/v3-core": 1.0.0
-    "@uniswap/v3-sdk": ^3.25.2
-    "@uniswap/v4-sdk": ^1.21.2
-    bignumber.js: ^9.0.2
-    ethers: ^5.7.0
-  checksum: 19cead34c47ce9ab6d9224dfd07f016848306b7ba98208affa1f8af47a47346ae17f16b854dd6074cf402eee8ed32ccf947532c865cf0d69249f5a6e8ef5f737
-  languageName: node
-  linkType: hard
-
 "@uniswap/universal-router@npm:2.0.0-beta.2":
   version: 2.0.0-beta.2
   resolution: "@uniswap/universal-router@npm:2.0.0-beta.2"
@@ -5254,19 +5170,6 @@ __metadata:
   version: 1.0.1
   resolution: "@uniswap/v2-core@npm:1.0.1"
   checksum: eaa118fe45eac2e80b7468547ce2cde12bd3c8157555d2e40e0462a788c9506c6295247b511382da85e44a89ad92aff7bb3433b23bfbd2eeea23942ecd46e979
-  languageName: node
-  linkType: hard
-
-"@uniswap/v2-sdk@npm:^4.14.0, @uniswap/v2-sdk@npm:^4.15.2, @uniswap/v2-sdk@npm:^4.9.0":
-  version: 4.15.2
-  resolution: "@uniswap/v2-sdk@npm:4.15.2"
-  dependencies:
-    "@ethersproject/address": ^5.0.2
-    "@ethersproject/solidity": ^5.0.9
-    "@uniswap/sdk-core": ^7.7.1
-    tiny-invariant: ^1.1.0
-    tiny-warning: ^1.0.3
-  checksum: 0484786ef416a249afb219e6a6868ba7cc3591aafb49d3fc08e60b8cba6f0267214a60f4eca25c0bb347b17d3ef3b0e88ba32791cfa48b771d1b2d574a17b76b
   languageName: node
   linkType: hard
 
@@ -5297,22 +5200,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-sdk@npm:3.25.2, @uniswap/v3-sdk@npm:^3.21.0, @uniswap/v3-sdk@npm:^3.24.1, @uniswap/v3-sdk@npm:^3.25.2":
-  version: 3.25.2
-  resolution: "@uniswap/v3-sdk@npm:3.25.2"
-  dependencies:
-    "@ethersproject/abi": ^5.5.0
-    "@ethersproject/solidity": ^5.0.9
-    "@uniswap/sdk-core": ^7.7.1
-    "@uniswap/swap-router-contracts": ^1.3.0
-    "@uniswap/v3-periphery": ^1.1.1
-    "@uniswap/v3-staker": 1.0.0
-    tiny-invariant: ^1.1.0
-    tiny-warning: ^1.0.3
-  checksum: fafda7c48aef4d04a552ea770ea6c8e13f8f61ecb431ee09c35f800e10c18d7bf933b81178540c9a333949feaa4863d6800cc0f6d8ea468166aeb52a808728ce
-  languageName: node
-  linkType: hard
-
 "@uniswap/v3-staker@npm:1.0.0":
   version: 1.0.0
   resolution: "@uniswap/v3-staker@npm:1.0.0"
@@ -5321,19 +5208,6 @@ __metadata:
     "@uniswap/v3-core": 1.0.0
     "@uniswap/v3-periphery": ^1.0.1
   checksum: 5a68e59f33d4761956ad735c8ce5ea6e566076bd260ea0a0bb4b3a0db237719e39f21a22eb0a5a231141efdf0154bfe03f690612d632898f33192b4442c888b3
-  languageName: node
-  linkType: hard
-
-"@uniswap/v4-sdk@npm:^1.15.0, @uniswap/v4-sdk@npm:^1.20.0, @uniswap/v4-sdk@npm:^1.21.2":
-  version: 1.21.2
-  resolution: "@uniswap/v4-sdk@npm:1.21.2"
-  dependencies:
-    "@ethersproject/solidity": ^5.0.9
-    "@uniswap/sdk-core": ^7.7.1
-    "@uniswap/v3-sdk": 3.25.2
-    tiny-invariant: ^1.1.0
-    tiny-warning: ^1.0.3
-  checksum: 6145f5dbdda2694db12b4f5195137b63428172307520457ab236adf28c794ae926eda68623e35ca8194292f5a29fa794beb2e81fc44618aaf141218932d10798
   languageName: node
   linkType: hard
 
@@ -5812,16 +5686,17 @@ __metadata:
   linkType: hard
 
 "array.prototype.findlastindex@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "array.prototype.findlastindex@npm:1.2.5"
+  version: 1.2.6
+  resolution: "array.prototype.findlastindex@npm:1.2.6"
   dependencies:
-    call-bind: ^1.0.7
+    call-bind: ^1.0.8
+    call-bound: ^1.0.4
     define-properties: ^1.2.1
-    es-abstract: ^1.23.2
+    es-abstract: ^1.23.9
     es-errors: ^1.3.0
-    es-object-atoms: ^1.0.0
-    es-shim-unscopables: ^1.0.2
-  checksum: 2c81cff2a75deb95bf1ed89b6f5f2bfbfb882211e3b7cc59c3d6b87df774cd9d6b36949a8ae39ac476e092c1d4a4905f5ee11a86a456abb10f35f8211ae4e710
+    es-object-atoms: ^1.1.1
+    es-shim-unscopables: ^1.1.0
+  checksum: bd2665bd51f674d4e1588ce5d5848a8adb255f414070e8e652585598b801480516df2c6cef2c60b6ea1a9189140411c49157a3f112d52e9eabb4e9fc80936ea6
   languageName: node
   linkType: hard
 
@@ -6843,9 +6718,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001688":
-  version: 1.0.30001703
-  resolution: "caniuse-lite@npm:1.0.30001703"
-  checksum: f3c19e357df7f5ff480a8a24a61213d1442bf3df9e2f9563a47f4c95e9c08ea7d3c8faa965bc84dcc57c569542584c965b30d552d9b35e421f352c974980de17
+  version: 1.0.30001706
+  resolution: "caniuse-lite@npm:1.0.30001706"
+  checksum: e164acd9d40b36fd0bfbd779962dc2c5e67defa932c1c8e1d36f1fdb96eafd18d524d1d28cfa93444c0f414470da413007916dc4a215398e035003749281685b
   languageName: node
   linkType: hard
 
@@ -8221,9 +8096,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.115
-  resolution: "electron-to-chromium@npm:1.5.115"
-  checksum: 2f9f0519758d90b9bee29bf2c3dc5ac78990794ba2ad7e0680433b6298320e6bd50e673ef481819f3ef00bb24a6ec53fd3ab603d6f3511e59de627405016e84f
+  version: 1.5.120
+  resolution: "electron-to-chromium@npm:1.5.120"
+  checksum: 868a112942a906edbd730d948276cb198429b1dac52a7911df7f2199c227d37c197ea67c250a6bb388194f2a2b9f6bcdb7ff8a5635915920202d9966872b7ec9
   languageName: node
   linkType: hard
 
@@ -8442,7 +8317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-shim-unscopables@npm:^1.0.2":
+"es-shim-unscopables@npm:^1.0.2, es-shim-unscopables@npm:^1.1.0":
   version: 1.1.0
   resolution: "es-shim-unscopables@npm:1.1.0"
   dependencies:
@@ -14520,9 +14395,9 @@ __metadata:
   linkType: hard
 
 "nwsapi@npm:^2.2.0":
-  version: 2.2.18
-  resolution: "nwsapi@npm:2.2.18"
-  checksum: 19dab3b9e86d45c6b856540fa55058b2a13d7dbd4b4b9d05232435879cc3449917fcac4855574d5fa49186caf78ead2103b53f96b76dd0181e13b61444668add
+  version: 2.2.19
+  resolution: "nwsapi@npm:2.2.19"
+  checksum: a3076d11173cfd77acc49f798b0fea8e981427d4d7657d2f9d2f7c1f30d65f18e5bda2f0b1564462aa65a8a5cb07cac4c20bb103114a4e6968ac63e4c8351bdd
   languageName: node
   linkType: hard
 
@@ -14589,13 +14464,14 @@ __metadata:
   linkType: hard
 
 "object.entries@npm:^1.1.8":
-  version: 1.1.8
-  resolution: "object.entries@npm:1.1.8"
+  version: 1.1.9
+  resolution: "object.entries@npm:1.1.9"
   dependencies:
-    call-bind: ^1.0.7
+    call-bind: ^1.0.8
+    call-bound: ^1.0.4
     define-properties: ^1.2.1
-    es-object-atoms: ^1.0.0
-  checksum: 5314877cb637ef3437a30bba61d9bacdb3ce74bf73ac101518be0633c37840c8cc67407edb341f766e8093b3d7516d5c3358f25adfee4a2c697c0ec4c8491907
+    es-object-atoms: ^1.1.1
+  checksum: 0ab2ef331c4d6a53ff600a5d69182948d453107c3a1f7fd91bc29d387538c2aba21d04949a74f57c21907208b1f6fb175567fd1f39f1a7a4046ba1bca762fb41
   languageName: node
   linkType: hard
 
@@ -19085,8 +18961,8 @@ __metadata:
   linkType: hard
 
 "viem@npm:^2.23.5":
-  version: 2.23.10
-  resolution: "viem@npm:2.23.10"
+  version: 2.23.12
+  resolution: "viem@npm:2.23.12"
   dependencies:
     "@noble/curves": 1.8.1
     "@noble/hashes": 1.7.1
@@ -19101,7 +18977,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 979bcadacffe2a3e7a1140413872c7a3ee12ce741c64f9c5909fb418cf22421b83e24d8fa2a211f39e2b3200f34d8122ecb012ce83a82270bb45fc4565296837
+  checksum: 3969979c618dbf2fd7af5283506aec6a1d2f04219ee0b5bcd8a939d2ba499d6b54350916b4b28d9bbb542700dfa217a14d088423cf1761bcbd5a3d8c41e186b5
   languageName: node
   linkType: hard
 

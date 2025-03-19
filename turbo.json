@@ -1,4 +1,27 @@
 {
+  "tasks": {
+    "v2-sdk#build": {
+      "dependsOn": ["sdk-core#build"]
+    },
+    "v3-sdk#build": {
+      "dependsOn": ["sdk-core#build"]
+    },
+    "v4-sdk#build": {
+      "dependsOn": ["sdk-core#build", "v3-sdk#build"]
+    },
+    "router-sdk#build": {
+      "dependsOn": ["v2-sdk#build"]
+    },
+    "universal-router-sdk#build": {
+      "dependsOn": [
+        "sdk-core#build",
+        "v2-sdk#build",
+        "v3-sdk#build",
+        "v4-sdk#build",
+        "router-sdk#build"
+      ]
+    }
+  },
   "pipeline": {
     "lint": {
       "inputs": [
@@ -7,6 +30,7 @@
       ]
     },
     "build": {
+      "dependsOn": ["^build"],
       "inputs": [
         "yarn.lock",
         "**/package.json",
