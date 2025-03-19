@@ -2451,7 +2451,7 @@ __metadata:
     "@kittycorn-labs/sdk-core": ^1.0.0
     "@kittycorn-labs/v2-sdk": ^1.0.1
     "@kittycorn-labs/v3-sdk": ^1.0.1
-    "@kittycorn-labs/v4-sdk": ^1.1.6
+    "@kittycorn-labs/v4-sdk": ^1.1.7
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     prettier: ^2.4.1
@@ -2509,7 +2509,7 @@ __metadata:
     "@kittycorn-labs/sdk-core": ^1.0.0
     "@kittycorn-labs/v2-sdk": ^1.0.1
     "@kittycorn-labs/v3-sdk": ^1.0.1
-    "@kittycorn-labs/v4-sdk": ^1.1.6
+    "@kittycorn-labs/v4-sdk": ^1.1.7
     "@openzeppelin/contracts": 4.7.0
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
@@ -2615,16 +2615,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/v4-sdk@npm:^1.1.4, @kittycorn-labs/v4-sdk@npm:^1.1.6":
-  version: 1.1.6
-  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.6"
+"@kittycorn-labs/v4-sdk@npm:^1.1.4, @kittycorn-labs/v4-sdk@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.7"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
     "@kittycorn-labs/sdk-core": ^1.0.0
     "@kittycorn-labs/v3-sdk": ^1.0.1
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
-  checksum: b081db5dfb517ed647f7fd073be3b79d077eb7a5a2c8c26ec6076301a13f35fe1c5f35ff5e37bc4411d080712b7a1e80521932153ad672c3c0e6a1a1b70c241c
+  checksum: 464675ab4477a94b5d462e535f2d2e7e5cc1aaa2a5eee6aabc9f506f71bc95f414a87dfb79b966f7e27c5ec90dcc5d1bc22ac25c16136b05060df1b8e8b89bff
   languageName: node
   linkType: hard
 

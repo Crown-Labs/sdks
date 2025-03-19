@@ -129,6 +129,8 @@ export function getPoolTokenize(chainId: ChainId, tokenize: Token) {
   const underlying = getSupportUnderlyingByTokenize(chainId, tokenize)!
   const tickSpacing = 60
   const liquidity = JSBI.BigInt(utils.parseEther('1000000').toString())
+  console.log('underlying', underlying)
+  console.log('tokenize', tokenize)
   return new V4Pool(underlying, tokenize, FeeAmount.MEDIUM, 60, ZERO_ADDRESS, encodeSqrtRatioX96(1, 1), liquidity, 0, [
     {
       index: nearestUsableTick(TickMath.MIN_TICK, tickSpacing),

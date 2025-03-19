@@ -92,10 +92,10 @@ export const BASE_TOKENIZE_UNDERLYING: {
       tokenize: TUSDT_SEPOLIA,
       underlying: new Token(
         ChainId.SEPOLIA,
-        '0x137a906E06EC20808c8F156F9024196427429220',
+        '0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0',
         6,
-        'Kittycorn Tokenize USDT',
-        'tUSDT'
+        'USDT',
+        'USDT Token'
       ),
     },
     {
