@@ -1,10 +1,11 @@
 {
-  "name": "@uniswap/v2-sdk",
+  "name": "@kittycorn-labs/v2-sdk",
   "description": "🛠 An SDK for building applications on top of Uniswap V2",
-  "repository": "https://github.com/Uniswap/sdks.git",
+  "repository": "https://github.com/Crown-Labs/sdks.git",
   "keywords": [
     "uniswap",
-    "ethereum"
+    "ethereum",
+    "kittycorn-labs"
   ],
   "license": "MIT",
   "main": "dist/index.js",
@@ -26,7 +27,7 @@
   "dependencies": {
     "@ethersproject/address": "^5.0.2",
     "@ethersproject/solidity": "^5.0.9",
-    "@uniswap/sdk-core": "^7.7.1",
+    "@kittycorn-labs/sdk-core": "^1.0.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"
   },
