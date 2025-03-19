@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount } from '@kittycorn-labs/sdk-core'
 import { Pool } from '../entities/pool'
-import { getSupportTokenizeByUnderlying } from '@kittycorn-labs/smart-order-router'
+import { getSupportTokenizeByUnderlying } from '../tokenizeAddresses'
 import { Token } from '@kittycorn-labs/sdk-core'
 
 export function amountWithPathCurrency(amount: CurrencyAmount<Currency>, pool: Pool): CurrencyAmount<Currency> {
