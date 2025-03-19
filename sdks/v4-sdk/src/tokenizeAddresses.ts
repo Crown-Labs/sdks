@@ -90,13 +90,7 @@ export const BASE_TOKENIZE_UNDERLYING: {
     },
     {
       tokenize: TUSDT_SEPOLIA,
-      underlying: new Token(
-        ChainId.SEPOLIA,
-        '0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0',
-        6,
-        'USDT',
-        'USDT Token'
-      ),
+      underlying: new Token(ChainId.SEPOLIA, '0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0', 6, 'USDT', 'USDT Token'),
     },
     {
       tokenize: TWETH_SEPOLIA,
