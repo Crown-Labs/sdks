@@ -1,4 +1,4 @@
-import { Currency } from '@uniswap/sdk-core'
+import { Currency } from '@kittycorn-labs/sdk-core'
 
 export function sortsBefore(currencyA: Currency, currencyB: Currency): boolean {
   if (currencyA.isNative) return true

@@ -1,4 +1,4 @@
-import { Currency, Token } from '@uniswap/sdk-core'
+import { Currency, Token } from '@kittycorn-labs/sdk-core'
 import { Pool as V4Pool } from '@kittycorn-labs/v4-sdk'
 import { TPool } from '@kittycorn-labs/router-sdk'
 

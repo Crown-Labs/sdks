@@ -1,7 +1,17 @@
-import { Currency, CurrencyAmount, Ether, WETH9, Percent, Price, sqrt, Token, TradeType } from '@uniswap/sdk-core'
+import {
+  Currency,
+  CurrencyAmount,
+  Ether,
+  WETH9,
+  Percent,
+  Price,
+  sqrt,
+  Token,
+  TradeType,
+} from '@kittycorn-labs/sdk-core'
 import { ADDRESS_ZERO, FEE_AMOUNT_MEDIUM, TICK_SPACING_SIXTY } from '../internalConstants'
 import JSBI from 'jsbi'
-import { nearestUsableTick, encodeSqrtRatioX96, TickMath } from '@uniswap/v3-sdk'
+import { nearestUsableTick, encodeSqrtRatioX96, TickMath } from '@kittycorn-labs/v3-sdk'
 import { Pool } from './pool'
 import { Route } from './route'
 import { Trade } from './trade'
