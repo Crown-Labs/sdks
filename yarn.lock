@@ -2542,7 +2542,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kittycorn-labs/router-sdk@npm:^1.2.3, @kittycorn-labs/router-sdk@npm:^1.2.4":
+"@kittycorn-labs/router-sdk@npm:^1.2.4":
   version: 1.2.4
   resolution: "@kittycorn-labs/router-sdk@npm:1.2.4"
   dependencies:
@@ -2614,7 +2614,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/smart-order-router@npm:^4.20.4-7":
+"@kittycorn-labs/smart-order-router@npm:^4.20.4-6, @kittycorn-labs/smart-order-router@npm:^4.20.4-7":
   version: 4.20.4-7
   resolution: "@kittycorn-labs/smart-order-router@npm:4.20.4-7"
   dependencies:
@@ -2648,27 +2648,6 @@ __metadata:
   peerDependencies:
     jsbi: ^3.2.0
   checksum: 28f8563cdc7be9cb04959db0ba3528d189a815c72cd352b7e14ad74e843abcbef706bb4a442cdeec463a3cf8f3d1471e39216864750401ea0b8348d028600623
-  languageName: node
-  linkType: hard
-
-"@kittycorn-labs/universal-router-sdk@npm:^1.4.5":
-  version: 1.4.5
-  resolution: "@kittycorn-labs/universal-router-sdk@npm:1.4.5"
-  dependencies:
-    "@kittycorn-labs/router-sdk": ^1.2.3
-    "@kittycorn-labs/sdk-core": ^1.0.0
-    "@kittycorn-labs/smart-order-router": ^4.20.4-5
-    "@kittycorn-labs/v2-sdk": ^1.0.1
-    "@kittycorn-labs/v3-sdk": ^1.0.1
-    "@kittycorn-labs/v4-sdk": ^1.1.4
-    "@openzeppelin/contracts": 4.7.0
-    "@uniswap/permit2-sdk": ^1.3.0
-    "@uniswap/universal-router": 2.0.0-beta.2
-    "@uniswap/v2-core": ^1.0.1
-    "@uniswap/v3-core": 1.0.0
-    bignumber.js: ^9.0.2
-    ethers: ^5.7.0
-  checksum: 8bf9bb5b80a924073c6972fceb504e5c61cfc6816f81440954bc357b1403f8feec7d78093152a7931ac36dfbee69f91dc3bb4c28b761dd73bbd63e94e208b349
   languageName: node
   linkType: hard
 
@@ -2808,7 +2787,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/v4-sdk@npm:^1.1.5":
+"@kittycorn-labs/v4-sdk@npm:^1.1.4, @kittycorn-labs/v4-sdk@npm:^1.1.5":
   version: 1.1.5
   resolution: "@kittycorn-labs/v4-sdk@npm:1.1.5"
   dependencies:
