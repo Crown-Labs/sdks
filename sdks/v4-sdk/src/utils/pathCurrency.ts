@@ -1,7 +1,7 @@
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount } from '@kittycorn-labs/sdk-core'
 import { Pool } from '../entities/pool'
 import { getSupportTokenizeByUnderlying } from '@kittycorn-labs/smart-order-router'
-import { Token } from '@uniswap/sdk-core'
+import { Token } from '@kittycorn-labs/sdk-core'
 
 export function amountWithPathCurrency(amount: CurrencyAmount<Currency>, pool: Pool): CurrencyAmount<Currency> {
   return CurrencyAmount.fromFractionalAmount(

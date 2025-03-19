@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import { Token, WETH9 } from '@uniswap/sdk-core'
-import { encodeSqrtRatioX96, nearestUsableTick, TickMath } from '@uniswap/v3-sdk'
+import { Token, WETH9 } from '@kittycorn-labs/sdk-core'
+import { encodeSqrtRatioX96, nearestUsableTick, TickMath } from '@kittycorn-labs/v3-sdk'
 import { ethers, BigNumber } from 'ethers'
 import { CommandParser, UniversalRouterCall } from '../../src/utils/commandParser'
 import { RoutePlanner, CommandType } from '../../src/utils/routerCommands'
