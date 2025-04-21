@@ -2476,6 +2476,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kittycorn-labs/sdk-core@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@kittycorn-labs/sdk-core@npm:1.0.1"
+  dependencies:
+    "@ethersproject/address": ^5.0.2
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": 5.7.0
+    "@ethersproject/strings": 5.7.0
+    big.js: ^5.2.2
+    decimal.js-light: ^2.5.0
+    jsbi: ^3.1.4
+    tiny-invariant: ^1.1.0
+    toformat: ^2.0.0
+  checksum: f905f776fb359a16843ebb8528efe965a8c7618695d2ca3a9579595e21d6a3f148e738dda9861fbf42e3931ebd65a314f01045b48d38ad33b362d5b71c1fd5d2
+  languageName: node
+  linkType: hard
+
 "@kittycorn-labs/sdk-core@workspace:sdks/sdk-core":
   version: 0.0.0-use.local
   resolution: "@kittycorn-labs/sdk-core@workspace:sdks/sdk-core"
@@ -2553,7 +2570,7 @@ __metadata:
   dependencies:
     "@ethersproject/address": ^5.0.2
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.0
+    "@kittycorn-labs/sdk-core": ^1.0.1
     "@types/big.js": ^4.0.5
     "@types/jest": ^24.0.25
     "@uniswap/v2-core": ^1.0.1
@@ -2594,7 +2611,7 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.0
+    "@kittycorn-labs/sdk-core": ^1.0.1
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     "@uniswap/v3-core": 1.0.0
@@ -2633,7 +2650,7 @@ __metadata:
   resolution: "@kittycorn-labs/v4-sdk@workspace:sdks/v4-sdk"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.0
+    "@kittycorn-labs/sdk-core": ^1.0.1
     "@kittycorn-labs/v3-sdk": ^1.0.1
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
