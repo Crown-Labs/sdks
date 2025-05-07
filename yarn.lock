@@ -2466,8 +2466,8 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@kittycorn-labs/sdk-core": ^1.0.2
-    "@kittycorn-labs/v2-sdk": ^1.0.2
-    "@kittycorn-labs/v3-sdk": ^1.0.2
+    "@kittycorn-labs/v2-sdk": ^1.0.3
+    "@kittycorn-labs/v3-sdk": ^1.0.3
     "@kittycorn-labs/v4-sdk": ^1.1.9
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
@@ -2524,8 +2524,8 @@ __metadata:
   dependencies:
     "@kittycorn-labs/router-sdk": ^1.2.8
     "@kittycorn-labs/sdk-core": ^1.0.2
-    "@kittycorn-labs/v2-sdk": ^1.0.2
-    "@kittycorn-labs/v3-sdk": ^1.0.2
+    "@kittycorn-labs/v2-sdk": ^1.0.3
+    "@kittycorn-labs/v3-sdk": ^1.0.3
     "@kittycorn-labs/v4-sdk": ^1.1.9
     "@openzeppelin/contracts": 4.7.0
     "@types/chai": ^4.3.3
@@ -2561,6 +2561,19 @@ __metadata:
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
   checksum: acecc4b43df7d69d34c10177287e5a147cea6d11992bfaf5570fa3ca71ef1b1737d767991a0814753c21f2e8054df386d14e35588f41c815c36d65ab14c072e9
+  languageName: node
+  linkType: hard
+
+"@kittycorn-labs/v2-sdk@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@kittycorn-labs/v2-sdk@npm:1.0.3"
+  dependencies:
+    "@ethersproject/address": ^5.0.2
+    "@ethersproject/solidity": ^5.0.9
+    "@kittycorn-labs/sdk-core": ^1.0.2
+    tiny-invariant: ^1.1.0
+    tiny-warning: ^1.0.3
+  checksum: a3b3049917164fa69f158fa1aa827af5cc99f3ce12a3d858809f2ca8d2ea70fd0251c9a05722c6457ad0fff394d430f998bdff566f29f4f2f312a0986e65f7e4
   languageName: node
   linkType: hard
 
@@ -2602,6 +2615,22 @@ __metadata:
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
   checksum: ecd252337d9ac6502dede976588e49fc4c43f86eec377f0a80dcde29f363353c948472648b18af4f5d37d6f49cc2593b6fde6789eccde550e862d2e7b90aa583
+  languageName: node
+  linkType: hard
+
+"@kittycorn-labs/v3-sdk@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@kittycorn-labs/v3-sdk@npm:1.0.3"
+  dependencies:
+    "@ethersproject/abi": ^5.5.0
+    "@ethersproject/solidity": ^5.0.9
+    "@kittycorn-labs/sdk-core": ^1.0.2
+    "@uniswap/swap-router-contracts": ^1.3.0
+    "@uniswap/v3-periphery": ^1.1.1
+    "@uniswap/v3-staker": 1.0.0
+    tiny-invariant: ^1.1.0
+    tiny-warning: ^1.0.3
+  checksum: 972c162a28ed87c298d3e413c46d646461e12f937aec51ca25e4316d9a69e774b12a540f6feaf36dad10e4761f3ac36f49f946debe51144ef2533de8036c8ed7
   languageName: node
   linkType: hard
 
@@ -2651,7 +2680,7 @@ __metadata:
   dependencies:
     "@ethersproject/solidity": ^5.0.9
     "@kittycorn-labs/sdk-core": ^1.0.2
-    "@kittycorn-labs/v3-sdk": ^1.0.2
+    "@kittycorn-labs/v3-sdk": ^1.0.3
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
     "@types/node": ^18.7.16
