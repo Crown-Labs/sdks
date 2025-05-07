@@ -5,29 +5,29 @@ import { ChainId, Token } from '@kittycorn-labs/sdk-core'
 // Mainnet
 export const TUSDC_MAINNET = new Token(
   ChainId.MAINNET,
-  '0x39826E09f8efb9df4C56Aeb9eEC0D2B8164d3B36',
+  '0xcc331eC1d6CF4542F9eB988B49249cfa163081dc',
   6,
   'Kittycorn Tokenize USDC',
   'tUSDC'
 )
 export const TUSDT_MAINNET = new Token(
   ChainId.MAINNET,
-  '0xACB5b53F9F193b99bcd8EF8544ddF4c398DE24a3',
+  '0x561A87303005D9C83FbD94dDEb80D63528fCD448',
   6,
   'Kittycorn Tokenize USDT',
   'tUSDT'
 )
 export const TWETH_MAINNET = new Token(
   ChainId.MAINNET,
-  '0x6C3F7ed79b9D75486D0250946f7a20BDA74844Ba',
-  6,
+  '0x8a2D75bAadcd2C71b2aCF715fc3Da68964CEA48e',
+  18,
   'Kittycorn Tokenize WETH',
   'tWETH'
 )
 export const TWBTC_MAINNET = new Token(
   ChainId.MAINNET,
-  '0x90A3B384F62f43Ba07938EA43aEEc35c2aBfeCa2',
-  6,
+  '0x137a906E06EC20808c8F156F9024196427429220',
+  8,
   'Kittycorn Tokenize WBTC',
   'tWBTC'
 )
