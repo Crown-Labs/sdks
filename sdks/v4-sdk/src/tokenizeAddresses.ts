@@ -1,6 +1,7 @@
 import { ChainId, Token } from '@kittycorn-labs/sdk-core'
 
 // Kittycorn: Tokenize Token
+// This file contains the addresses of the Tokenize tokens on different networks.
 
 // Mainnet
 export const TUSDC_MAINNET = new Token(
