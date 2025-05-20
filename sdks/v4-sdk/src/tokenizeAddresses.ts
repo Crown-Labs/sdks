@@ -50,17 +50,31 @@ export const TUSDT_SEPOLIA = new Token(
 )
 export const TWETH_SEPOLIA = new Token(
   ChainId.SEPOLIA,
-  '0x9fEcb19a660d1d6d3aD7a33A7e9BeB01A9EE24aB',
+  '0x6F556945544761e8384Fa36c76a7D1e360194cE6',
   18,
   'Kittycorn Tokenize WETH',
   'tWETH'
 )
 export const TWBTC_SEPOLIA = new Token(
   ChainId.SEPOLIA,
-  '0x3dd320984b954453D09F69B95d4c9F5Bc92a9a58',
+  '0xf21aD4869f024B48d7DE8F9348Ae72f0c82e40c8',
   8,
   'Kittycorn Tokenize WBTC',
   'tWBTC'
+)
+export const TLINK_SEPOLIA = new Token(
+  ChainId.SEPOLIA,
+  '0xBDfAb5bF222Aa915A591526A683203B4c865636a',
+  18,
+  'Kittycorn Tokenize LINK',
+  'tLINK'
+)
+export const TAAVE_SEPOLIA = new Token(
+  ChainId.SEPOLIA,
+  '0x0Bf16847E358158F92784cC0e873A5F0B7FB4eF7',
+  18,
+  'Kittycorn Tokenize AAVE',
+  'tAAVE'
 )
 
 export const BASE_TOKENIZE_UNDERLYING: {
@@ -100,6 +114,14 @@ export const BASE_TOKENIZE_UNDERLYING: {
     {
       tokenize: TWBTC_SEPOLIA,
       underlying: new Token(ChainId.SEPOLIA, '0x29f2D40B0605204364af54EC677bD022dA425d03', 8, 'WBTC', 'WBTC Token'),
+    },
+    {
+      tokenize: TLINK_SEPOLIA,
+      underlying: new Token(ChainId.SEPOLIA, '0xf8Fb3713D459D7C1018BD0A49D19b4C44290EBE5', 18, 'LINK', 'LINK Token'),
+    },
+    {
+      tokenize: TAAVE_SEPOLIA,
+      underlying: new Token(ChainId.SEPOLIA, '0x88541670E55cC00bEEFD87eB59EDd1b7C511AC9a', 18, 'AAVE', 'AAVE Token'),
     },
   ],
 }
