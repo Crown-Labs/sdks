@@ -50,28 +50,28 @@ export const TUSDT_SEPOLIA = new Token(
 )
 export const TWETH_SEPOLIA = new Token(
   ChainId.SEPOLIA,
-  '0x6F556945544761e8384Fa36c76a7D1e360194cE6',
+  '0x8b7fEBC354B71c277DD047C951303928e7a86e40',
   18,
   'Kittycorn Tokenize WETH',
   'tWETH'
 )
 export const TWBTC_SEPOLIA = new Token(
   ChainId.SEPOLIA,
-  '0xf21aD4869f024B48d7DE8F9348Ae72f0c82e40c8',
+  '0x44b3Dc0BaDc5364C66b14edF54Beb9d1874ca6ba',
   8,
   'Kittycorn Tokenize WBTC',
   'tWBTC'
 )
 export const TLINK_SEPOLIA = new Token(
   ChainId.SEPOLIA,
-  '0xBDfAb5bF222Aa915A591526A683203B4c865636a',
+  '0x3b852a549CfC4cf36749058D14C4Ecf988d535DB',
   18,
   'Kittycorn Tokenize LINK',
   'tLINK'
 )
 export const TAAVE_SEPOLIA = new Token(
   ChainId.SEPOLIA,
-  '0x0Bf16847E358158F92784cC0e873A5F0B7FB4eF7',
+  '0xBc5bf93525658F9D0047c77D48A7b487052cF452',
   18,
   'Kittycorn Tokenize AAVE',
   'tAAVE'
