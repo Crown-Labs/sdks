@@ -2465,7 +2465,7 @@ __metadata:
   resolution: "@kittycorn-labs/router-sdk@workspace:sdks/router-sdk"
   dependencies:
     "@ethersproject/abi": ^5.5.0
-    "@kittycorn-labs/sdk-core": ^1.0.3
+    "@kittycorn-labs/sdk-core": ^1.0.4
     "@kittycorn-labs/v2-sdk": ^1.0.4
     "@kittycorn-labs/v3-sdk": ^1.0.4
     "@kittycorn-labs/v4-sdk": ^1.1.14
@@ -2476,7 +2476,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/sdk-core@npm:^1.0.3":
+"@kittycorn-labs/sdk-core@npm:^1.0.3, @kittycorn-labs/sdk-core@npm:^1.0.4":
   version: 1.0.4
   resolution: "@kittycorn-labs/sdk-core@npm:1.0.4"
   dependencies:
@@ -2523,7 +2523,7 @@ __metadata:
   resolution: "@kittycorn-labs/universal-router-sdk@workspace:sdks/universal-router-sdk"
   dependencies:
     "@kittycorn-labs/router-sdk": ^1.2.12
-    "@kittycorn-labs/sdk-core": ^1.0.3
+    "@kittycorn-labs/sdk-core": ^1.0.4
     "@kittycorn-labs/v2-sdk": ^1.0.4
     "@kittycorn-labs/v3-sdk": ^1.0.4
     "@kittycorn-labs/v4-sdk": ^1.1.14
@@ -2570,7 +2570,7 @@ __metadata:
   dependencies:
     "@ethersproject/address": ^5.0.2
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.3
+    "@kittycorn-labs/sdk-core": ^1.0.4
     "@types/big.js": ^4.0.5
     "@types/jest": ^24.0.25
     "@uniswap/v2-core": ^1.0.1
@@ -2611,7 +2611,7 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.3
+    "@kittycorn-labs/sdk-core": ^1.0.4
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     "@uniswap/v3-core": 1.0.0
@@ -2633,15 +2633,15 @@ __metadata:
   linkType: soft
 
 "@kittycorn-labs/v4-sdk@npm:^1.1.14":
-  version: 1.1.14
-  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.14"
+  version: 1.1.15
+  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.15"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
     "@kittycorn-labs/sdk-core": ^1.0.3
     "@kittycorn-labs/v3-sdk": ^1.0.4
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
-  checksum: b9bb7b6e3a7f8621c70e621004e24b0ad0a0af6c0dbffed13cbf96aeca7d33b856c9193256b10a23180f5f57a4abb96535f18d36ee18d70f3d71a54eddcd010a
+  checksum: 3377f3b5d1659d96e18cf242006562891a19e66d73453d6a60aef0addf74c09b662fab62fea5b4c00f98a60fc9adc7d03cd3a99d5801a2d9c9ae5685bbf2dbff
   languageName: node
   linkType: hard
 
@@ -2650,7 +2650,7 @@ __metadata:
   resolution: "@kittycorn-labs/v4-sdk@workspace:sdks/v4-sdk"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.3
+    "@kittycorn-labs/sdk-core": ^1.0.4
     "@kittycorn-labs/v3-sdk": ^1.0.4
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
