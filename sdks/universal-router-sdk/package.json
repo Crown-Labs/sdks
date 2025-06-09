@@ -29,7 +29,7 @@
     "test:hardhat": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' hardhat test"
   },
   "dependencies": {
-    "@kittycorn-labs/router-sdk": "^1.2.15",
+    "@kittycorn-labs/router-sdk": "^1.2.18",
     "@kittycorn-labs/sdk-core": "^1.0.5",
     "@kittycorn-labs/v2-sdk": "^1.0.6",
     "@kittycorn-labs/v3-sdk": "^1.0.6",

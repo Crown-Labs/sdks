@@ -2446,17 +2446,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kittycorn-labs/router-sdk@npm:^1.2.15":
-  version: 1.2.17
-  resolution: "@kittycorn-labs/router-sdk@npm:1.2.17"
+"@kittycorn-labs/router-sdk@npm:^1.2.18":
+  version: 1.2.18
+  resolution: "@kittycorn-labs/router-sdk@npm:1.2.18"
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@kittycorn-labs/sdk-core": ^1.0.5
     "@kittycorn-labs/v2-sdk": ^1.0.6
     "@kittycorn-labs/v3-sdk": ^1.0.6
-    "@kittycorn-labs/v4-sdk": ^1.1.17
+    "@kittycorn-labs/v4-sdk": ^1.1.20
     "@uniswap/swap-router-contracts": ^1.3.0
-  checksum: ceee473d193d7b3ec150be41e17db017f93ab7ad9d81a313e50ab92be29fbacf5ea91358c0778ab6fc8b8b17d81b9cf255855524077da8dc823b5ddd4eda71a6
+  checksum: ac4e6544a1f6f2b97793dc8ac0a0a8f85276ead4ab41c01433829a454cf32b70bcd08117561354c27012f76d0438bc7c1a71e313d61ce5c60b0acc0009090b0c
   languageName: node
   linkType: hard
 
@@ -2522,7 +2522,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@kittycorn-labs/universal-router-sdk@workspace:sdks/universal-router-sdk"
   dependencies:
-    "@kittycorn-labs/router-sdk": ^1.2.15
+    "@kittycorn-labs/router-sdk": ^1.2.18
     "@kittycorn-labs/sdk-core": ^1.0.5
     "@kittycorn-labs/v2-sdk": ^1.0.6
     "@kittycorn-labs/v3-sdk": ^1.0.6
@@ -2632,7 +2632,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/v4-sdk@npm:^1.1.17, @kittycorn-labs/v4-sdk@npm:^1.1.20":
+"@kittycorn-labs/v4-sdk@npm:^1.1.20":
   version: 1.1.20
   resolution: "@kittycorn-labs/v4-sdk@npm:1.1.20"
   dependencies:
