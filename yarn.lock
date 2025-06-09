@@ -2465,7 +2465,7 @@ __metadata:
   resolution: "@kittycorn-labs/router-sdk@workspace:sdks/router-sdk"
   dependencies:
     "@ethersproject/abi": ^5.5.0
-    "@kittycorn-labs/sdk-core": ^1.0.4
+    "@kittycorn-labs/sdk-core": ^1.0.5
     "@kittycorn-labs/v2-sdk": ^1.0.5
     "@kittycorn-labs/v3-sdk": ^1.0.5
     "@kittycorn-labs/v4-sdk": ^1.1.17
@@ -2476,9 +2476,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/sdk-core@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "@kittycorn-labs/sdk-core@npm:1.0.4"
+"@kittycorn-labs/sdk-core@npm:^1.0.4, @kittycorn-labs/sdk-core@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@kittycorn-labs/sdk-core@npm:1.0.5"
   dependencies:
     "@ethersproject/address": ^5.0.2
     "@ethersproject/bytes": ^5.7.0
@@ -2489,7 +2489,7 @@ __metadata:
     jsbi: ^3.1.4
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
-  checksum: 59aa5a2ffdf36d5ba60f67e3e40028c422eae680978c77655f907c3940ce7c7cd6c318994ce3b406aa40b9331a4bb16a3011dce5cfc0da66d7a362b487288dcb
+  checksum: 498a86c5f1e72a28c9adfc92811c49454787458d5c1ab36f54c1139ee336025e26faed4c62b38d7603918611eec327d8a428a6914f1e76fe2a5d896601400e87
   languageName: node
   linkType: hard
 
@@ -2523,7 +2523,7 @@ __metadata:
   resolution: "@kittycorn-labs/universal-router-sdk@workspace:sdks/universal-router-sdk"
   dependencies:
     "@kittycorn-labs/router-sdk": ^1.2.15
-    "@kittycorn-labs/sdk-core": ^1.0.4
+    "@kittycorn-labs/sdk-core": ^1.0.5
     "@kittycorn-labs/v2-sdk": ^1.0.5
     "@kittycorn-labs/v3-sdk": ^1.0.5
     "@kittycorn-labs/v4-sdk": ^1.1.17
@@ -2570,7 +2570,7 @@ __metadata:
   dependencies:
     "@ethersproject/address": ^5.0.2
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.4
+    "@kittycorn-labs/sdk-core": ^1.0.5
     "@types/big.js": ^4.0.5
     "@types/jest": ^24.0.25
     "@uniswap/v2-core": ^1.0.1
@@ -2611,7 +2611,7 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.4
+    "@kittycorn-labs/sdk-core": ^1.0.5
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     "@uniswap/v3-core": 1.0.0
@@ -2633,15 +2633,15 @@ __metadata:
   linkType: soft
 
 "@kittycorn-labs/v4-sdk@npm:^1.1.17":
-  version: 1.1.17
-  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.17"
+  version: 1.1.18
+  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.18"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
     "@kittycorn-labs/sdk-core": ^1.0.4
     "@kittycorn-labs/v3-sdk": ^1.0.5
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
-  checksum: a03587bdea8a6b11b8374c739c02b18e11effcf41f1e349dc6dc57eefed39c92563ca6b7875410aa6e3a505541909c0026ae0ae8434faa3b2345cf7b5b6d6eeb
+  checksum: 9707871f434236e73e0bd523f434381ed51ae4590f2468efd5c132da8f48cd1c44142ebb7a9c44254ebc7b31d040b02691eec3c81af12822459bad2d2c5f58b7
   languageName: node
   linkType: hard
 
@@ -2650,7 +2650,7 @@ __metadata:
   resolution: "@kittycorn-labs/v4-sdk@workspace:sdks/v4-sdk"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.4
+    "@kittycorn-labs/sdk-core": ^1.0.5
     "@kittycorn-labs/v3-sdk": ^1.0.5
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
@@ -6151,7 +6151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.24.0, browserslist@npm:^4.24.4":
+"browserslist@npm:^4.24.0, browserslist@npm:^4.25.0":
   version: 4.25.0
   resolution: "browserslist@npm:4.25.0"
   dependencies:
@@ -7045,18 +7045,18 @@ __metadata:
   linkType: hard
 
 "core-js-compat@npm:^3.40.0":
-  version: 3.42.0
-  resolution: "core-js-compat@npm:3.42.0"
+  version: 3.43.0
+  resolution: "core-js-compat@npm:3.43.0"
   dependencies:
-    browserslist: ^4.24.4
-  checksum: 4f0a7db9ed9a95c4edae0749fe9a4d4d4f8f51a53c7c3e06049887500e98763732e8afef9628d2145f875b6e262567e951a77e4d06273f9eac273f5241259fd3
+    browserslist: ^4.25.0
+  checksum: 32d1383c3d6bf84b8bb41b5a1e0a45bf8144ea3f7b913a7e83dd51f1252e9db9c187c4e34877b39ac5661be51a03655694c3a01e03637b895c39f7908f440c77
   languageName: node
   linkType: hard
 
 "core-js@npm:^3.8.2":
-  version: 3.42.0
-  resolution: "core-js@npm:3.42.0"
-  checksum: 270b5532511e2e6cc8e6b10c1434306208dca377aba3850875941316ce605b008ddbdeca0b6dd6eb2a4b188899dab259c0aecd7dc265bc5e7df19563e4e284b7
+  version: 3.43.0
+  resolution: "core-js@npm:3.43.0"
+  checksum: b6da4099d9556ce23f8ada331c8cdc4a6803089a4de837126d52058ec05b74be1c6019e00ff2cf17635989d16562ddddf13cc6fa189d254914b4a42eb4960322
   languageName: node
   linkType: hard
 
