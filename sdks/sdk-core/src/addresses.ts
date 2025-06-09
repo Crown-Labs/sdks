@@ -223,9 +223,9 @@ const SEPOLIA_ADDRESSES: ChainAddresses = {
 
   // TODO: update all below once v4 on sepolia redeployed
   v4PoolManagerAddress: '0xE03A1074c86CFeDd5C142C4F04F1a1536e203543',
-  v4PositionManagerAddress: '0xff92b1dCB26C83C9629bDFd61bc2416cbA85d568',
+  v4PositionManagerAddress: '0x9217f722bcd5812FA14538BFDc5f2c4D0546594e',
   v4StateView: '0xE1Dd9c3fA50EDB962E442f60DfBc432e24537E4C',
-  v4QuoterAddress: '0x979b4b5809DCc2259F0626936EdB14a7a8062F0F',
+  v4QuoterAddress: '0x54D382EF8F4f33891feBcdC80fD797eb970873FF',
 }
 
 // Avalanche v3 addresses
