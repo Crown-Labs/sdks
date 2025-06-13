@@ -2447,16 +2447,16 @@ __metadata:
   linkType: hard
 
 "@kittycorn-labs/router-sdk@npm:^1.2.21":
-  version: 1.2.22
-  resolution: "@kittycorn-labs/router-sdk@npm:1.2.22"
+  version: 1.2.23
+  resolution: "@kittycorn-labs/router-sdk@npm:1.2.23"
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@kittycorn-labs/sdk-core": ^1.0.7
-    "@kittycorn-labs/v2-sdk": ^1.0.7
-    "@kittycorn-labs/v3-sdk": ^1.0.7
+    "@kittycorn-labs/v2-sdk": ^1.0.8
+    "@kittycorn-labs/v3-sdk": ^1.0.8
     "@kittycorn-labs/v4-sdk": ^1.1.22
     "@uniswap/swap-router-contracts": ^1.3.0
-  checksum: d85be096998101ade11e95ecce67d43aaabd69c29cd7ad0cef538c8561d98149388deab08de3afba2267e8f2a2c539be6df156e7bd771e26a41b52f337a59008
+  checksum: 0b0f45b2682e4a7fd4689abc7b64ab5890b979ef7fe70dd05dd2d3cd6ae3beda05641f598977e9f0be0faefdb167b6ce52c77b2cbd3442a1431a30af0e31c2c5
   languageName: node
   linkType: hard
 
@@ -2468,7 +2468,7 @@ __metadata:
     "@kittycorn-labs/sdk-core": ^1.0.7
     "@kittycorn-labs/v2-sdk": ^1.0.8
     "@kittycorn-labs/v3-sdk": ^1.0.8
-    "@kittycorn-labs/v4-sdk": ^1.1.22
+    "@kittycorn-labs/v4-sdk": ^1.1.24
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     prettier: ^2.4.1
@@ -2526,7 +2526,7 @@ __metadata:
     "@kittycorn-labs/sdk-core": ^1.0.7
     "@kittycorn-labs/v2-sdk": ^1.0.8
     "@kittycorn-labs/v3-sdk": ^1.0.8
-    "@kittycorn-labs/v4-sdk": ^1.1.22
+    "@kittycorn-labs/v4-sdk": ^1.1.24
     "@openzeppelin/contracts": 4.7.0
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
@@ -2551,7 +2551,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/v2-sdk@npm:^1.0.7, @kittycorn-labs/v2-sdk@npm:^1.0.8":
+"@kittycorn-labs/v2-sdk@npm:^1.0.8":
   version: 1.0.8
   resolution: "@kittycorn-labs/v2-sdk@npm:1.0.8"
   dependencies:
@@ -2589,7 +2589,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/v3-sdk@npm:^1.0.7, @kittycorn-labs/v3-sdk@npm:^1.0.8":
+"@kittycorn-labs/v3-sdk@npm:^1.0.8":
   version: 1.0.8
   resolution: "@kittycorn-labs/v3-sdk@npm:1.0.8"
   dependencies:
@@ -2632,16 +2632,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/v4-sdk@npm:^1.1.22":
-  version: 1.1.23
-  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.23"
+"@kittycorn-labs/v4-sdk@npm:^1.1.22, @kittycorn-labs/v4-sdk@npm:^1.1.24":
+  version: 1.1.24
+  resolution: "@kittycorn-labs/v4-sdk@npm:1.1.24"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
     "@kittycorn-labs/sdk-core": ^1.0.7
-    "@kittycorn-labs/v3-sdk": ^1.0.7
+    "@kittycorn-labs/v3-sdk": ^1.0.8
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
-  checksum: 686017a3acdb94b6dce4a212a130f6901844ec496c20f7747cc0613ce4147d244a48bd936e052effc1a3c28b7851b80a659fa28196cfe058e186c96be8beff1d
+  checksum: f882c29f63584bdd377d0851522480119c3c329f66f7b94718555fc587b33cf6b085fd3b38bd4ca6b4a655b31af32271ed3da5d869924203566658cd7a252138
   languageName: node
   linkType: hard
 
