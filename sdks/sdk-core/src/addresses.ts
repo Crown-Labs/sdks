@@ -225,7 +225,7 @@ const SEPOLIA_ADDRESSES: ChainAddresses = {
   v4PoolManagerAddress: '0xE03A1074c86CFeDd5C142C4F04F1a1536e203543',
   v4PositionManagerAddress: '0x9217f722bcd5812FA14538BFDc5f2c4D0546594e',
   v4StateView: '0xE1Dd9c3fA50EDB962E442f60DfBc432e24537E4C',
-  v4QuoterAddress: '0x735b4730B5749843636c683bD93cF63f913051c6',
+  v4QuoterAddress: '0xF6d15Ac305168d5d6A3246eF0013519eF82019C6',
 }
 
 // Avalanche v3 addresses
