@@ -2465,7 +2465,7 @@ __metadata:
   resolution: "@kittycorn-labs/router-sdk@workspace:sdks/router-sdk"
   dependencies:
     "@ethersproject/abi": ^5.5.0
-    "@kittycorn-labs/sdk-core": ^1.0.7
+    "@kittycorn-labs/sdk-core": ^1.0.8
     "@kittycorn-labs/v2-sdk": ^1.0.8
     "@kittycorn-labs/v3-sdk": ^1.0.8
     "@kittycorn-labs/v4-sdk": ^1.1.24
@@ -2476,9 +2476,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@kittycorn-labs/sdk-core@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@kittycorn-labs/sdk-core@npm:1.0.7"
+"@kittycorn-labs/sdk-core@npm:^1.0.7, @kittycorn-labs/sdk-core@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@kittycorn-labs/sdk-core@npm:1.0.8"
   dependencies:
     "@ethersproject/address": ^5.0.2
     "@ethersproject/bytes": ^5.7.0
@@ -2489,7 +2489,7 @@ __metadata:
     jsbi: ^3.1.4
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
-  checksum: c980f2925aabf1f73bf9f84da439aee1b85c561c63ee7ec72f91fcaef8d91560289e3fddb8d4f911d679f43f62cc7a5040d67777358cb41cf5c20d024b50c608
+  checksum: 4c8dde03e0c6b1c0c279d3ac0594c53a266475b7b61a2eac0c10a0afb0e70ee374f0496a7c1ac03d0bc9bc694cf3a172ff1ce8b025359c2838fba4ac782d17d7
   languageName: node
   linkType: hard
 
@@ -2523,7 +2523,7 @@ __metadata:
   resolution: "@kittycorn-labs/universal-router-sdk@workspace:sdks/universal-router-sdk"
   dependencies:
     "@kittycorn-labs/router-sdk": ^1.2.24
-    "@kittycorn-labs/sdk-core": ^1.0.7
+    "@kittycorn-labs/sdk-core": ^1.0.8
     "@kittycorn-labs/v2-sdk": ^1.0.8
     "@kittycorn-labs/v3-sdk": ^1.0.8
     "@kittycorn-labs/v4-sdk": ^1.1.24
@@ -2570,7 +2570,7 @@ __metadata:
   dependencies:
     "@ethersproject/address": ^5.0.2
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.7
+    "@kittycorn-labs/sdk-core": ^1.0.8
     "@types/big.js": ^4.0.5
     "@types/jest": ^24.0.25
     "@uniswap/v2-core": ^1.0.1
@@ -2611,7 +2611,7 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.7
+    "@kittycorn-labs/sdk-core": ^1.0.8
     "@types/jest": ^24.0.25
     "@uniswap/swap-router-contracts": ^1.3.0
     "@uniswap/v3-core": 1.0.0
@@ -2650,7 +2650,7 @@ __metadata:
   resolution: "@kittycorn-labs/v4-sdk@workspace:sdks/v4-sdk"
   dependencies:
     "@ethersproject/solidity": ^5.0.9
-    "@kittycorn-labs/sdk-core": ^1.0.7
+    "@kittycorn-labs/sdk-core": ^1.0.8
     "@kittycorn-labs/v3-sdk": ^1.0.8
     "@types/chai": ^4.3.3
     "@types/mocha": ^9.1.1
