@@ -147,6 +147,13 @@ refactor: improve code structure
 
 When creating a new pull request, do NOT create a new branch. Always create the PR from the current branch, even if this branch already has an existing PR. This allows for multiple PRs from the same branch as needed.
 
+**Important**: Do NOT include the Claude Code signature in PR descriptions or any other documentation:
+```
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
 # Summary instructions
 
 When you are using compact, please focus on test output and code changes
