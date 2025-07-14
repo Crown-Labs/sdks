@@ -105,6 +105,11 @@ This is a Yarn workspaces monorepo containing TypeScript SDKs for Uniswap protoc
 - Smart contract tests for blockchain interactions
 - All tests should pass before release
 
+### Required Testing Commands
+Before any code changes are considered complete, you MUST run:
+- `yarn g:lint` - Check and fix linting issues across all packages
+- `yarn prettier` - Format code according to project standards
+
 Always build the entire monorepo after making changes to ensure dependency compatibility across all SDKs.
 
 ## Commit Message Guidelines
