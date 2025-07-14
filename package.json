@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "@babel/runtime": "7.18.9",
+    "@changesets/changelog-github": "0.5.1",
+    "@changesets/cli": "2.29.5",
     "@manypkg/cli": "^0.19.2",
     "@typescript-eslint/eslint-plugin": "^5.62",
     "danger": "11.2.6",
@@ -37,9 +39,5 @@
   ],
   "resolutions": {
     "@manypkg/cli@^0.19.2": "patch:@manypkg/cli@npm%3A0.19.2#./.yarn/patches/@manypkg-cli-npm-0.19.2-ea52ff91d4.patch"
-  },
-  "devDependencies": {
-    "@changesets/changelog-github": "0.5.1",
-    "@changesets/cli": "2.29.5"
   }
 }
