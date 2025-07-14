@@ -66,9 +66,9 @@ This is a Yarn workspaces monorepo containing TypeScript SDKs for Uniswap protoc
 - Commits fail if secrets are detected
 
 ### Release Process
-- **Semantic Release** with Angular commit conventions
-- Custom release rules at `publishing/release-rules.cjs`
-- Automatic NPM publishing with provenance on main branch merge
+- **Changesets** for version management and publishing
+- Interactive changeset creation with `yarn changeset`
+- Automatic NPM publishing with provenance on main branch merge via GitHub Actions
 
 ## Development Workflow
 
