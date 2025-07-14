@@ -1,6 +1,6 @@
 {
   "name": "@kittycorn-labs/v4-sdk",
-  "version": "1.1.26",
+  "version": "1.1.27",
   "description": "⚒️ An SDK for building applications on top of Uniswap V4",
   "repository": "https://github.com/Crown-Labs/sdks",
   "keywords": [

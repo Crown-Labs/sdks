@@ -1,6 +1,6 @@
 {
   "name": "@kittycorn-labs/router-sdk",
-  "version": "1.2.27",
+  "version": "1.2.28",
   "description": "An sdk for routing swaps using Uniswap v2 and Uniswap v3.",
   "repository": "https://github.com/Crown-Labs/sdks.git",
   "keywords": [
