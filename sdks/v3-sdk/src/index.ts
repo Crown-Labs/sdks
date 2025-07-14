@@ -1,3 +1,4 @@
+// Kittycorn V3 SDK
 export * from './entities'
 export * from './utils'
 
