@@ -78,13 +78,29 @@ This is a Yarn workspaces monorepo containing TypeScript SDKs for Uniswap protoc
 4. **Lint**: `yarn g:lint` (enforces code quality standards)
 5. **Individual work**: `yarn sdk <package-name> <command>` for specific packages
 
+## Pre-Commit Requirements
+
+**CRITICAL**: Before every git commit, you MUST run these commands in order:
+
+```bash
+yarn g:lint
+yarn prettier
+```
+
+These commands ensure:
+- Code follows linting rules and passes all quality checks
+- Code is formatted consistently according to project standards
+- All files are properly formatted before committing
+
+**Never commit code without running these commands first.** The pre-commit hooks will catch some issues, but running these commands manually ensures a clean commit history.
+
 ## Key Configuration Files
 
 - `turbo.json` - Build pipeline and dependency configuration
 - `package.json` - Root workspace with global scripts
 - Individual SDK `package.json` files - Package-specific configurations
 - `.husky/pre-commit` - Git hook security checks
-- `publishing/release-rules.cjs` - Semantic release automation
+- `.changeset/config.json` - Changesets configuration for releases
 
 ## Common Development Patterns
 
@@ -106,10 +122,6 @@ This is a Yarn workspaces monorepo containing TypeScript SDKs for Uniswap protoc
 - All tests should pass before release
 
 ### Required Testing Commands
-Before any code changes are considered complete, you MUST run:
-- `yarn g:lint` - Check and fix linting issues across all packages
-- `yarn prettier` - Format code according to project standards
-
 Always build the entire monorepo after making changes to ensure dependency compatibility across all SDKs.
 
 ## Commit Message Guidelines
@@ -130,6 +142,10 @@ fix: resolve bug issue
 chore: update dependencies
 refactor: improve code structure
 ```
+
+## Pull Request Guidelines
+
+When creating a new pull request, do NOT create a new branch. Always create the PR from the current branch, even if this branch already has an existing PR. This allows for multiple PRs from the same branch as needed.
 
 # Summary instructions
 

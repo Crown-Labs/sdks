@@ -54,5 +54,5 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
-  },
+  }
 }
