@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uniswap/uniswapx-sdk", "@uniswap/smart-wallet-sdk", "@uniswap/permit2-sdk"]
+  "ignore": ["@uniswap/uniswapx-sdk", "@uniswap/smart-wallet-sdk", "@uniswap/permit2-sdk", "uniswapx-integration"]
 }
