@@ -1,6 +1,7 @@
 {
   "name": "@uniswap/smart-wallet-sdk",
   "version": "1.0.0",
+  "private": true,
   "description": "⚒️ An SDK for building applications with smart wallets on Uniswap",
   "repository": "https://github.com/Uniswap/sdks.git",
   "keywords": [

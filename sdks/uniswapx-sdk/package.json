@@ -1,6 +1,7 @@
 {
   "name": "@uniswap/uniswapx-sdk",
   "version": "1.0.0",
+  "private": true,
   "author": "Uniswap",
   "repository": "https://github.com/Uniswap/sdks.git",
   "keywords": [
