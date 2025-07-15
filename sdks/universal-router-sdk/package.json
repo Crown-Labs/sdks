@@ -1,5 +1,6 @@
 {
   "name": "@kittycorn-labs/universal-router-sdk",
+  "version": "1.4.39",
   "description": "sdk for integrating with the Universal Router contracts",
   "repository": "https://github.com/Crown-Labs/sdks",
   "keywords": [
@@ -23,7 +24,7 @@
     "lint:fix": "yarn prettier:fix && yarn forge:fix",
     "prettier": "prettier --check '**/*.ts' && prettier --check '**/*.json'",
     "prettier:fix": "prettier --write '**/*.ts' && prettier --write '**/*.json'",
-    "release": "semantic-release",
+    "release": "changeset publish",
     "test": "yarn test:hardhat && yarn test:forge",
     "test:forge": "forge test",
     "test:hardhat": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' hardhat test"
@@ -67,35 +68,6 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
-  },
-  "release": {
-    "extends": "semantic-release-monorepo",
-    "branches": [
-      {
-        "name": "main",
-        "prerelease": false
-      }
-    ],
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "angular",
-          "releaseRules": "../../publishing/release-rules.cjs"
-        }
-      ],
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      "@semantic-release/github",
-      [
-        "@semantic-release/exec",
-        {
-          "successCmd": "git restore yarn.lock && yarn",
-          "failCmd": "git restore yarn.lock && yarn",
-          "execCwd": "../.."
-        }
-      ]
-    ]
   },
   "installConfig": {
     "hoistingLimits": "workspaces"

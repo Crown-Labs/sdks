@@ -1,5 +1,6 @@
 {
   "name": "@kittycorn-labs/router-sdk",
+  "version": "1.2.28",
   "description": "An sdk for routing swaps using Uniswap v2 and Uniswap v3.",
   "repository": "https://github.com/Crown-Labs/sdks.git",
   "keywords": [
@@ -16,7 +17,7 @@
   "scripts": {
     "build": "tsdx build",
     "lint": "tsdx lint src",
-    "release": "semantic-release",
+    "release": "changeset publish",
     "start": "tsdx watch",
     "test": "tsdx test"
   },
@@ -41,34 +42,5 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
-  },
-  "release": {
-    "extends": "semantic-release-monorepo",
-    "branches": [
-      {
-        "name": "main",
-        "prerelease": false
-      }
-    ],
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "angular",
-          "releaseRules": "../../publishing/release-rules.cjs"
-        }
-      ],
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      "@semantic-release/github",
-      [
-        "@semantic-release/exec",
-        {
-          "successCmd": "git restore yarn.lock && yarn",
-          "failCmd": "git restore yarn.lock && yarn",
-          "execCwd": "../.."
-        }
-      ]
-    ]
   }
 }
