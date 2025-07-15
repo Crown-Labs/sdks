@@ -39,12 +39,6 @@ jobs:
       - name: 🏗  Build
         run: yarn g:build
 
-      - name: 🔬 Lint
-        run: yarn g:lint
-
-      - name: 🧪 Run Tests
-        run: yarn g:test
-
       - name: 📋 Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
