@@ -1,5 +1,15 @@
 # @kittycorn-labs/router-sdk
 
+## 1.2.29
+
+### Patch Changes
+
+- Updated dependencies
+  - @kittycorn-labs/sdk-core@1.0.10
+  - @kittycorn-labs/v2-sdk@1.0.11
+  - @kittycorn-labs/v3-sdk@1.0.11
+  - @kittycorn-labs/v4-sdk@1.1.28
+
 ## 1.2.28
 
 ### Patch Changes

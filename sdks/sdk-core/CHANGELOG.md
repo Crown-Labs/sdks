@@ -1,5 +1,11 @@
 # @kittycorn-labs/sdk-core
 
+## 1.0.10
+
+### Patch Changes
+
+- test publish @kittycorn-labs/sdk-core
+
 ## 1.0.9
 
 ### Patch Changes
