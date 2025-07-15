@@ -1,5 +1,11 @@
 # @kittycorn-labs/router-sdk
 
+## 1.2.30
+
+### Patch Changes
+
+- test publish @kittycorn-labs/router-sdk
+
 ## 1.2.29
 
 ### Patch Changes
