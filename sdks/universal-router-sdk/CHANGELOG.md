@@ -1,5 +1,12 @@
 # @kittycorn-labs/universal-router-sdk
 
+## 1.4.41
+
+### Patch Changes
+
+- Updated dependencies
+  - @kittycorn-labs/router-sdk@1.2.30
+
 ## 1.4.40
 
 ### Patch Changes
