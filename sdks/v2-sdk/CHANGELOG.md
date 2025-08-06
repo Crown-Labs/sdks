@@ -1,5 +1,13 @@
 # @kittycorn-labs/v2-sdk
 
+## 1.0.12
+
+### Patch Changes
+
+- Added support Arbitrum network
+- Updated dependencies
+  - @kittycorn-labs/sdk-core@1.0.11
+
 ## 1.0.11
 
 ### Patch Changes
