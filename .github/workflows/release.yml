@@ -40,6 +40,10 @@ jobs:
       - name: 🏗  Build
         run: yarn g:build
 
+      - name: 🔧 Prepare packages for publishing
+        run: node scripts/prepare-publish.js
+        if: github.ref == 'refs/heads/main'
+
       - name: 📋 Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1

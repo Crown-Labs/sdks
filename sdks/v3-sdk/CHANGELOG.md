@@ -1,5 +1,11 @@
 # @kittycorn-labs/v3-sdk
 
+## 1.0.13
+
+### Patch Changes
+
+- fix dependency
+
 ## 1.0.12
 
 ### Patch Changes
