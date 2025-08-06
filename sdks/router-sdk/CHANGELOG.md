@@ -1,5 +1,16 @@
 # @kittycorn-labs/router-sdk
 
+## 1.2.31
+
+### Patch Changes
+
+- Added support Arbitrum network
+- Updated dependencies
+  - @kittycorn-labs/sdk-core@1.0.11
+  - @kittycorn-labs/v2-sdk@1.0.12
+  - @kittycorn-labs/v3-sdk@1.0.12
+  - @kittycorn-labs/v4-sdk@1.1.29
+
 ## 1.2.30
 
 ### Patch Changes

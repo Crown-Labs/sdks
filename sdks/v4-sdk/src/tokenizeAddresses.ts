@@ -33,6 +33,50 @@ export const TWBTC_MAINNET = new Token(
   'tWBTC'
 )
 
+// Arbitrum
+export const TUSDC_ARBITRUM_ONE = new Token(
+  ChainId.ARBITRUM_ONE,
+  '0x43297FBD1306f9fcDf96EE3A27e0113E4295D738',
+  6,
+  'Kittycorn Tokenize USDC',
+  'tUSDC'
+)
+export const TUSDT_ARBITRUM_ONE = new Token(
+  ChainId.ARBITRUM_ONE,
+  '0x93Ee5B16F4dDE4566b94488B8d929F39df112f60',
+  6,
+  'Kittycorn Tokenize USDT',
+  'tUSDT'
+)
+export const TWETH_ARBITRUM_ONE = new Token(
+  ChainId.ARBITRUM_ONE,
+  '0xCfdAb139Da7252EC3D8Df14F03659A46d1d1848C',
+  18,
+  'Kittycorn Tokenize WETH',
+  'tWETH'
+)
+export const TWBTC_ARBITRUM_ONE = new Token(
+  ChainId.ARBITRUM_ONE,
+  '0x8fecD0452BBF493C4915834E75310a5e8fe1FdDe',
+  8,
+  'Kittycorn Tokenize WBTC',
+  'tWBTC'
+)
+export const TLINK_ARBITRUM_ONE = new Token(
+  ChainId.ARBITRUM_ONE,
+  '0xDd816723CF1B310d1755156c4f37b4c8ed54ED5C',
+  18,
+  'Kittycorn Tokenize LINK',
+  'tLINK'
+)
+export const TAAVE_ARBITRUM_ONE = new Token(
+  ChainId.ARBITRUM_ONE,
+  '0x3eD9D2e07d314f2DcA05f920Ed5cbF2DFF60bC9a',
+  18,
+  'Kittycorn Tokenize AAVE',
+  'tAAVE'
+)
+
 // Sepolia
 export const TUSDC_SEPOLIA = new Token(
   ChainId.SEPOLIA,
@@ -96,6 +140,68 @@ export const BASE_TOKENIZE_UNDERLYING: {
     {
       tokenize: TWBTC_MAINNET,
       underlying: new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC'),
+    },
+  ],
+  [ChainId.ARBITRUM_ONE]: [
+    {
+      tokenize: TUSDC_ARBITRUM_ONE,
+      underlying: new Token(
+        ChainId.ARBITRUM_ONE,
+        '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+        6,
+        'USDC',
+        'USDC Token'
+      ),
+    },
+    {
+      tokenize: TUSDT_ARBITRUM_ONE,
+      underlying: new Token(
+        ChainId.ARBITRUM_ONE,
+        '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
+        6,
+        'USDT',
+        'USDT Token'
+      ),
+    },
+    {
+      tokenize: TWETH_ARBITRUM_ONE,
+      underlying: new Token(
+        ChainId.ARBITRUM_ONE,
+        '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+        18,
+        'WETH',
+        'Wrapped Ether'
+      ),
+    },
+    {
+      tokenize: TWBTC_ARBITRUM_ONE,
+      underlying: new Token(
+        ChainId.ARBITRUM_ONE,
+        '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
+        8,
+        'WBTC',
+        'WBTC Token'
+      ),
+    },
+    {
+      tokenize: TLINK_ARBITRUM_ONE,
+      underlying: new Token(
+        ChainId.ARBITRUM_ONE,
+        '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4',
+        18,
+        'LINK',
+        'LINK Token'
+      ),
+    },
+    {
+      tokenize: TAAVE_ARBITRUM_ONE,
+      underlying: new Token(
+        ChainId.ARBITRUM_ONE,
+        '0xba5DdD1f9d7F570dc94a51479a000E3BCE967196',
+        18,
+        'AAVE',
+        'AAVE Token'
+      ),
     },
   ],
   [ChainId.SEPOLIA]: [
