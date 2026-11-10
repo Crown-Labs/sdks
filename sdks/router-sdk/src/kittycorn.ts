@@ -1,14 +1,11 @@
 import { defaultAbiCoder, Interface } from '@ethersproject/abi'
-import { validateAndParseAddress as getAddress } from '@kittycorn-labs/sdk-core'
+import { Currency, Percent, TradeType, validateAndParseAddress as getAddress } from '@kittycorn-labs/sdk-core'
+import { encodeRouteToPath, isTokenizeConversion, KITTYCORN_BASE_SEPOLIA as config } from '@kittycorn-labs/v4-sdk'
 import { Protocol } from './entities/protocol'
 import { Trade } from './entities/trade'
 import { RouteV4 } from './entities/route'
-import { Currency, TradeType } from '@kittycorn-labs/sdk-core'
-import { encodeRouteToPath } from '@kittycorn-labs/v4-sdk'
-import { Percent } from '@kittycorn-labs/sdk-core'
 export type KittycornSwapOptions = { recipient: string; slippageTolerance: Percent }
 export type KittycornMethodParameters = { to: string; calldata: string; value: string }
-import { isTokenizeConversion, KITTYCORN_BASE_SEPOLIA as config } from '@kittycorn-labs/v4-sdk'
 
 const ROUTER = new Interface(['function executeActions(bytes params) payable'])
 const SWAP_PARAMS =
@@ -37,6 +34,8 @@ export function buildKittycornMethodParameters(
   let actions = '0x'
   const settle = new Set<string>()
   const take = new Set<string>()
+  let quotedOutput = trade.outputAmount.multiply(0)
+  let minimumOutput = quotedOutput
   for (const swap of trade.swaps) {
     if (swap.route.protocol !== Protocol.V4 || !(swap.route instanceof RouteV4))
       throw new Error('Kittycorn requires V4 routes')
@@ -54,9 +53,14 @@ export function buildKittycornMethodParameters(
     settle.add(convertIn ? input.tokenize.address : input.underlying.address)
     take.add(convertOut ? output.tokenize.address : output.underlying.address)
     const amount = exactOutput ? swap.outputAmount : swap.inputAmount
+    // Allocate rounding across split legs so their limits sum to the trade's
+    // aggregate minimum. Independently rounding each leg loses up to n - 1 units.
+    const previousMinimum = minimumOutput
+    quotedOutput = quotedOutput.add(swap.outputAmount)
+    minimumOutput = trade.minimumAmountOut(options.slippageTolerance, quotedOutput)
     const limit = exactOutput
       ? trade.maximumAmountIn(options.slippageTolerance, swap.inputAmount)
-      : trade.minimumAmountOut(options.slippageTolerance, swap.outputAmount)
+      : minimumOutput.subtract(previousMinimum)
     if (amount.quotient.toString() === '0' || limit.quotient.toString() === '0')
       throw new Error('Kittycorn amount and limit must be positive')
     params.push(

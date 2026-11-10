@@ -49,6 +49,8 @@ The direct router requires ERC20 approval to the returned `to` address and has n
 
 Standard Universal Router builders reject Kittycorn conversion edges instead of treating them as ordinary AMM pools. Conversion edges can be shared across split legs; real AMM pools cannot.
 
+The 2026-11-10 follow-up review found a split-slippage rounding gap: independently rounding two 101-unit outputs at 1% allowed 198 units even though the aggregate minimum was 199. The builder now allocates rounding cumulatively so the encoded leg minimums add up to the reported trade minimum. This applies to both direct execution and the Universal Router wrapper, which reuses that action plan. Regression coverage includes different split sizes/slippage, intermediate-conversion rejection, and real underlying/share pool identification. The full offline suite passes 2,185 tests (4 existing skips); all six packages build and pack. This review covers the maintained integration and release path, not a guarantee about every upstream protocol or external deployment.
+
 ## Cross-repository validation and deployment
 
 Keep sibling directories `sdks`, `smart-order-router`, and `universal-router`. Build/pack SDKs first, then install/build/test SOR against these tarballs. SOR's `npm run check:fork` deploys the new Universal Router on local Anvil, executes quotes through real Permit2 and current Kittycorn contracts, checks balances/limits/refunds, and restores its snapshots.

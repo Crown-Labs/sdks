@@ -152,4 +152,88 @@ describe('Kittycorn ERC4626 calldata', () => {
         'Slippage'
       )
   })
+
+  test('split minimums preserve the aggregate slippage limit when rounding', () => {
+    const split = new Trade({
+      v4Routes: [100, 500].map((fee) => ({
+        routev4: route(fee),
+        inputAmount: CurrencyAmount.fromRawAmount(a.underlying, 100),
+        outputAmount: CurrencyAmount.fromRawAmount(b.underlying, 101),
+      })),
+      tradeType: TradeType.EXACT_INPUT,
+    })
+    const result = buildKittycornMethodParameters(split, options, 84532)
+    const [plan] = new Interface(['function executeActions(bytes)']).decodeFunctionData(
+      'executeActions',
+      result.calldata
+    )
+    const [, params] = defaultAbiCoder.decode(['bytes', 'bytes[]'], plan)
+    const limits = params.slice(0, 2).map((p: string) => defaultAbiCoder.decode([swapType], p)[0].limit)
+    expect(limits[0].add(limits[1]).toString()).toBe(
+      split.minimumAmountOut(options.slippageTolerance).quotient.toString()
+    )
+  })
+
+  test('rounding allocation remains within each quote across split sizes and slippage', () => {
+    for (const quoted of [
+      [101, 101],
+      [101, 333, 999],
+      [10001, 20003, 30007],
+    ]) {
+      for (const percent of [0, 1, 25, 99]) {
+        const split = new Trade({
+          v4Routes: quoted.map((amount, i) => ({
+            routev4: route([100, 500, 3000][i]),
+            inputAmount: CurrencyAmount.fromRawAmount(a.underlying, amount),
+            outputAmount: CurrencyAmount.fromRawAmount(b.underlying, amount),
+          })),
+          tradeType: TradeType.EXACT_INPUT,
+        })
+        const slippageTolerance = new Percent(percent, 100)
+        const result = buildKittycornMethodParameters(split, { ...options, slippageTolerance }, 84532)
+        const [plan] = new Interface(['function executeActions(bytes)']).decodeFunctionData(
+          'executeActions',
+          result.calldata
+        )
+        const [, params] = defaultAbiCoder.decode(['bytes', 'bytes[]'], plan)
+        const limits = quoted.map((amount, i) => {
+          const limit = defaultAbiCoder.decode([swapType], params[i])[0].limit
+          expect(limit.lte(amount)).toBe(true)
+          expect(limit.gt(0)).toBe(true)
+          return limit
+        })
+        expect(limits.reduce((sum, limit) => sum.add(limit)).toString()).toBe(
+          split.minimumAmountOut(slippageTolerance).quotient.toString()
+        )
+      }
+    }
+  })
+
+  test('rejects an intermediate conversion instead of producing an invalid action plan', () => {
+    const invalid = new Route(
+      [
+        new Pool(a.underlying, b.underlying, 100, 1, zero, encodeSqrtRatioX96(1, 1), '1000000', 0),
+        conversions[1],
+        new Pool(b.tokenize, config.tokens[2].underlying, 100, 1, zero, encodeSqrtRatioX96(1, 1), '1000000', 0),
+      ],
+      a.underlying,
+      config.tokens[2].underlying
+    )
+    const t = new Trade({
+      v4Routes: [
+        {
+          routev4: invalid,
+          inputAmount: CurrencyAmount.fromRawAmount(a.underlying, 1000),
+          outputAmount: CurrencyAmount.fromRawAmount(config.tokens[2].underlying, 1000),
+        },
+      ],
+      tradeType: TradeType.EXACT_INPUT,
+    })
+    expect(() => buildKittycornMethodParameters(t, options, 84532)).toThrow('route endpoints')
+  })
+
+  test('recognizes conversion identities without hiding a real underlying/share pool', () => {
+    const real = new Pool(a.underlying, a.tokenize, 100, 1, zero, encodeSqrtRatioX96(1, 1), '1000000', 0)
+    expect(isTokenizeConversion(real)).toBe(false)
+  })
 })
