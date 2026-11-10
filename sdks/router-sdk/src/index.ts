@@ -1,4 +1,3 @@
-// Kittycorn Router SDK
 export * from './constants'
 export * from './approveAndCall'
 export * from './multicallExtended'
@@ -13,3 +12,5 @@ export * from './utils/encodeMixedRouteToPath'
 export * from './utils/TPool'
 export * from './utils/pathCurrency'
 export * from './utils'
+
+export * from './kittycorn'

@@ -1,63 +1,414 @@
-# @kittycorn-labs/universal-router-sdk
+# @uniswap/universal-router-sdk
 
-## 1.4.43
+## 5.17.0
+
+### Minor Changes
+
+- 1291425: Add an opt-in `omitRedundantSettlementSweep` field to `encodeSwaps` for direct-transfer plans with a redundant settlement sweep.
+- 54d79dd: Add Elysium (chain 99901), whose gas token is HYPE: the chain ID, WHYPE as the wrapped native, the V2, V3 and V4 core addresses, and Universal Router 2.1.2 and 2.2.0.
 
 ### Patch Changes
 
-- fix dependency
+- Updated dependencies [54d79dd]
+  - @uniswap/sdk-core@7.22.0
+  - @uniswap/router-sdk@2.11.12
+  - @uniswap/v2-sdk@4.21.11
+  - @uniswap/v3-sdk@3.31.11
+  - @uniswap/v4-sdk@2.4.7
+
+## 5.16.2
+
+### Patch Changes
+
+- Updated dependencies [74c9d3d]
+  - @uniswap/sdk-core@7.21.0
+  - @uniswap/router-sdk@2.11.11
+  - @uniswap/v2-sdk@4.21.10
+  - @uniswap/v3-sdk@3.31.10
+  - @uniswap/v4-sdk@2.4.6
+
+## 5.16.1
+
+### Patch Changes
+
+- Updated dependencies [baa5fad]
+  - @uniswap/sdk-core@7.20.1
+  - @uniswap/router-sdk@2.11.10
+  - @uniswap/v2-sdk@4.21.9
+  - @uniswap/v3-sdk@3.31.9
+  - @uniswap/v4-sdk@2.4.5
+
+## 5.16.0
+
+### Minor Changes
+
+- d99df9a: Add `SwapOptions.settleBeforeSwapHooks`. A v4 exact-input route through a listed hook is encoded as `SETTLE(amountIn)` then a swap on the open delta, so hooks that `take` the input inside `beforeSwap` (for example ERC-4626 wrapper hooks) find it in the PoolManager. Routes through other hooks keep the existing encoding byte for byte. An exact-output route through a listed hook throws `SETTLE_BEFORE_SWAP_HOOK_EXACT_INPUT_ONLY`.
+
+## 5.15.3
+
+### Patch Changes
+
+- Updated dependencies [0d47773]
+  - @uniswap/sdk-core@7.20.0
+  - @uniswap/router-sdk@2.11.9
+  - @uniswap/v2-sdk@4.21.8
+  - @uniswap/v3-sdk@3.31.8
+  - @uniswap/v4-sdk@2.4.4
+
+## 5.15.2
+
+### Patch Changes
+
+- b5c4f36: Publish TypeScript sources and declaration maps so shipped sourcemaps resolve and go-to-definition opens the real source.
+- Updated dependencies [b5c4f36]
+  - @uniswap/sdk-core@7.19.6
+  - @uniswap/v2-sdk@4.21.7
+  - @uniswap/v3-sdk@3.31.7
+  - @uniswap/v4-sdk@2.4.3
+  - @uniswap/router-sdk@2.11.8
+  - @uniswap/permit2-sdk@1.4.1
+
+## 5.15.1
+
+### Patch Changes
+
 - Updated dependencies
-  - @kittycorn-labs/router-sdk@1.2.32
-  - @kittycorn-labs/v2-sdk@1.0.13
-  - @kittycorn-labs/v3-sdk@1.0.13
-  - @kittycorn-labs/v4-sdk@1.1.30
+  - @uniswap/sdk-core@7.19.5
+  - @uniswap/router-sdk@2.11.7
+  - @uniswap/v2-sdk@4.21.6
+  - @uniswap/v3-sdk@3.31.6
+  - @uniswap/v4-sdk@2.4.2
 
-## 1.4.42
+## 5.15.0
+
+### Minor Changes
+
+- fc8129c: `SwapRouter.migrateV3ToV4CallParameters` now takes an optional `urVersion` on `MigrateV3ToV4Options`. When `v3RemoveLiquidityOptions.permit` is set, its `spender` must be the Universal Router registered for that version; the check used to be hardcoded to the chain's 2.0 router, so on chains that register only a newer router (Robinhood, Arc) `UNIVERSAL_ROUTER_ADDRESS(V2_0, chainId)` threw before the spender was even compared and a permit-based migration could not be built at all. `urVersion` defaults to `V2_0`, so existing callers are unchanged. The spender comparison is also case-insensitive now, so a checksummed spender is accepted. A `urVersion` below 2.0 is rejected with `UR_VERSION_TOO_OLD`, since the position-manager commands a migrate emits do not exist on the 1.2 router.
+
+## 5.14.0
+
+### Minor Changes
+
+- 2360eba: `SwapRouter.encodeSwaps` can now pay a fee to more than one recipient. `SwapSpecification.fee` accepts an array of up to `MAX_FEE_RECIPIENTS` (4) `Fee` entries alongside the single `Fee` it has always accepted; each entry becomes its own command (`PAY_PORTION` / `PAY_PORTION_FULL_PRECISION` for `portion`, `TRANSFER` for `flat`), emitted in the caller's order ahead of the settlement `SWEEP`.
+
+  Portion fees have gross-output semantics: each entry's fee means "this fraction of the gross swap output". Since on-chain `PAY_PORTION` pays a portion of the router's _remaining_ balance, the encoder rescales fee i via the shared `scalePortionFees` helper to `f_i / (1 - sum(f_0..f_{i-1}))` (exact fraction math), so every recipient receives their stated fraction of gross to within the flooring dust of 1e18 command precision. The rescaled portions are fractional bips and are emitted as `PAY_PORTION_FULL_PRECISION`, so more than one portion fee requires `urVersion` >= 2.1.1 and is rejected with `MULTIPLE_FEE_RECIPIENTS_REQUIRE_UR_V2_1_1` on older versions.
+
+  The sweep floor replays the encoded command cascade against the gross minimum output (`computeEncodeSwapsAmounts`, via the shared `simulatePortionFeeDeduction` helper): each command floors against the router's running balance using the exact portion value that gets ABI-encoded, so the floor equals exactly what the router holds after the fees and a fill at the gross minimum always satisfies it. Portion totals exceeding 100% are rejected with `Portion fees together exceed 100% of the swap output` (thrown by `scalePortionFees`) instead of underflowing into ABI encoding. Flat fees are absolute transfers, so their sum is exact by construction; a flat total exceeding the exact output is rejected (`FLAT_FEE_GT_AMOUNT` in `validateEncodeSwaps`, `FEE_TOTAL_GT_AMOUNT_OUT` in `computeEncodeSwapsAmounts`).
+
+  Every existing per-fee invariant applies per entry: portion pairs with `EXACT_INPUT`, flat with `EXACT_OUTPUT`, fractional bips require UR >= 2.1.1, and portion fees require router custody under `allowDirectTransfers`. A mixed portion/flat array is rejected by those same invariants. An empty array (`AT_LEAST_ONE_FEE_RECIPIENT_REQUIRED`) and more than `MAX_FEE_RECIPIENTS` entries (`TOO_MANY_FEE_RECIPIENTS`) are rejected in `validateEncodeSwaps`.
+
+  Passing a single `Fee` is unchanged: calldata is byte-identical across UR 2.0 / 2.1.1, both trade types, portion and flat fees, `safeMode`, and the `ApproveProxy` wrapper — a single portion needs no rescaling, and for one fee the cascade replay reduces exactly to the previous quantized deduction `floor(gross * encodedFee / SCALE)`.
+
+- a4e9e50: `UniswapTrade` / `SwapRouter.swapCallParameters` can now pay a portion fee to more than one recipient. `SwapOptions.fee` accepts an array of up to 4 `FeeOptions` alongside the single `FeeOptions` it has always accepted; each entry becomes its own fee command, emitted in the caller's order ahead of the final `SWEEP` / `UNWRAP_WETH` / `WRAP_ETH`.
+
+  Fees have gross-output semantics: each entry's fee means "this fraction of the gross swap output". Since on-chain `PAY_PORTION` pays a portion of the router's _remaining_ balance, the SDK rescales fee i at encode time to `f_i / (1 - sum(f_0..f_{i-1}))` (exact fraction math via `scalePortionFees`, exported), so every recipient receives their stated fraction of gross to within the flooring dust of 1e18 command precision. The rescaled portions are fractional bips, so they are emitted as `PAY_PORTION_FULL_PRECISION` (1e18 denominator), so more than one fee recipient therefore requires `urVersion` >= 2.1.1 and throws `Multiple fee recipients require Universal Router version V2_1_1 or higher` on older versions.
+
+  The exact-output fee deduction replays the encoded command cascade against the gross minimum (`simulatePortionFeeDeduction`, exported): each command floors against the router's running balance using the exact portion value that gets ABI-encoded, so the sweep floor equals exactly what the router holds after the fees — never an unmeetable wei higher. Fees that together reach or exceed 100% of the output (leaving the swapper nothing) are rejected with `Portion fees together exceed 100% of the swap output`.
+
+  Passing a single `FeeOptions` is unchanged: calldata is byte-identical to the previous release across UR 2.0 / 2.1.1 and both trade types — a single fee needs no rescaling, and for one fee the cascade replay reduces exactly to the previous quantized deduction `floor(minimumAmountOut * encodedFee / SCALE)`. An empty array and more than `MAX_FEE_RECIPIENTS` (4) entries are rejected in the `UniswapTrade` constructor; `fee` and `flatFee` remain mutually exclusive.
+
+- 4ca4a9f: `routerBalanceInput` now supports a native (ETH) input. The router is funded via `msg.value` on `execute()` and the route's `WRAP_ETH` wraps the router's whole native balance (`CONTRACT_BALANCE`), so nothing is left behind; when `routerBalanceInput.minimumAmount` is set the floor is asserted post-wrap as WETH with `BALANCE_CHECK_ERC20`. A trailing native sweep returns any dust to the recipient, and the encoded transaction `value` is `0` because the funder, not the swapper, attaches the ETH.
+
+  Routes that consume native directly (a pure-native v4 first pool, so no wrap step exists) are refused in the `UniswapTrade` constructor with `routerBalanceInput with a native input requires a route that wraps to WETH`; split routes with a native input require every leg to wrap. Recipients that resolve to a Universal Router sentinel (`address(1)`, `address(2)`) or the zero address are refused, since with a router-funded swap they would pay the filler, strand the output in the router, or burn it.
+
+- 80a6b58: `SwapOptions.routerBalanceInput` on both encode paths (`SwapRouter.swapCallParameters` and `encodeSwaps`): the swap spends whatever input-token balance the Universal Router already holds instead of pulling it from the swapper via Permit2. The first hop's amount is encoded as `CONTRACT_BALANCE`, and an optional `routerBalanceInput.minimumAmount` is asserted up front with `BALANCE_CHECK_ERC20` against the router's own address, so an under-funded router reverts before any swap runs. Split routes are supported: fixed legs are encoded first at their quoted amounts and the largest leg last as `CONTRACT_BALANCE`, with one aggregate sweep floor. Every spender leg (fixed and remainder) is encoded with `payerIsUser` false, so a flag left over from a wallet-mode plan never turns into a Permit2 pull from the funder. A v4 spender step must list its input-token `SETTLE` before its first input swap, since the rewrite keeps action order and a swap ahead of the settle would run against an unfunded delta (`ROUTER_BALANCE_INPUT_V4_SETTLE_BEFORE_SWAP`).
+
+  Intended for bridged or relayer-delivered funds that land in the router and are swapped in the same transaction. `routerBalanceInput` requires `TradeType.EXACT_INPUT`, an explicit recipient (not `SENDER_AS_RECIPIENT`, since `msg.sender` is the funder rather than the swapper), and is mutually exclusive with `inputTokenPermit`, `nativeErc20Input` and `TokenTransferMode.ApproveProxy`. Callers that don't set the option get byte-identical calldata to the previous release.
 
 ### Patch Changes
 
-- Added support Arbitrum network
+- 4ca4a9f: `routerBalanceInput` no longer adds a second open-delta swap to a v4 step that already has one. GuideStar writes intermediate steps with one `SWAP_EXACT_IN*` at `amountIn: 0`, and the remainder picker compared amounts, so that nominated leg always lost to a fixed slice and a second open-delta swap was created: the first consumed the whole delta and the second reverted. A step that already nominates its remainder now keeps it, one that does not keeps the previous largest-last behaviour, and a step with two is refused. A post-rewrite invariant asserts exactly one open-delta swap per input currency.
+- 4ca4a9f: `routerBalanceInput` no longer double-claims the delivered balance when WETH is the input and the plan unwraps mid-route into a native v4 pool. `UNWRAP_WETH` takes the router's entire WETH balance, so it is already the open-ended leg; promoting a v3 leg to `CONTRACT_BALANCE` as well drained the pot and left the unwrap reverting on its `amountMin`. The WETH legs now keep their quoted amounts and the leg spending the unwrapped ETH becomes the `CONTRACT_BALANCE` claim, so over-delivery reaches the recipient instead of stranding in the router.
+
+  Shapes that cannot be expressed are refused rather than mis-encoded: an input-token leg after the unwrap (`ROUTER_BALANCE_INPUT_WETH_LEG_AFTER_UNWRAP`), an unwrap with no native leg following it, and more than one native leg after the unwrap. An unwrap that drains an intermediate token rather than the delivered one is unaffected.
+
+- 4ca4a9f: `routerBalanceInput` shape checks move into `validateEncodeSwaps`, so a plan the rewrite cannot express is refused before encoding rather than throwing mid-transform: an unwrap with no native leg after it, more than one native leg after the unwrap, a split leg with no comparable amount, and a v4 step nominating two open-delta swaps on the same currency. The transform keeps the same assertions as a backstop. Callers that mapped a transform throw to a 500 now get the same typed refusal both encode paths already produce.
+
+## 5.13.1
+
+### Patch Changes
+
+- afd80aa: Add permissioned PositionManager and PermissionedHooks addresses for Base and Ink, and the UniversalRouter 2.2.0 deployments on Base and Ink
+- Updated dependencies [afd80aa]
+  - @uniswap/sdk-core@7.19.4
+  - @uniswap/router-sdk@2.11.6
+  - @uniswap/v2-sdk@4.21.5
+  - @uniswap/v3-sdk@3.31.5
+  - @uniswap/v4-sdk@2.4.1
+
+## 5.13.0
+
+### Minor Changes
+
+- 1ba95b3: `swapCallParameters` output floors:
+
+  - `EXACT_OUTPUT` trades that contain a V2 leg now route every leg through router custody and settle with a `SWEEP` (or `UNWRAP_WETH`) floored at `amountOut`. The Universal Router's `v2SwapExactOutput` only bounds `amountIn` and forwards whatever the pair actually produced, so when less than the computed `amountIn` reached the pair (a fee-on-transfer input, or any pre-pair shortfall) the recipient received less than the requested output without a revert; the router now reverts (`InsufficientToken` / `InsufficientETH`) instead. V3 and V4 exact-out legs already assert their own output and keep the direct-recipient encoding.
+  - When the router custodies output that must be wrapped (a native-ETH path settling into WETH), settlement is now `WRAP_ETH(ROUTER, CONTRACT_BALANCE)` followed by a floored `SWEEP(WETH, recipient, minimum)` instead of an unfloored `WRAP_ETH(recipient, CONTRACT_BALANCE)`. Custodied legs carry `amountOutMinimum = 0`, so this settlement was previously the trade's only output check and had none.
+
+  `EXACT_INPUT` encoding is unchanged except for the wrapped-output settlement above. No-fee, ERC-20-output V2 exact-out swaps gain one `SWEEP` command and one router→recipient transfer.
+
+## 5.12.0
+
+### Minor Changes
+
+- 4a67d47: Add Universal Router v2.1.2 addresses (#736)
+
+  Adds the `UniversalRouterVersion.V2_1_2` enum member (mirrored as `URVersion.V2_1_2` in v4-sdk) and the v2.1.2 Universal Router deployment config — router address and creation block — across the 24 supported chains. Consumers can now resolve v2.1.2 routers via `UNIVERSAL_ROUTER_ADDRESS`/`CHAIN_CONFIGS` and select the version through `SwapOptions.urVersion`; #736 landed the addresses on `main` without a changeset, so this releases them.
+
+### Patch Changes
+
+- 4a67d47: Update Universal Router v2.2.0 addresses (#738)
+
+  Repoints the v2.2.0 Universal Router deployment config on Ethereum mainnet (1), Ethereum Sepolia (11155111) and Ink (57073) to the corrected router addresses, and removes Ink's `V2_1_1` entry. That entry was an alias pointing at Ink's old v2.2.0 router rather than a real v2.1.1 deployment, so `getUniversalRouterAddress(UniversalRouterVersion.V2_1_1, 57073)` no longer resolves and now throws — callers on Ink should use `V2_1_2` or `V2_2_0`. #738 landed these changes on `main` without a changeset, so this releases them.
+
+- Updated dependencies [358d9de]
+- Updated dependencies [4a67d47]
+  - @uniswap/sdk-core@7.19.3
+  - @uniswap/v4-sdk@2.4.0
+  - @uniswap/router-sdk@2.11.5
+  - @uniswap/v2-sdk@4.21.4
+  - @uniswap/v3-sdk@3.31.4
+
+## 5.11.5
+
+### Patch Changes
+
+- Updated dependencies [9a52777]
+  - @uniswap/sdk-core@7.19.2
+  - @uniswap/router-sdk@2.11.4
+  - @uniswap/v2-sdk@4.21.3
+  - @uniswap/v3-sdk@3.31.3
+  - @uniswap/v4-sdk@2.3.3
+
+## 5.11.4
+
+### Patch Changes
+
+- Updated dependencies [0954b08]
+  - @uniswap/router-sdk@2.11.3
+
+## 5.11.3
+
+### Patch Changes
+
+- 0d91d5f: Encode the ACROSS_V4_DEPOSIT_V3 command input as a single offset-prefixed tuple, matching ChainedActions.sol's `abi.decode(input, (AcrossV4DepositV3Params))`. The previous flat 13-value encoding reverted with empty data at the dispatcher's decode, so every payload built via `addAcrossBridge` / `swapCallParameters` `bridgeOptions` was unexecutable.
+- 4600c8d: Update permissioned pools deployment addresses for mainnet and Sepolia
+- Updated dependencies [4600c8d]
+  - @uniswap/sdk-core@7.19.1
+  - @uniswap/router-sdk@2.11.2
+  - @uniswap/v2-sdk@4.21.2
+  - @uniswap/v3-sdk@3.31.2
+  - @uniswap/v4-sdk@2.3.2
+
+## 5.11.2
+
+### Patch Changes
+
+- 842f63f: Update the Ethereum Sepolia (11155111) Universal Router 2.1.1 address to the fresh deployment at `0x7DfD4F31be6814D2906BDE155c3e1B146EAc1468` (creation block 11343084), replacing the previous deployment at `0x8B844f885672f333Bc0042cB669255f93a4C1E6b`.
+
+## 5.11.1
+
+### Patch Changes
+
+- Updated dependencies [8dc2570]
+- Updated dependencies [0b2b31c]
+  - @uniswap/sdk-core@7.19.0
+  - @uniswap/router-sdk@2.11.1
+  - @uniswap/v2-sdk@4.21.1
+  - @uniswap/v3-sdk@3.31.1
+  - @uniswap/v4-sdk@2.3.1
+
+## 5.11.0
+
+### Minor Changes
+
+- `SwapRouter.encodeSwaps`: add `allowDirectTransfers`, an opt-in regime letting routing-supplied steps move funds directly between the user and pools (per-step `payerIsUser` on V2/V3 swaps and v4 SETTLE, step recipients equal to the spec recipient, v4 SETTLE_ALL/TAKE_ALL). The SDK enforces an inbound budget (direct pulls never exceed `exactOrMaxAmountIn`; ingress pulls only the remainder) and outbound coverage (direct output minimums reduce the final sweep floor, with a small tolerance for per-leg rounding). Portion fees still require full output custody. Without the flag, v4 `SETTLE_ALL`/`TAKE_ALL` are now rejected at encode time. Also exports `computeEncodeSwapsAmounts` (and `EncodeSwapsAmounts`); it takes a `NormalizedSwapSpecification`, so run `normalizeEncodeSwapsSpec` first.
+
+## 5.10.0
+
+### Minor Changes
+
+- 124bfcd: V4 exact-output legs encoded via `swapCallParameters` now `TAKE` the exact leg output amount instead of `OPEN_DELTA`, so under-delivery (e.g. pool liquidity exhausted at the price limit) reverts at unlock settlement instead of silently partial-filling. Hook pools that overcredit output beyond the exact amount will also revert. Zero exact-output amounts now throw at encode time (`ZERO_EXACT_OUTPUT_AMOUNT`). Scope: SDK-generated trade encoding through `addV4Swap` only — caller-authored `encodeSwaps` V4 action plans are unaffected.
+
+## 5.9.0
+
+### Minor Changes
+
+- d0718a9: Aligning our slippage tolerance equation around the same definition: slippage represents loss in output, not price worsening.
+
+### Patch Changes
+
+- f4f3a9e: Fix `CommandParser.parseCalldata` to decode the `minHopPriceX36` per-hop slippage parameter added in UniversalRouter V2.1.1. The decoder now accepts an optional `UniversalRouterVersion` (defaulting to `V2_0` for backwards compatibility) and uses the V2.1.1 V2/V3 swap command definitions plus the versioned V4 action parser so the trailing `minHopPriceX36` array is no longer silently dropped.
+- Updated dependencies [d0718a9]
+  - @uniswap/router-sdk@2.11.0
+  - @uniswap/v2-sdk@4.21.0
+  - @uniswap/v3-sdk@3.31.0
+  - @uniswap/v4-sdk@2.3.0
+
+## 5.8.0
+
+### Minor Changes
+
+- 4263dcf: Add Ink chain and Universal Router deployment config (v2.2.0 router also exposed as v2.1.1)
+
+### Patch Changes
+
+- Updated dependencies [4263dcf]
+  - @uniswap/sdk-core@7.18.0
+  - @uniswap/router-sdk@2.10.5
+  - @uniswap/v2-sdk@4.20.5
+  - @uniswap/v3-sdk@3.30.5
+  - @uniswap/v4-sdk@2.2.3
+
+## 5.7.0
+
+### Minor Changes
+
+- aafa8fc: Add `nativeErc20Input` swap option for chains whose native gas token is exposed via an ERC20 predeploy (e.g. USDC on Arc). When set, swaps are funded by attaching `msg.value = maximumAmountIn * 10^(18 - token.decimals)` instead of pulling the input via Permit2: the Universal Router self-funds (`payerIsUser = false`), no ERC20 approval or permit is ever needed, and unused input is swept back to the recipient on exact-output / partial-fill-risk trades. Off by default; incompatible with native input, `inputTokenPermit`, and `TokenTransferMode.ApproveProxy`.
+
+### Patch Changes
+
+- a8a1cb1: `nativeErc20Input` exact-output / partial-fill refunds now sweep the leftover input as native (`ETH_ADDRESS`) instead of the ERC20. The router's leftover lives in its native balance (18 decimals); an ERC20 sweep floors to the token's decimals (e.g. 6 for Arc USDC) and can strand sub-decimal dust in the router.
+
+## 5.6.0
+
+### Minor Changes
+
+- ca82bac: Add Robinhood (4663) and Arc (5042) chain and Universal Router deployment config.
+
+  Also corrects `ChainId.ROBINHOOD` from `46630` to `4663` to match the canonical Robinhood
+  mainnet chain ID used across Uniswap's backend and the contracts deployments repo. Robinhood
+  had no addresses wired up previously, so this is shipped as a minor bump.
+
+### Patch Changes
+
+- Updated dependencies [ca82bac]
+  - @uniswap/sdk-core@7.17.0
+  - @uniswap/router-sdk@2.10.4
+  - @uniswap/v2-sdk@4.20.4
+  - @uniswap/v3-sdk@3.30.4
+  - @uniswap/v4-sdk@2.2.2
+
+## 5.5.2
+
+### Patch Changes
+
+- Fix UR version mapping with v4-sdk
+
+## 5.5.1
+
+### Patch Changes
+
+- Add mainnet UniversalRouterVersion V2_2_0 router config and update sepolia V2_2_0 address (perm-pool redeploy)
 - Updated dependencies
-  - @kittycorn-labs/router-sdk@1.2.31
-  - @kittycorn-labs/sdk-core@1.0.11
-  - @kittycorn-labs/v2-sdk@1.0.12
-  - @kittycorn-labs/v3-sdk@1.0.12
-  - @kittycorn-labs/v4-sdk@1.1.29
+  - @uniswap/sdk-core@7.16.1
+  - @uniswap/v4-sdk@2.2.1
+  - @uniswap/router-sdk@2.10.3
+  - @uniswap/v2-sdk@4.20.3
+  - @uniswap/v3-sdk@3.30.3
 
-## 1.4.41
+## 5.5.0
 
-### Patch Changes
+### Minor Changes
 
-- Updated dependencies
-  - @kittycorn-labs/router-sdk@1.2.30
-
-## 1.4.40
+- Add UniversalRouterVersion V2_2_0 (Sepolia) with permissioned-pool support
 
 ### Patch Changes
 
 - Updated dependencies
-  - @kittycorn-labs/sdk-core@1.0.10
-  - @kittycorn-labs/router-sdk@1.2.29
-  - @kittycorn-labs/v2-sdk@1.0.11
-  - @kittycorn-labs/v3-sdk@1.0.11
-  - @kittycorn-labs/v4-sdk@1.1.28
+  - @uniswap/sdk-core@7.16.0
+  - @uniswap/v4-sdk@2.2.0
+  - @uniswap/router-sdk@2.10.2
+  - @uniswap/v2-sdk@4.20.2
+  - @uniswap/v3-sdk@3.30.2
 
-## 1.4.39
+## 5.4.0
+
+### Minor Changes
+
+- 0e30be1: Add MegaETH chain and Universal Router deployment config
 
 ### Patch Changes
 
-- 7b00c0a: test publish sdks
-- 6bb2f2c: Migrate to workspace dependencies and add Changesets support
+- Updated dependencies [0e30be1]
+  - @uniswap/sdk-core@7.15.0
+  - @uniswap/router-sdk@2.10.1
+  - @uniswap/v2-sdk@4.20.1
+  - @uniswap/v3-sdk@3.30.1
+  - @uniswap/v4-sdk@2.1.1
 
-  - Added comprehensive CLAUDE.md documentation with repository guidelines
-  - Migrated all @kittycorn-labs internal package dependencies to use workspace references
-  - Replaced semantic-release with Changesets for better monorepo support
-  - Updated GitHub Actions workflow to use Changesets for releases
-  - Added proper SDK export headers for better identification
+## 5.3.0
 
-- Updated dependencies [7b00c0a]
-- Updated dependencies [6bb2f2c]
-  - @kittycorn-labs/router-sdk@1.2.28
-  - @kittycorn-labs/sdk-core@1.0.9
-  - @kittycorn-labs/v2-sdk@1.0.10
-  - @kittycorn-labs/v3-sdk@1.0.10
-  - @kittycorn-labs/v4-sdk@1.1.27
+### Minor Changes
+
+- e8e7bd5: Add SwapRouter.encodeSwaps(spec, swapSteps), an alternative entry point for callers that can provide explicit SwapStep[] plans
+
+## 5.2.0
+
+### Minor Changes
+
+- 5398a2c: Rename maxHopSlippage to minHopPriceX36
+
+### Patch Changes
+
+- Updated dependencies [5398a2c]
+  - @uniswap/router-sdk@2.10.0
+  - @uniswap/v4-sdk@2.1.0
+
+## 5.1.0
+
+### Minor Changes
+
+- 061f054: Use `UniversalRouterVersion` for `SwapOptions.urVersion` instead of v4-sdk's `URVersion`. Version logic (`isAtLeastV2_1_1`) is now local to universal-router-sdk. Consumers should use `UniversalRouterVersion` from this package.
+
+## 5.0.0
+
+### Major Changes
+
+- 1726505: ### Major: Universal Router 2.1.1
+
+  - Adds **`UniversalRouterVersion.V2_1_1`** addresses/blocks where deployed.
+  - **`URVersion.V2_1` removed** — use **`URVersion.V2_1_1`** for UR **2.1.1** (or **`V2_0`** for older router ABIs). **2.1** had a **per-hop slippage precision bug** (`maxHopSlippage` could fail to enforce on some high–decimal / price–skew pools); **2.1.1** fixes that with higher-precision on-chain math.
+  - **`PAY_PORTION_FULL_PRECISION`** (1e18) replaces **`PAY_PORTION`** (bips) for percentage **`fee`** options when using **`V2_1_1`** — finer fractional fees; re-check exact-output + fee calldata if you upgrade.
+  - **`maxHopSlippage`** on V2, V3, and V4 swaps: extended ABIs when using **`V2_1_1`**; **`V2_0`** stays the old encoding.
+
+### Patch Changes
+
+- Updated dependencies [1726505]
+- Updated dependencies [1726505]
+  - @uniswap/router-sdk@2.9.0
+  - @uniswap/v4-sdk@2.0.0
+
+## 4.35.0
+
+### Minor Changes
+
+- 58a58d0: Migrate build system from TSDX to tsc with separate CJS/ESM/types outputs. The new `exports` field ensures correct module resolution for all standard consumers (`import`/`require` of the package root). Deep subpath imports (e.g., `@uniswap/sdk-core/dist/...`) are no longer supported — all public APIs are re-exported from the package entry point. `tslib` is now a runtime dependency (required by `importHelpers`). Minimum Node.js version is now 18.
+
+### Patch Changes
+
+- Updated dependencies [58a58d0]
+  - @uniswap/sdk-core@7.13.0
+  - @uniswap/v2-sdk@4.20.0
+  - @uniswap/v3-sdk@3.30.0
+  - @uniswap/v4-sdk@1.30.0
+  - @uniswap/router-sdk@2.8.0
+
+## 4.34.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @uniswap/v4-sdk@1.29.3
+  - @uniswap/router-sdk@2.7.3
+
+## 4.34.1
+
+### Patch Changes
+
+- Updated dependencies [1779ed4]
+  - @uniswap/sdk-core@7.12.2
+  - @uniswap/router-sdk@2.7.2
+  - @uniswap/v2-sdk@4.19.2
+  - @uniswap/v3-sdk@3.29.2
+  - @uniswap/v4-sdk@1.29.2

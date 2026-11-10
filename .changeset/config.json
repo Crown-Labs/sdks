@@ -2,13 +2,21 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [],
+  "fixed": [
+    [
+      "@kittycorn-labs/sdk-core",
+      "@kittycorn-labs/v2-sdk",
+      "@kittycorn-labs/v3-sdk",
+      "@kittycorn-labs/v4-sdk",
+      "@kittycorn-labs/router-sdk",
+      "@kittycorn-labs/universal-router-sdk"
+    ]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uniswap/uniswapx-sdk", "@uniswap/smart-wallet-sdk", "@uniswap/permit2-sdk", "uniswapx-integration"],
-  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
-    "updateInternalDependents": "always"
-  }
+  "ignore": [
+    "uniswapx-integration"
+  ]
 }

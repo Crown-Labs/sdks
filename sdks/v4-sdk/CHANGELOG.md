@@ -1,44 +1,193 @@
-# @kittycorn-labs/v4-sdk
+# @uniswap/v4-sdk
 
-## 1.1.30
+## 2.4.7
 
 ### Patch Changes
 
-- fix dependency
+- Updated dependencies [54d79dd]
+  - @uniswap/sdk-core@7.22.0
+  - @uniswap/v3-sdk@3.31.11
+
+## 2.4.6
+
+### Patch Changes
+
+- Updated dependencies [74c9d3d]
+  - @uniswap/sdk-core@7.21.0
+  - @uniswap/v3-sdk@3.31.10
+
+## 2.4.5
+
+### Patch Changes
+
+- Updated dependencies [baa5fad]
+  - @uniswap/sdk-core@7.20.1
+  - @uniswap/v3-sdk@3.31.9
+
+## 2.4.4
+
+### Patch Changes
+
+- Updated dependencies [0d47773]
+  - @uniswap/sdk-core@7.20.0
+  - @uniswap/v3-sdk@3.31.8
+
+## 2.4.3
+
+### Patch Changes
+
+- b5c4f36: Publish TypeScript sources and declaration maps so shipped sourcemaps resolve and go-to-definition opens the real source.
+- Updated dependencies [b5c4f36]
+  - @uniswap/sdk-core@7.19.6
+  - @uniswap/v3-sdk@3.31.7
+
+## 2.4.2
+
+### Patch Changes
+
 - Updated dependencies
-  - @kittycorn-labs/v3-sdk@1.0.13
+  - @uniswap/sdk-core@7.19.5
+  - @uniswap/v3-sdk@3.31.6
 
-## 1.1.29
+## 2.4.1
 
 ### Patch Changes
 
-- Added support Arbitrum network
+- Updated dependencies [afd80aa]
+  - @uniswap/sdk-core@7.19.4
+  - @uniswap/v3-sdk@3.31.5
+
+## 2.4.0
+
+### Minor Changes
+
+- 4a67d47: Add Universal Router v2.1.2 addresses (#736)
+
+  Adds the `UniversalRouterVersion.V2_1_2` enum member (mirrored as `URVersion.V2_1_2` in v4-sdk) and the v2.1.2 Universal Router deployment config — router address and creation block — across the 24 supported chains. Consumers can now resolve v2.1.2 routers via `UNIVERSAL_ROUTER_ADDRESS`/`CHAIN_CONFIGS` and select the version through `SwapOptions.urVersion`; #736 landed the addresses on `main` without a changeset, so this releases them.
+
+### Patch Changes
+
+- Updated dependencies [358d9de]
+  - @uniswap/sdk-core@7.19.3
+  - @uniswap/v3-sdk@3.31.4
+
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [9a52777]
+  - @uniswap/sdk-core@7.19.2
+  - @uniswap/v3-sdk@3.31.3
+
+## 2.3.2
+
+### Patch Changes
+
+- Updated dependencies [4600c8d]
+  - @uniswap/sdk-core@7.19.1
+  - @uniswap/v3-sdk@3.31.2
+
+## 2.3.1
+
+### Patch Changes
+
+- Updated dependencies [8dc2570]
+- Updated dependencies [0b2b31c]
+  - @uniswap/sdk-core@7.19.0
+  - @uniswap/v3-sdk@3.31.1
+
+## 2.3.0
+
+### Minor Changes
+
+- d0718a9: Aligning our slippage tolerance equation around the same definition: slippage represents loss in output, not price worsening.
+
+### Patch Changes
+
+- Updated dependencies [d0718a9]
+  - @uniswap/v3-sdk@3.31.0
+
+## 2.2.3
+
+### Patch Changes
+
+- Updated dependencies [4263dcf]
+  - @uniswap/sdk-core@7.18.0
+  - @uniswap/v3-sdk@3.30.5
+
+## 2.2.2
+
+### Patch Changes
+
+- Updated dependencies [ca82bac]
+  - @uniswap/sdk-core@7.17.0
+  - @uniswap/v3-sdk@3.30.4
+
+## 2.2.1
+
+### Patch Changes
+
 - Updated dependencies
-  - @kittycorn-labs/sdk-core@1.0.11
-  - @kittycorn-labs/v3-sdk@1.0.12
+  - @uniswap/sdk-core@7.16.1
+  - @uniswap/v3-sdk@3.30.3
 
-## 1.1.28
+## 2.2.0
+
+### Minor Changes
+
+- Add UniversalRouterVersion V2_2_0 (Sepolia) with permissioned-pool support
 
 ### Patch Changes
 
 - Updated dependencies
-  - @kittycorn-labs/sdk-core@1.0.10
-  - @kittycorn-labs/v3-sdk@1.0.11
+  - @uniswap/sdk-core@7.16.0
+  - @uniswap/v3-sdk@3.30.2
 
-## 1.1.27
+## 2.1.1
 
 ### Patch Changes
 
-- 7b00c0a: test publish sdks
-- 6bb2f2c: Migrate to workspace dependencies and add Changesets support
+- Updated dependencies [0e30be1]
+  - @uniswap/sdk-core@7.15.0
+  - @uniswap/v3-sdk@3.30.1
 
-  - Added comprehensive CLAUDE.md documentation with repository guidelines
-  - Migrated all @kittycorn-labs internal package dependencies to use workspace references
-  - Replaced semantic-release with Changesets for better monorepo support
-  - Updated GitHub Actions workflow to use Changesets for releases
-  - Added proper SDK export headers for better identification
+## 2.1.0
 
-- Updated dependencies [7b00c0a]
-- Updated dependencies [6bb2f2c]
-  - @kittycorn-labs/sdk-core@1.0.9
-  - @kittycorn-labs/v3-sdk@1.0.10
+### Minor Changes
+
+- 5398a2c: Rename maxHopSlippage to minHopPriceX36
+
+## 2.0.0
+
+### Major Changes
+
+- 1726505: ### Major: Universal Router 2.1.1
+
+  - **`URVersion.V2_1` removed** — use **`URVersion.V2_1_1`** for UR **2.1.1** (or **`V2_0`** for older router ABIs). **2.1** had a **per-hop slippage precision bug** (`maxHopSlippage` could fail to enforce on some high–decimal / price–skew pools); **2.1.1** fixes that with higher-precision on-chain math.
+  - **`URVersion.V2_1_1`** swap ABIs include **`maxHopSlippage`** on **single-hop** V4 swaps (in addition to multi-hop); **`V2_0`** keeps structs without per-hop fields.
+
+## 1.30.0
+
+### Minor Changes
+
+- 58a58d0: Migrate build system from TSDX to tsc with separate CJS/ESM/types outputs. The new `exports` field ensures correct module resolution for all standard consumers (`import`/`require` of the package root). Deep subpath imports (e.g., `@uniswap/sdk-core/dist/...`) are no longer supported — all public APIs are re-exported from the package entry point. `tslib` is now a runtime dependency (required by `importHelpers`). Minimum Node.js version is now 18.
+
+### Patch Changes
+
+- Updated dependencies [58a58d0]
+  - @uniswap/sdk-core@7.13.0
+  - @uniswap/v3-sdk@3.30.0
+
+## 1.29.3
+
+### Patch Changes
+
+- fix increase liquidity to use
+
+## 1.29.2
+
+### Patch Changes
+
+- Updated dependencies [1779ed4]
+  - @uniswap/sdk-core@7.12.2
+  - @uniswap/v3-sdk@3.29.2

@@ -1,58 +1,236 @@
-# @kittycorn-labs/router-sdk
+# @uniswap/router-sdk
 
-## 1.2.32
+## 2.11.12
 
 ### Patch Changes
 
-- fix dependency
+- Updated dependencies [54d79dd]
+  - @uniswap/sdk-core@7.22.0
+  - @uniswap/v2-sdk@4.21.11
+  - @uniswap/v3-sdk@3.31.11
+  - @uniswap/v4-sdk@2.4.7
+
+## 2.11.11
+
+### Patch Changes
+
+- Updated dependencies [74c9d3d]
+  - @uniswap/sdk-core@7.21.0
+  - @uniswap/v2-sdk@4.21.10
+  - @uniswap/v3-sdk@3.31.10
+  - @uniswap/v4-sdk@2.4.6
+
+## 2.11.10
+
+### Patch Changes
+
+- Updated dependencies [baa5fad]
+  - @uniswap/sdk-core@7.20.1
+  - @uniswap/v2-sdk@4.21.9
+  - @uniswap/v3-sdk@3.31.9
+  - @uniswap/v4-sdk@2.4.5
+
+## 2.11.9
+
+### Patch Changes
+
+- Updated dependencies [0d47773]
+  - @uniswap/sdk-core@7.20.0
+  - @uniswap/v2-sdk@4.21.8
+  - @uniswap/v3-sdk@3.31.8
+  - @uniswap/v4-sdk@2.4.4
+
+## 2.11.8
+
+### Patch Changes
+
+- b5c4f36: Publish TypeScript sources and declaration maps so shipped sourcemaps resolve and go-to-definition opens the real source.
+- Updated dependencies [b5c4f36]
+  - @uniswap/sdk-core@7.19.6
+  - @uniswap/v2-sdk@4.21.7
+  - @uniswap/v3-sdk@3.31.7
+  - @uniswap/v4-sdk@2.4.3
+
+## 2.11.7
+
+### Patch Changes
+
 - Updated dependencies
-  - @kittycorn-labs/v2-sdk@1.0.13
-  - @kittycorn-labs/v3-sdk@1.0.13
-  - @kittycorn-labs/v4-sdk@1.1.30
+  - @uniswap/sdk-core@7.19.5
+  - @uniswap/v2-sdk@4.21.6
+  - @uniswap/v3-sdk@3.31.6
+  - @uniswap/v4-sdk@2.4.2
 
-## 1.2.31
+## 2.11.6
 
 ### Patch Changes
 
-- Added support Arbitrum network
+- Updated dependencies [afd80aa]
+  - @uniswap/sdk-core@7.19.4
+  - @uniswap/v2-sdk@4.21.5
+  - @uniswap/v3-sdk@3.31.5
+  - @uniswap/v4-sdk@2.4.1
+
+## 2.11.5
+
+### Patch Changes
+
+- Updated dependencies [358d9de]
+- Updated dependencies [4a67d47]
+  - @uniswap/sdk-core@7.19.3
+  - @uniswap/v4-sdk@2.4.0
+  - @uniswap/v2-sdk@4.21.4
+  - @uniswap/v3-sdk@3.31.4
+
+## 2.11.4
+
+### Patch Changes
+
+- Updated dependencies [9a52777]
+  - @uniswap/sdk-core@7.19.2
+  - @uniswap/v2-sdk@4.21.3
+  - @uniswap/v3-sdk@3.31.3
+  - @uniswap/v4-sdk@2.3.3
+
+## 2.11.3
+
+### Patch Changes
+
+- 0954b08: Fix midPrice inverting pool price across native/wrapped currency boundaries in mixed routes by deriving it from the route's resolved path. Handle the same boundaries at encode time: partitionMixedRouteByProtocol now ends a section at a native/wrapped boundary (so the encoder's wrap/unwrap between sections applies) and getOutputOfPools bridges wrapped equivalents instead of throwing.
+
+## 2.11.2
+
+### Patch Changes
+
+- Updated dependencies [4600c8d]
+  - @uniswap/sdk-core@7.19.1
+  - @uniswap/v2-sdk@4.21.2
+  - @uniswap/v3-sdk@3.31.2
+  - @uniswap/v4-sdk@2.3.2
+
+## 2.11.1
+
+### Patch Changes
+
+- Updated dependencies [8dc2570]
+- Updated dependencies [0b2b31c]
+  - @uniswap/sdk-core@7.19.0
+  - @uniswap/v2-sdk@4.21.1
+  - @uniswap/v3-sdk@3.31.1
+  - @uniswap/v4-sdk@2.3.1
+
+## 2.11.0
+
+### Minor Changes
+
+- d0718a9: Aligning our slippage tolerance equation around the same definition: slippage represents loss in output, not price worsening.
+
+### Patch Changes
+
+- Updated dependencies [d0718a9]
+  - @uniswap/v2-sdk@4.21.0
+  - @uniswap/v3-sdk@3.31.0
+  - @uniswap/v4-sdk@2.3.0
+
+## 2.10.5
+
+### Patch Changes
+
+- Updated dependencies [4263dcf]
+  - @uniswap/sdk-core@7.18.0
+  - @uniswap/v2-sdk@4.20.5
+  - @uniswap/v3-sdk@3.30.5
+  - @uniswap/v4-sdk@2.2.3
+
+## 2.10.4
+
+### Patch Changes
+
+- Updated dependencies [ca82bac]
+  - @uniswap/sdk-core@7.17.0
+  - @uniswap/v2-sdk@4.20.4
+  - @uniswap/v3-sdk@3.30.4
+  - @uniswap/v4-sdk@2.2.2
+
+## 2.10.3
+
+### Patch Changes
+
 - Updated dependencies
-  - @kittycorn-labs/sdk-core@1.0.11
-  - @kittycorn-labs/v2-sdk@1.0.12
-  - @kittycorn-labs/v3-sdk@1.0.12
-  - @kittycorn-labs/v4-sdk@1.1.29
+  - @uniswap/sdk-core@7.16.1
+  - @uniswap/v4-sdk@2.2.1
+  - @uniswap/v2-sdk@4.20.3
+  - @uniswap/v3-sdk@3.30.3
 
-## 1.2.30
-
-### Patch Changes
-
-- test publish @kittycorn-labs/router-sdk
-
-## 1.2.29
+## 2.10.2
 
 ### Patch Changes
 
 - Updated dependencies
-  - @kittycorn-labs/sdk-core@1.0.10
-  - @kittycorn-labs/v2-sdk@1.0.11
-  - @kittycorn-labs/v3-sdk@1.0.11
-  - @kittycorn-labs/v4-sdk@1.1.28
+  - @uniswap/sdk-core@7.16.0
+  - @uniswap/v4-sdk@2.2.0
+  - @uniswap/v2-sdk@4.20.2
+  - @uniswap/v3-sdk@3.30.2
 
-## 1.2.28
+## 2.10.1
 
 ### Patch Changes
 
-- 7b00c0a: test publish sdks
-- 6bb2f2c: Migrate to workspace dependencies and add Changesets support
+- Updated dependencies [0e30be1]
+  - @uniswap/sdk-core@7.15.0
+  - @uniswap/v2-sdk@4.20.1
+  - @uniswap/v3-sdk@3.30.1
+  - @uniswap/v4-sdk@2.1.1
 
-  - Added comprehensive CLAUDE.md documentation with repository guidelines
-  - Migrated all @kittycorn-labs internal package dependencies to use workspace references
-  - Replaced semantic-release with Changesets for better monorepo support
-  - Updated GitHub Actions workflow to use Changesets for releases
-  - Added proper SDK export headers for better identification
+## 2.10.0
 
-- Updated dependencies [7b00c0a]
-- Updated dependencies [6bb2f2c]
-  - @kittycorn-labs/sdk-core@1.0.9
-  - @kittycorn-labs/v2-sdk@1.0.10
-  - @kittycorn-labs/v3-sdk@1.0.10
-  - @kittycorn-labs/v4-sdk@1.1.27
+### Minor Changes
+
+- 5398a2c: Rename maxHopSlippage to minHopPriceX36
+
+### Patch Changes
+
+- Updated dependencies [5398a2c]
+  - @uniswap/v4-sdk@2.1.0
+
+## 2.9.0
+
+### Minor Changes
+
+- 1726505: Optional **`maxHopSlippage`** (`bigint[]` per swap leg) on **`Trade.swaps`** for per-hop slippage (e.g. UR 2.1.1+).
+
+### Patch Changes
+
+- Updated dependencies [1726505]
+  - @uniswap/v4-sdk@2.0.0
+
+## 2.8.0
+
+### Minor Changes
+
+- 58a58d0: Migrate build system from TSDX to tsc with separate CJS/ESM/types outputs. The new `exports` field ensures correct module resolution for all standard consumers (`import`/`require` of the package root). Deep subpath imports (e.g., `@uniswap/sdk-core/dist/...`) are no longer supported — all public APIs are re-exported from the package entry point. `tslib` is now a runtime dependency (required by `importHelpers`). Minimum Node.js version is now 18.
+
+### Patch Changes
+
+- Updated dependencies [58a58d0]
+  - @uniswap/sdk-core@7.13.0
+  - @uniswap/v2-sdk@4.20.0
+  - @uniswap/v3-sdk@3.30.0
+  - @uniswap/v4-sdk@1.30.0
+
+## 2.7.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @uniswap/v4-sdk@1.29.3
+
+## 2.7.2
+
+### Patch Changes
+
+- Updated dependencies [1779ed4]
+  - @uniswap/sdk-core@7.12.2
+  - @uniswap/v2-sdk@4.19.2
+  - @uniswap/v3-sdk@3.29.2
+  - @uniswap/v4-sdk@1.29.2

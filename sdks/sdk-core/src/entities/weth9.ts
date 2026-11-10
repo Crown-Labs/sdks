@@ -5,7 +5,7 @@ import { Token } from './token'
  */
 export const WETH9: { [chainId: number]: Token } = {
   1: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether'),
-  11155111: new Token(11155111, '0xC558DBdd856501FCd9aaF1E62eae57A9F0629a3c', 18, 'WETH', 'Wrapped Ether'),
+  11155111: new Token(11155111, '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 18, 'WETH', 'Wrapped Ether'),
   3: new Token(3, '0xc778417E063141139Fce010982780140Aa0cD5Ab', 18, 'WETH', 'Wrapped Ether'),
   4: new Token(4, '0xc778417E063141139Fce010982780140Aa0cD5Ab', 18, 'WETH', 'Wrapped Ether'),
   5: new Token(5, '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6', 18, 'WETH', 'Wrapped Ether'),
@@ -33,4 +33,11 @@ export const WETH9: { [chainId: number]: Token } = {
   130: new Token(130, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether'),
   10143: new Token(10143, '0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701', 18, 'WMON', 'Wrapped Monad'),
   1868: new Token(1868, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether'),
+  143: new Token(143, '0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A', 18, 'WMON', 'Wrapped Monad'),
+  59144: new Token(59144, '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f', 18, 'WETH', 'Wrapped Ether'),
+  4326: new Token(4326, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether'),
+  4663: new Token(4663, '0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73', 18, 'WETH', 'Wrapped Ether'),
+  57073: new Token(57073, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether'),
+  // Elysium's gas token is HYPE, so its wrapped native is WHYPE
+  99901: new Token(99901, '0xbA876237B0F021A6c6D852d6c26E107997cC5E81', 18, 'WHYPE', 'Wrapped HYPE'),
 }

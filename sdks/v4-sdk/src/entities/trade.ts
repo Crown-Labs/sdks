@@ -1,13 +1,6 @@
-import {
-  Currency,
-  Fraction,
-  Percent,
-  Price,
-  sortedInsert,
-  CurrencyAmount,
-  TradeType,
-  Token,
-} from '@kittycorn-labs/sdk-core'
+import { isTokenizeConversion } from '../tokenize'
+import { Currency, Fraction, Percent, Price, sortedInsert, CurrencyAmount, TradeType, Token } from '@kittycorn-labs/sdk-core'
+import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../internalConstants'
 import { Pool } from './pool'
@@ -257,6 +250,37 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       for (let i = route.pools.length - 1; i >= 0; i--) {
         const pool = route.pools[i]
         ;[tokenAmount] = await pool.getInputAmount(tokenAmount)
+
+        // Special case: if this is the last pool (first in backward iteration) and it's an ETH-WETH pool
+        // with ETH as the route output, we need to convert the WETH amount back to ETH
+        // so the next pool in the iteration can work with ETH
+        // and vice versa if the route output is WETH
+        if (i === route.pools.length - 1) {
+          // Check if this is an ETH-WETH pool
+          const isEthWethPool = pool.currency1.equals(pool.currency0.wrapped)
+
+          if (isEthWethPool) {
+            if (route.output.isNative && route.pools[i - 1]?.currency0.isNative) {
+              // Convert WETH amount to ETH for the next pool
+              tokenAmount = CurrencyAmount.fromFractionalAmount(
+                pool.currency0, // native currency
+                tokenAmount.numerator,
+                tokenAmount.denominator
+              )
+            } else if (
+              route.output.equals(pool.currency1) &&
+              route.pools[i - 1] &&
+              !route.pools[i - 1].currency0.isNative
+            ) {
+              // Convert ETH amount to WETH for the next pool
+              tokenAmount = CurrencyAmount.fromFractionalAmount(
+                pool.currency1, // wrapped currency
+                tokenAmount.numerator,
+                tokenAmount.denominator
+              )
+            }
+          }
+        }
       }
       inputAmount = CurrencyAmount.fromFractionalAmount(route.input, tokenAmount.numerator, tokenAmount.denominator)
       outputAmount = CurrencyAmount.fromFractionalAmount(route.output, amount.numerator, amount.denominator)
@@ -384,11 +408,11 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       'OUTPUT_CURRENCY_MATCH'
     )
 
-    const numPools = routes.map(({ route }) => route.pools.length).reduce((total, cur) => total + cur, 0)
+    const numPools = routes.map(({ route }) => route.pools.filter(pool => !isTokenizeConversion(pool)).length).reduce((total, cur) => total + cur, 0)
     const poolIDSet = new Set<string>()
     for (const { route } of routes) {
       for (const pool of route.pools) {
-        poolIDSet.add(Pool.getPoolId(pool.currency0, pool.currency1, pool.fee, pool.tickSpacing, pool.hooks))
+        if (!isTokenizeConversion(pool)) poolIDSet.add(Pool.getPoolId(pool.currency0, pool.currency1, pool.fee, pool.tickSpacing, pool.hooks))
       }
     }
 
@@ -409,10 +433,12 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       return amountOut
     } else {
       const slippageAdjustedAmountOut = new Fraction(ONE)
-        .add(slippageTolerance)
-        .invert()
+        .subtract(slippageTolerance)
         .multiply(amountOut.quotient).quotient
-      return CurrencyAmount.fromRawAmount(amountOut.currency, slippageAdjustedAmountOut)
+      const clampedAmount = JSBI.greaterThan(slippageAdjustedAmountOut, JSBI.BigInt(0))
+        ? slippageAdjustedAmountOut
+        : JSBI.BigInt(0)
+      return CurrencyAmount.fromRawAmount(amountOut.currency, clampedAmount)
     }
   }
 

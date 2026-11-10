@@ -3,18 +3,28 @@ import {
   UniversalRouterVersion,
   UNIVERSAL_ROUTER_ADDRESS,
   UNIVERSAL_ROUTER_CREATION_BLOCK,
+  WETH_ADDRESS,
+  SWAP_PROXY_ADDRESS,
   CHAIN_CONFIGS,
+  ZERO_ADDRESS,
 } from '../../src/utils/constants'
 
 describe('Universal Router Constants', () => {
   // only the chain numbers that have a router deployed
   const chainIds = Object.keys(CHAIN_CONFIGS).map(Number)
   const versions = Object.keys(CHAIN_CONFIGS[1].routerConfigs) as unknown as UniversalRouterVersion[]
+  // chains whose only pre-2.1.2 router is V2_1_1 (no V1_2, no V2_0)
+  const v211OnlyChainIds = [5042, 4663]
+  // MegaETH skipped 2.1.1 entirely: 2.0 -> 2.1.2
+  const MEGAETH_CHAIN_ID = 4326
+  const INK_CHAIN_ID = 57073
+  const ELYSIUM_CHAIN_ID = 99901
 
   describe('UNIVERSAL_ROUTER_ADDRESS', () => {
     versions.forEach((version) => {
       chainIds.forEach((chainId) => {
-        it(`should return a valid address for version ${UniversalRouterVersion[version]} on chain ${chainId}`, () => {
+        if (!CHAIN_CONFIGS[chainId].routerConfigs[version]) return
+        it(`should return a valid address for version ${version} on chain ${chainId}`, () => {
           const address = UNIVERSAL_ROUTER_ADDRESS(version, chainId)
           expect(address).to.be.a('string')
           expect(address).to.match(/^0x[a-fA-F0-9]{40}$/)
@@ -28,12 +38,55 @@ describe('Universal Router Constants', () => {
         'Universal Router not deployed on chain 999999'
       )
     })
+
+    it('should throw an error for a version not deployed on an existing chain', () => {
+      // Linea (59144) has no V1_2
+      expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V1_2, 59144)).to.throw(
+        'Universal Router version 1.2 not deployed on chain 59144'
+      )
+
+      // MegaETH (4326) has no V1_2
+      expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V1_2, 4326)).to.throw(
+        'Universal Router version 1.2 not deployed on chain 4326'
+      )
+
+      // Ink (57073) has no V1_2
+      expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V1_2, 57073)).to.throw(
+        'Universal Router version 1.2 not deployed on chain 57073'
+      )
+
+      // Arc (5042) and Robinhood (4663) only have V2_1_1
+      v211OnlyChainIds.forEach((chainId) => {
+        expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V1_2, chainId)).to.throw(
+          `Universal Router version 1.2 not deployed on chain ${chainId}`
+        )
+        expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_0, chainId)).to.throw(
+          `Universal Router version 2.0 not deployed on chain ${chainId}`
+        )
+      })
+    })
+
+    it('should return the correct V2_1_1 address for arc and robinhood', () => {
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_1, 5042)).to.equal(
+        '0x4fca4a51ab4f23a7447b3284fbd7d73289a89fb1'
+      )
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_1, 4663)).to.equal(
+        '0x8876789976decbfcbbbe364623c63652db8c0904'
+      )
+    })
+
+    it('should throw for Ink (57073) V2_1_1, which is not deployed there', () => {
+      expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_1, 57073)).to.throw(
+        'Universal Router version 2.1.1 not deployed on chain 57073'
+      )
+    })
   })
 
   describe('UNIVERSAL_ROUTER_CREATION_BLOCK', () => {
     versions.forEach((version) => {
       chainIds.forEach((chainId) => {
-        it(`should return a valid block number for version ${UniversalRouterVersion[version]} on chain ${chainId}`, () => {
+        if (!CHAIN_CONFIGS[chainId].routerConfigs[version]) return
+        it(`should return a valid block number for version ${version} on chain ${chainId}`, () => {
           const blockNumber = UNIVERSAL_ROUTER_CREATION_BLOCK(version, chainId)
           expect(blockNumber).to.be.a('number')
           expect(blockNumber).to.be.greaterThan(0)
@@ -46,6 +99,169 @@ describe('Universal Router Constants', () => {
       expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V1_2, 999999)).to.throw(
         'Universal Router not deployed on chain 999999'
       )
+    })
+
+    it('should throw an error for a version not deployed on an existing chain', () => {
+      // Linea (59144) has no V1_2
+      expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V1_2, 59144)).to.throw(
+        'Universal Router version 1.2 not deployed on chain 59144'
+      )
+
+      // MegaETH (4326) has no V1_2
+      expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V1_2, 4326)).to.throw(
+        'Universal Router version 1.2 not deployed on chain 4326'
+      )
+
+      // Ink (57073) has no V1_2
+      expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V1_2, 57073)).to.throw(
+        'Universal Router version 1.2 not deployed on chain 57073'
+      )
+
+      // Arc (5042) and Robinhood (4663) only have V2_1_1
+      v211OnlyChainIds.forEach((chainId) => {
+        expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V1_2, chainId)).to.throw(
+          `Universal Router version 1.2 not deployed on chain ${chainId}`
+        )
+        expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_0, chainId)).to.throw(
+          `Universal Router version 2.0 not deployed on chain ${chainId}`
+        )
+      })
+    })
+
+    it('should return the correct V2_1_1 creation block for arc and robinhood', () => {
+      expect(UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_1_1, 5042)).to.equal(1950059)
+      expect(UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_1_1, 4663)).to.equal(18127)
+    })
+
+    it('should throw for Ink (57073) V2_1_1 creation block, which is not deployed there', () => {
+      expect(() => UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_1_1, 57073)).to.throw(
+        'Universal Router version 2.1.1 not deployed on chain 57073'
+      )
+    })
+  })
+
+  describe('V2_1_2', () => {
+    it('is deployed on every chain that has V2_1_1, plus MegaETH, Ink and Elysium', () => {
+      const with211 = chainIds.filter((id) => CHAIN_CONFIGS[id].routerConfigs[UniversalRouterVersion.V2_1_1])
+      const with212 = chainIds.filter((id) => CHAIN_CONFIGS[id].routerConfigs[UniversalRouterVersion.V2_1_2])
+      expect(with212).to.have.lengthOf(25)
+      // every 2.1.1 chain got 2.1.2. MegaETH never had a 2.1.1, Ink's was an alias to
+      // v2.2.0 that has since been removed, and Elysium launched on 2.1.2, so all three
+      // have 2.1.2 without 2.1.1.
+      expect(with211.filter((id) => !with212.includes(id))).to.deep.equal([])
+      expect(with212.filter((id) => !with211.includes(id))).to.deep.equal([
+        MEGAETH_CHAIN_ID,
+        INK_CHAIN_ID,
+        ELYSIUM_CHAIN_ID,
+      ])
+    })
+
+    it('has no V2_1_1 on MegaETH to fall back to', () => {
+      expect(() => UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_1, MEGAETH_CHAIN_ID)).to.throw(
+        `Universal Router version 2.1.1 not deployed on chain ${MEGAETH_CHAIN_ID}`
+      )
+    })
+
+    it('was deployed after V2_1_1 on every chain that had it', () => {
+      chainIds.forEach((chainId) => {
+        if (!CHAIN_CONFIGS[chainId].routerConfigs[UniversalRouterVersion.V2_1_2]) return
+        if (!CHAIN_CONFIGS[chainId].routerConfigs[UniversalRouterVersion.V2_1_1]) return
+        expect(UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_1_2, chainId)).to.be.greaterThan(
+          UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_1_1, chainId)
+        )
+      })
+    })
+
+    it('returns the deployed V2_1_2 address on mainnet and sepolia', () => {
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, 1)).to.equal(
+        '0x23617e59A5925b2A4Bf75d73ff6711cD0b29De85'
+      )
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, 11155111)).to.equal(
+        '0x7E4f6c5e954Da5c61B3423D81E2277431Ac043f3'
+      )
+    })
+
+    // unlike 2.1.1, Ink has a standalone 2.1.2 router rather than an alias
+    it('is a standalone deployment on Ink (57073), not aliased to V2_2_0', () => {
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, 57073)).to.equal(
+        '0x661E93cca42AfacB172121EF892830cA3b70F08d'
+      )
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, 57073)).to.not.equal(
+        UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_2_0, 57073)
+      )
+    })
+
+    it('is deployed on arc and robinhood, which previously had only V2_1_1', () => {
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, 5042)).to.equal(
+        '0x8702463e73f74d0b6765aBceb314Ef07aCb92650'
+      )
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, 4663)).to.equal(
+        '0x204FAca1764B154221e35c0d20aBb3c525710498'
+      )
+    })
+  })
+
+  describe('Elysium (99901)', () => {
+    it('returns the deployed V2_1_2 and V2_2_0 routers', () => {
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_1_2, ELYSIUM_CHAIN_ID)).to.equal(
+        '0xA13f7611115752DEB2B13813BDDE16A5073e4b45'
+      )
+      expect(UNIVERSAL_ROUTER_ADDRESS(UniversalRouterVersion.V2_2_0, ELYSIUM_CHAIN_ID)).to.equal(
+        '0x1B341FDD55d56F8E08409A2C25DDFad93Eb03C1a'
+      )
+    })
+
+    it('returns each router creation block', () => {
+      expect(UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_1_2, ELYSIUM_CHAIN_ID)).to.equal(256483)
+      expect(UNIVERSAL_ROUTER_CREATION_BLOCK(UniversalRouterVersion.V2_2_0, ELYSIUM_CHAIN_ID)).to.equal(257585)
+    })
+
+    it('has no router before 2.1.2', () => {
+      ;[UniversalRouterVersion.V1_2, UniversalRouterVersion.V2_0, UniversalRouterVersion.V2_1_1].forEach((version) => {
+        expect(() => UNIVERSAL_ROUTER_ADDRESS(version, ELYSIUM_CHAIN_ID)).to.throw(
+          `Universal Router version ${version} not deployed on chain ${ELYSIUM_CHAIN_ID}`
+        )
+      })
+    })
+
+    it('returns WHYPE as the wrapped native', () => {
+      expect(WETH_ADDRESS(ELYSIUM_CHAIN_ID)).to.equal('0xbA876237B0F021A6c6D852d6c26E107997cC5E81')
+    })
+
+    it('has no native/ERC20 balance alias, because HYPE is plain native gas and WHYPE a separate wrapper', () => {
+      expect(CHAIN_CONFIGS[ELYSIUM_CHAIN_ID].nativeErc20BalanceAlias).to.equal(false)
+    })
+  })
+
+  describe('SWAP_PROXY_ADDRESS', () => {
+    it('should return the Ink SwapProxy address', () => {
+      expect(SWAP_PROXY_ADDRESS(57073)).to.equal('0x0000000085E102724e78eCd2F45DC9cA239Affad')
+    })
+
+    it('should return the Elysium SwapProxy address', () => {
+      expect(SWAP_PROXY_ADDRESS(ELYSIUM_CHAIN_ID)).to.equal('0x0000000085E102724e78eCd2F45DC9cA239Affad')
+    })
+
+    it('should throw for an unsupported chain', () => {
+      expect(() => SWAP_PROXY_ADDRESS(999999)).to.throw('SwapProxy not deployed on chain 999999')
+    })
+  })
+
+  describe('WETH_ADDRESS', () => {
+    it('should throw for arc because WETH is unsupported', () => {
+      expect(() => WETH_ADDRESS(5042)).to.throw('Chain 5042 does not have WETH')
+    })
+
+    it('should return Robinhood WETH', () => {
+      expect(WETH_ADDRESS(4663)).to.equal('0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73')
+    })
+
+    it('should mark every chain without WETH as a native/ERC20 balance alias chain', () => {
+      for (const chainId of chainIds) {
+        if (CHAIN_CONFIGS[chainId].weth === ZERO_ADDRESS) {
+          expect(CHAIN_CONFIGS[chainId].nativeErc20BalanceAlias, `chain ${chainId}`).to.equal(true)
+        }
+      }
     })
   })
 })

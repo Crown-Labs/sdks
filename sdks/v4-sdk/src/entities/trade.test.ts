@@ -1,14 +1,4 @@
-import {
-  Currency,
-  CurrencyAmount,
-  Ether,
-  WETH9,
-  Percent,
-  Price,
-  sqrt,
-  Token,
-  TradeType,
-} from '@kittycorn-labs/sdk-core'
+import { Currency, CurrencyAmount, Ether, WETH9, Percent, Price, sqrt, Token, TradeType } from '@kittycorn-labs/sdk-core'
 import { ADDRESS_ZERO, FEE_AMOUNT_MEDIUM, TICK_SPACING_SIXTY } from '../internalConstants'
 import JSBI from 'jsbi'
 import { nearestUsableTick, encodeSqrtRatioX96, TickMath } from '@kittycorn-labs/v3-sdk'
@@ -96,6 +86,11 @@ describe('Trade', () => {
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100000))
   )
 
+  const pool_weth_eth = v2StylePool(
+    CurrencyAmount.fromRawAmount(ETHER, JSBI.BigInt(100000)),
+    CurrencyAmount.fromRawAmount(weth, JSBI.BigInt(100000))
+  )
+
   describe('#fromRoute', () => {
     it('can be constructed with ETHER as input', async () => {
       const trade = await Trade.fromRoute(
@@ -174,6 +169,24 @@ describe('Trade', () => {
       )
       expect(trade.inputAmount.currency).toEqual(token0)
       expect(trade.outputAmount.currency).toEqual(ETHER)
+    })
+    it('can be constructed with ETHER as output for exact output with ETH-WETH pool', async () => {
+      const trade = await Trade.fromRoute(
+        new Route([pool_eth_0, pool_weth_eth], token0, ETHER),
+        CurrencyAmount.fromRawAmount(ETHER, 10000),
+        TradeType.EXACT_OUTPUT
+      )
+      expect(trade.inputAmount.currency).toEqual(token0)
+      expect(trade.outputAmount.currency).toEqual(ETHER)
+    })
+    it('can be constructed with weth as output for exact output with ETH-WETH pool', async () => {
+      const trade = await Trade.fromRoute(
+        new Route([pool_weth_0, pool_weth_eth], token0, weth),
+        CurrencyAmount.fromRawAmount(weth, 10000),
+        TradeType.EXACT_OUTPUT
+      )
+      expect(trade.inputAmount.currency).toEqual(token0)
+      expect(trade.outputAmount.currency).toEqual(weth)
     })
   })
 
@@ -447,12 +460,12 @@ describe('Trade', () => {
       it('returns exact if nonzero', () => {
         expect(exactIn.worstExecutionPrice(new Percent(0, 100))).toEqual(new Price(token0, token2, 100, 69))
         expect(exactIn.worstExecutionPrice(new Percent(5, 100))).toEqual(new Price(token0, token2, 100, 65))
-        expect(exactIn.worstExecutionPrice(new Percent(200, 100))).toEqual(new Price(token0, token2, 100, 23))
+        expect(exactIn.worstExecutionPrice(new Percent(200, 100))).toEqual(new Price(token0, token2, 100, 0))
       })
       it('returns exact if nonzero with multiple routes', () => {
         expect(exactInMultiRoute.worstExecutionPrice(new Percent(0, 100))).toEqual(new Price(token0, token2, 100, 69))
         expect(exactInMultiRoute.worstExecutionPrice(new Percent(5, 100))).toEqual(new Price(token0, token2, 100, 65))
-        expect(exactInMultiRoute.worstExecutionPrice(new Percent(200, 100))).toEqual(new Price(token0, token2, 100, 23))
+        expect(exactInMultiRoute.worstExecutionPrice(new Percent(200, 100))).toEqual(new Price(token0, token2, 100, 0))
       })
     })
     describe('tradeType = EXACT_OUTPUT', () => {
@@ -784,10 +797,10 @@ describe('Trade', () => {
           CurrencyAmount.fromRawAmount(token2, 7004)
         )
         expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(5), 100))).toEqual(
-          CurrencyAmount.fromRawAmount(token2, 6670)
+          CurrencyAmount.fromRawAmount(token2, 6653)
         )
         expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(200), 100))).toEqual(
-          CurrencyAmount.fromRawAmount(token2, 2334)
+          CurrencyAmount.fromRawAmount(token2, 0)
         )
       })
     })

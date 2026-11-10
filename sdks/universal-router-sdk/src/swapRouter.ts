@@ -18,15 +18,57 @@ import {
   PoolKey,
 } from '@kittycorn-labs/v4-sdk'
 import { Trade as RouterTrade } from '@kittycorn-labs/router-sdk'
-import { Currency, TradeType, Percent, CHAIN_TO_ADDRESSES_MAP, SupportedChainsType } from '@kittycorn-labs/sdk-core'
-import { UniswapTrade, SwapOptions } from './entities/actions/uniswap'
+import { Currency, TradeType, Percent, CHAIN_TO_ADDRESSES_MAP, SupportedChainsType, WETH9 } from '@kittycorn-labs/sdk-core'
+import { UniswapTrade, SwapOptions, TokenTransferMode } from './entities/actions/uniswap'
+import { AcrossV4DepositV3Params } from './entities/actions/across'
+import { SwapSpecification, SwapStep } from './types/encodeSwaps'
 import { RoutePlanner, CommandType } from './utils/routerCommands'
 import { encodePermit, encodeV3PositionPermit } from './utils/inputTokens'
-import { UNIVERSAL_ROUTER_ADDRESS, UniversalRouterVersion } from './utils/constants'
+import { directTransferSweepFloor, isSettlementSweepRedundant, sumUserPaidMax } from './utils/directTransfers'
+import {
+  DEFAULT_UR_VERSION,
+  ETH_ADDRESS,
+  ROUTER_AS_RECIPIENT,
+  UNIVERSAL_ROUTER_ADDRESS,
+  UniversalRouterVersion,
+  isAtLeastV2_0,
+  isAtLeastV2_1_1,
+} from './utils/constants'
+import { getCurrencyAddress } from './utils/getCurrencyAddress'
+import { encodeFee1e18, encodeFeeBips } from './utils/numbers'
+import { encodeSwapStep } from './utils/encodeSwapStep'
+import { applyNativeRouterBalanceInputToSteps, applyRouterBalanceInputToSteps } from './utils/routerBalanceSteps'
+import { computeEncodeSwapsAmounts } from './utils/computeEncodeSwapsAmounts'
+import { normalizeEncodeSwapsSpec, toFeeList, toPortionFeeList } from './utils/normalizeEncodeSwapsSpec'
+import { scalePortionFees } from './utils/portionFees'
+import { validateEncodeSwaps } from './utils/validateEncodeSwaps'
+import { getUniversalRouterDomain, EXECUTE_SIGNED_TYPES, generateNonce } from './utils/eip712'
+import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 
 export type SwapRouterConfig = {
   sender?: string // address
   deadline?: BigNumberish
+}
+
+export type SignedRouteOptions = {
+  intent: string // bytes32 - application-specific intent identifier
+  data: string // bytes32 - application-specific data
+  sender: string // msg.sender to verify, or address(0) to skip sender verification
+  nonce?: string // bytes32 - optional nonce. If not provided, random nonce is generated. Use NONCE_SKIP_CHECK to skip nonce verification
+}
+
+export type EIP712Payload = {
+  domain: TypedDataDomain
+  types: Record<string, TypedDataField[]>
+  value: {
+    commands: string
+    inputs: string[]
+    intent: string
+    data: string
+    sender: string
+    nonce: string
+    deadline: string
+  }
 }
 
 export interface MigrateV3ToV4Options {
@@ -34,7 +76,10 @@ export interface MigrateV3ToV4Options {
   outputPosition: V4Position
   v3RemoveLiquidityOptions: V3RemoveLiquidityOptions
   v4AddLiquidityOptions: V4AddLiquidityOptions
+  urVersion?: UniversalRouterVersion // router that executes the migrate; an embedded V3 NFT permit must name it as spender (defaults to V2_0)
 }
+
+const DEFAULT_PROXY_DEADLINE_BUFFER_SECONDS = 30 * 60
 
 function isMint(options: V4AddLiquidityOptions): options is MintOptions {
   return Object.keys(options).some((k) => k === 'recipient')
@@ -43,9 +88,14 @@ function isMint(options: V4AddLiquidityOptions): options is MintOptions {
 export abstract class SwapRouter {
   public static INTERFACE: Interface = new Interface(UniversalRouter.abi)
 
+  public static PROXY_INTERFACE: Interface = new Interface([
+    'function execute(address router, address token, uint256 amount, bytes calldata commands, bytes[] calldata inputs, uint256 deadline) external',
+  ])
+
   public static swapCallParameters(
     trades: RouterTrade<Currency, Currency, TradeType>,
-    options: SwapOptions
+    options: SwapOptions,
+    bridgeOptions?: AcrossV4DepositV3Params[] // Optional bridge parameters
   ): MethodParameters {
     // TODO: use permit if signature included in swapOptions
     const planner = new RoutePlanner()
@@ -53,20 +103,385 @@ export abstract class SwapRouter {
     const trade: UniswapTrade = new UniswapTrade(trades, options)
 
     const inputCurrency = trade.trade.inputAmount.currency
-    invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
-    if (options.inputTokenPermit) {
-      encodePermit(planner, options.inputTokenPermit)
+    if (options.tokenTransferMode === TokenTransferMode.ApproveProxy) {
+      invariant(!inputCurrency.isNative, 'PROXY_NATIVE_INPUT: SwapProxy only supports ERC20 input')
+      invariant(!!options.chainId, 'PROXY_MISSING_CHAIN_ID: chainId required when tokenTransferMode is ApproveProxy')
+      invariant(!options.inputTokenPermit, 'PROXY_PERMIT_CONFLICT: Permit2 not used with SwapProxy')
+    } else {
+      invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
+
+      if (options.inputTokenPermit) {
+        encodePermit(planner, options.inputTokenPermit)
+      }
     }
 
-    const nativeCurrencyValue = inputCurrency.isNative
-      ? BigNumber.from(trade.trade.maximumAmountIn(options.slippageTolerance).quotient.toString())
-      : BigNumber.from(0)
+    let nativeCurrencyValue: BigNumber
+    if (inputCurrency.isNative) {
+      // routerBalanceInput: the delivered amount is unknown at encode time — the executor
+      // attaches it as msg.value on execute() (raw transfers to the router revert), so the
+      // encoded value is zero and the plan wraps whatever arrives.
+      nativeCurrencyValue = options.routerBalanceInput
+        ? BigNumber.from(0)
+        : BigNumber.from(trade.trade.maximumAmountIn(options.slippageTolerance).quotient.toString())
+    } else if (options.nativeErc20Input) {
+      // input token is the chain's native-ERC20 gas token (e.g. Arc USDC predeploy):
+      // fund the router via msg.value, scaled from token decimals to 18-decimal native units
+      invariant(inputCurrency.decimals <= 18, 'NATIVE_ERC20_INPUT_DECIMALS')
+      nativeCurrencyValue = BigNumber.from(
+        trade.trade.maximumAmountIn(options.slippageTolerance).quotient.toString()
+      ).mul(BigNumber.from(10).pow(18 - inputCurrency.decimals))
+    } else {
+      nativeCurrencyValue = BigNumber.from(0)
+    }
 
     trade.encode(planner, { allowRevert: false })
+
+    // Add bridge commands if provided
+    if (bridgeOptions) {
+      for (const bridge of bridgeOptions) {
+        planner.addAcrossBridge(bridge)
+      }
+    }
+
+    if (options.tokenTransferMode === TokenTransferMode.ApproveProxy) {
+      return SwapRouter.encodeProxyPlan(planner, trade, options)
+    }
+
     return SwapRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash ? BigNumber.from(options.deadlineOrPreviousBlockhash) : undefined,
     })
+  }
+
+  /**
+   * Encodes router-provided swap steps inside the SDK safety envelope.
+   *
+   * Routers own `swapSteps` (V2/V3/V4 swaps, plus any `WRAP_ETH` / `UNWRAP_WETH` required by the route).
+   * The SDK owns ingress, fees, final settlement, exact-output refund, and optional `safeMode`.
+   *
+   * Two validation regimes:
+   * - Default (router custody): the single SDK ingress pull is the only user withdrawal and every step
+   *   recipient must be the router; the final SWEEP floor enforces the minimum output.
+   * - `allowDirectTransfers`: steps may pull input straight from the user (`payerIsUser`,
+   *   v4 SETTLE_ALL) and pay output straight to `recipient` (step recipients, v4 TAKE/TAKE_ALL,
+   *   UNWRAP_WETH). Direct pulls may total at most exactOrMaxAmountIn — ingress pulls the
+   *   remainder — and direct output minimums count toward the SWEEP floor. Portion fees still
+   *   require output custody. Step amounts are never trusted, only counted or capped.
+   *
+   * Direct-transfer caveats:
+   * - Fee-on-transfer output: output minimums bind the amount each swap *produces* (pre-transfer), not the
+   *   recipient's post-tax balance. A FoT token's own transfer tax reduces the final balance below the
+   *   minimum — inherent to such tokens and expected when swapping into one, not a shortfall to guard.
+   * - A flat fee is a plain TRANSFER, so routing must keep at least the fee amount in router custody
+   *   (not route 100% of output directly), or the fee TRANSFER reverts.
+   *
+   * Router contract: end with final output in `spec.routing.outputToken`; for `EXACT_OUTPUT`, unused input
+   * must end in `spec.routing.inputToken`. Don't include a top-level `SWEEP` — the SDK appends settlement,
+   * refund, and safeMode sweeps itself.
+   *
+   * Amount convention: on `EXACT_INPUT`, `spec.routing.quote` is the GROSS output (before fees).
+   * The fee cascade is deducted from it when sizing the sweep floor; passing a net
+   * (post-fee) quote double-counts the fees and floors the sweep below the real minimum.
+   */
+  public static encodeSwaps(spec: SwapSpecification, swapSteps: SwapStep[]): MethodParameters {
+    const normalizedSpec = normalizeEncodeSwapsSpec(spec)
+    const planner = new RoutePlanner()
+
+    validateEncodeSwaps(normalizedSpec, swapSteps)
+
+    const { exactOrMaxAmountIn, netMinOrExactAmountOut } = computeEncodeSwapsAmounts(normalizedSpec)
+    const {
+      routing: { inputToken, outputToken },
+    } = normalizedSpec
+
+    // Router-balance funding: assert the floor before anything spends, so an under-funded
+    // router reverts up front rather than swapping a short amount. A native balance input
+    // has no balance-check command, so its floor is asserted post-wrap as WETH instead
+    // (inside the step loop below).
+    const nativeBalanceInput = !!normalizedSpec.routerBalanceInput && inputToken.isNative
+    const routerBalanceFloor = normalizedSpec.routerBalanceInput?.minimumAmount
+    const emitRouterBalanceFloor = () =>
+      planner.addCommand(
+        CommandType.BALANCE_CHECK_ERC20,
+        [
+          // BALANCE_CHECK_ERC20 reads `owner` verbatim (no sentinel resolution), so it
+          // needs the router's real address; validateEncodeSwaps requires chainId.
+          UNIVERSAL_ROUTER_ADDRESS(normalizedSpec.urVersion, normalizedSpec.chainId!),
+          inputToken.wrapped.address,
+          routerBalanceFloor!,
+        ],
+        false,
+        normalizedSpec.urVersion
+      )
+    if (routerBalanceFloor !== undefined && !nativeBalanceInput) {
+      emitRouterBalanceFloor()
+    }
+
+    // Ingress: pull funds into the router. Native input is paid as msg.value at the bottom
+    // instead of via Permit2 — as is a native-ERC20 gas-token input (nativeErc20Input);
+    // ApproveProxy ingress is handled by the outer wrapper at the end. A router-balance
+    // swap is funded by a third party in the same transaction, so it has no ingress at all.
+    if (normalizedSpec.tokenTransferMode === TokenTransferMode.Permit2 && !normalizedSpec.routerBalanceInput) {
+      if (normalizedSpec.permit) {
+        encodePermit(planner, normalizedSpec.permit)
+      }
+
+      if (!inputToken.isNative && !normalizedSpec.nativeErc20Input) {
+        // user-paid steps draw part of the budget straight from the wallet; ingress pulls only the rest
+        const ingressAmount = exactOrMaxAmountIn.sub(sumUserPaidMax(swapSteps))
+        if (ingressAmount.gt(0)) {
+          planner.addCommand(
+            CommandType.PERMIT2_TRANSFER_FROM,
+            [getCurrencyAddress(inputToken), ROUTER_AS_RECIPIENT, ingressAmount],
+            false,
+            normalizedSpec.urVersion
+          )
+        }
+      }
+    }
+
+    // With router-balance funding the delivered amount is unknown at encode time, so the
+    // input-spending first hop is rewritten to the CONTRACT_BALANCE sentinel (v4: settle
+    // the whole balance, swap the open delta).
+    let stepsToEncode = swapSteps
+    if (nativeBalanceInput) {
+      stepsToEncode = applyNativeRouterBalanceInputToSteps(swapSteps, inputToken.wrapped.address)
+    } else if (normalizedSpec.routerBalanceInput) {
+      stepsToEncode = applyRouterBalanceInputToSteps(
+        swapSteps,
+        getCurrencyAddress(inputToken),
+        WETH9[inputToken.chainId]?.address
+      )
+    }
+
+    stepsToEncode.forEach((step, index) => {
+      encodeSwapStep(planner, step, normalizedSpec.urVersion)
+      // Native balance input: the WRAP_ETH just consumed the whole native balance, so the
+      // WETH floor is checkable only now.
+      if (index === 0 && nativeBalanceInput && routerBalanceFloor !== undefined) {
+        emitRouterBalanceFloor()
+      }
+    })
+
+    // One command per recipient ahead of the settlement SWEEP, rescaled from gross fractions so each recipient gets its stated share.
+    const useFullPrecision = isAtLeastV2_1_1(normalizedSpec.urVersion)
+    const scaledPortions = scalePortionFees(toPortionFeeList(normalizedSpec.fee))
+    let portionIndex = 0
+    for (const fee of toFeeList(normalizedSpec.fee)) {
+      if (fee.kind === 'portion') {
+        const scaledFee = scaledPortions[portionIndex++].scaledFee
+        planner.addCommand(
+          useFullPrecision ? CommandType.PAY_PORTION_FULL_PRECISION : CommandType.PAY_PORTION,
+          [
+            getCurrencyAddress(outputToken),
+            fee.recipient,
+            useFullPrecision ? encodeFee1e18(scaledFee) : encodeFeeBips(scaledFee),
+          ],
+          false,
+          normalizedSpec.urVersion
+        )
+      } else {
+        planner.addCommand(
+          CommandType.TRANSFER,
+          [getCurrencyAddress(outputToken), fee.recipient, fee.amount],
+          false,
+          normalizedSpec.urVersion
+        )
+      }
+    }
+
+    // Assumes routers already normalized final gross output into `routing.outputToken`.
+    // Direct-output minimums (contract-enforced, delivered straight to the recipient)
+    // reduce the floor; the sweep remains unless `omitRedundantSettlementSweep` proves it redundant.
+    const sweepFloor = normalizedSpec.allowDirectTransfers
+      ? directTransferSweepFloor(normalizedSpec, netMinOrExactAmountOut, swapSteps, getCurrencyAddress(outputToken))
+      : netMinOrExactAmountOut
+
+    if (!isSettlementSweepRedundant(normalizedSpec, swapSteps, sweepFloor)) {
+      planner.addCommand(
+        CommandType.SWEEP,
+        [getCurrencyAddress(outputToken), normalizedSpec.recipient, sweepFloor],
+        false,
+        normalizedSpec.urVersion
+      )
+    }
+
+    // Assumes routers already normalized unused input into `routing.inputToken`.
+    // Exact-output uses max input, so any unused slippage padding is refunded to the recipient.
+    // For nativeErc20Input the leftover lives in the router's native balance (18 decimals), so
+    // sweep it as native: an ERC20 sweep would floor to the token's decimals and strand dust.
+    if (normalizedSpec.tradeType === TradeType.EXACT_OUTPUT) {
+      planner.addCommand(
+        CommandType.SWEEP,
+        [normalizedSpec.nativeErc20Input ? ETH_ADDRESS : getCurrencyAddress(inputToken), normalizedSpec.recipient, 0],
+        false,
+        normalizedSpec.urVersion
+      )
+    }
+
+    // safeMode: zero-min ETH sweep recovers any native funds left on the router (dust or unintended msg.value)
+    // Native balance input always sweeps trailing ETH dust to the recipient: the funder is
+    // a third party, so anything left on the router would otherwise be stranded or swept
+    // by a stranger.
+    if (normalizedSpec.safeMode || nativeBalanceInput) {
+      planner.addCommand(CommandType.SWEEP, [ETH_ADDRESS, normalizedSpec.recipient, 0], false, normalizedSpec.urVersion)
+    }
+
+    // ApproveProxy wraps the inner UR plan in an outer proxy.execute() that handles ingress upstream.
+    if (normalizedSpec.tokenTransferMode === TokenTransferMode.ApproveProxy) {
+      return SwapRouter.encodeProxyCall(
+        planner,
+        getCurrencyAddress(inputToken),
+        exactOrMaxAmountIn,
+        normalizedSpec.chainId!,
+        normalizedSpec.urVersion,
+        normalizedSpec.deadline
+      )
+    }
+
+    // Native input pays via msg.value; ERC20 input is already in the router via Permit2.
+    // A native-ERC20 gas-token input (e.g. Arc USDC predeploy) also pays via msg.value,
+    // scaled from token decimals to 18-decimal native units.
+    let nativeCurrencyValue: BigNumber
+    if (inputToken.isNative) {
+      // routerBalanceInput: the delivered amount is unknown at encode time — the executor
+      // attaches it as msg.value on execute() (raw transfers to the router revert), so the
+      // encoded value is zero and the plan wraps whatever arrives.
+      nativeCurrencyValue = normalizedSpec.routerBalanceInput ? BigNumber.from(0) : exactOrMaxAmountIn
+    } else if (normalizedSpec.nativeErc20Input) {
+      nativeCurrencyValue = exactOrMaxAmountIn.mul(BigNumber.from(10).pow(18 - inputToken.decimals))
+    } else {
+      nativeCurrencyValue = BigNumber.from(0)
+    }
+
+    return SwapRouter.encodePlan(planner, nativeCurrencyValue, {
+      deadline: normalizedSpec.deadline ? BigNumber.from(normalizedSpec.deadline) : undefined,
+    })
+  }
+
+  /**
+   * Generate EIP712 payload for signed execution (no signing performed)
+   * Decodes existing execute() calldata and prepares it for signing
+   *
+   * @param calldata The calldata from swapCallParameters() or similar
+   * @param signedOptions Options for signed execution (intent, data, sender, nonce)
+   * @param deadline The deadline timestamp
+   * @param chainId The chain ID
+   * @param routerAddress The Universal Router contract address
+   * @returns EIP712 payload ready to be signed externally
+   */
+  public static getExecuteSignedPayload(
+    calldata: string,
+    signedOptions: SignedRouteOptions,
+    deadline: BigNumberish,
+    chainId: number,
+    routerAddress: string
+  ): EIP712Payload {
+    // Decode the execute() calldata to extract commands and inputs
+    // Try to decode with deadline first, then without
+    let decoded: any
+    let commands: string
+    let inputs: string[]
+
+    try {
+      decoded = SwapRouter.INTERFACE.decodeFunctionData('execute(bytes,bytes[],uint256)', calldata)
+      commands = decoded.commands as string
+      inputs = decoded.inputs as string[]
+    } catch (e) {
+      // Try without deadline
+      decoded = SwapRouter.INTERFACE.decodeFunctionData('execute(bytes,bytes[])', calldata)
+      commands = decoded.commands as string
+      inputs = decoded.inputs as string[]
+    }
+
+    // Use provided nonce or generate random one
+    const nonce = signedOptions.nonce || generateNonce()
+
+    // sender is provided directly (address(0) = skip verification)
+    const sender = signedOptions.sender
+
+    const domain = getUniversalRouterDomain(chainId, routerAddress)
+
+    const intent = signedOptions.intent
+
+    const data = signedOptions.data
+
+    const deadlineStr = BigNumber.from(deadline).toString()
+
+    const value = {
+      commands,
+      inputs,
+      intent,
+      data,
+      sender,
+      nonce,
+      deadline: deadlineStr,
+    }
+
+    return {
+      domain,
+      types: EXECUTE_SIGNED_TYPES,
+      value,
+    }
+  }
+
+  /**
+   * Encode executeSigned() call with signature
+   *
+   * @param calldata The original calldata from swapCallParameters()
+   * @param signature The signature obtained from external signing
+   * @param signedOptions The same options used in getExecuteSignedPayload()
+   * @param deadline The deadline timestamp
+   * @param nativeCurrencyValue The native currency value (ETH) to send
+   * @returns Method parameters for executeSigned()
+   */
+  public static encodeExecuteSigned(
+    calldata: string,
+    signature: string,
+    signedOptions: SignedRouteOptions,
+    deadline: BigNumberish,
+    nativeCurrencyValue: BigNumber = BigNumber.from(0)
+  ): MethodParameters {
+    // Decode the execute() calldata to extract commands and inputs
+    // Try to decode with deadline first, then without
+    let decoded: any
+    let commands: string
+    let inputs: string[]
+
+    try {
+      decoded = SwapRouter.INTERFACE.decodeFunctionData('execute(bytes,bytes[],uint256)', calldata)
+      commands = decoded.commands as string
+      inputs = decoded.inputs as string[]
+    } catch (e) {
+      // Try without deadline
+      decoded = SwapRouter.INTERFACE.decodeFunctionData('execute(bytes,bytes[])', calldata)
+      commands = decoded.commands as string
+      inputs = decoded.inputs as string[]
+    }
+
+    // Use provided nonce (must match what was signed)
+    // Nonce must match what was signed - require it to be provided
+    if (!signedOptions.nonce) {
+      throw new Error('Nonce is required for encodeExecuteSigned - use the nonce from getExecuteSignedPayload')
+    }
+    const nonce = signedOptions.nonce
+
+    // Determine verifySender based on sender address
+    const verifySender = signedOptions.sender !== '0x0000000000000000000000000000000000000000'
+
+    // Encode executeSigned function call using the Universal Router v2.1 ABI
+    const signedCalldata = SwapRouter.INTERFACE.encodeFunctionData('executeSigned', [
+      commands,
+      inputs,
+      signedOptions.intent,
+      signedOptions.data,
+      verifySender,
+      nonce,
+      signature,
+      deadline,
+    ])
+
+    return { calldata: signedCalldata, value: nativeCurrencyValue.toHexString() }
   }
 
   /**
@@ -75,7 +490,8 @@ export abstract class SwapRouter {
    *   - v3RemoveLiquidityOptions.collectOptions.recipient must equal v4PositionManager
    *   - v3RemoveLiquidityOptions.liquidityPercentage must be 100%
    *   - input pool and output pool must have the same tokens
-   *   - V3 NFT must be approved, or valid inputV3NFTPermit must be provided with UR as spender
+   *   - V3 NFT must be approved, or a valid v3RemoveLiquidityOptions.permit must be provided whose spender is the
+   *     Universal Router for `urVersion` (defaults to V2_0)
    */
   public static migrateV3ToV4CallParameters(
     options: MigrateV3ToV4Options,
@@ -87,9 +503,13 @@ export abstract class SwapRouter {
     const v4PositionManagerAddress =
       positionManagerOverride ?? CHAIN_TO_ADDRESSES_MAP[v4Pool.chainId as SupportedChainsType].v4PositionManagerAddress
 
+    const urVersion = options.urVersion ?? DEFAULT_UR_VERSION
+
     // owner of the v3 nft must be the receiver of the v4 nft
 
     // validate the parameters
+    // the position-manager commands this plan emits do not exist on the 1.2 router
+    invariant(isAtLeastV2_0(urVersion), 'UR_VERSION_TOO_OLD')
     if (v4Pool.currency0.isNative) {
       invariant(
         (v4Pool.currency0.wrapped.equals(v3Token0) && v4Pool.currency1.equals(v3Token1)) ||
@@ -131,12 +551,15 @@ export abstract class SwapRouter {
 
     // add position permit to the universal router planner
     if (options.v3RemoveLiquidityOptions.permit) {
-      // permit spender should be UR
+      // permit spender must be the router that executes this migrate
       const universalRouterAddress = UNIVERSAL_ROUTER_ADDRESS(
-        UniversalRouterVersion.V2_0,
+        urVersion,
         options.inputPosition.pool.chainId as SupportedChainsType
       )
-      invariant(universalRouterAddress == options.v3RemoveLiquidityOptions.permit.spender, 'INVALID_SPENDER')
+      invariant(
+        universalRouterAddress.toLowerCase() === options.v3RemoveLiquidityOptions.permit.spender.toLowerCase(),
+        'INVALID_SPENDER'
+      )
       // don't need to transfer it because v3posm uses isApprovedOrOwner()
       encodeV3PositionPermit(planner, options.v3RemoveLiquidityOptions.permit, options.v3RemoveLiquidityOptions.tokenId)
       // remove permit so that multicall doesnt add it again
@@ -191,5 +614,46 @@ export abstract class SwapRouter {
     const parameters = !!config.deadline ? [commands, inputs, config.deadline] : [commands, inputs]
     const calldata = SwapRouter.INTERFACE.encodeFunctionData(functionSignature, parameters)
     return { calldata, value: nativeCurrencyValue.toHexString() }
+  }
+
+  /**
+   * Wraps an inner UR plan in calldata targeting the SwapProxy contract.
+   * The proxy pulls ERC20 tokens from the user into the UR, then executes commands.
+   */
+  private static encodeProxyPlan(planner: RoutePlanner, trade: UniswapTrade, options: SwapOptions): MethodParameters {
+    return SwapRouter.encodeProxyCall(
+      planner,
+      (trade.trade.inputAmount.currency as { address: string }).address,
+      BigNumber.from(trade.trade.maximumAmountIn(options.slippageTolerance).quotient.toString()),
+      options.chainId!,
+      options.urVersion ?? DEFAULT_UR_VERSION,
+      options.deadlineOrPreviousBlockhash ? BigNumber.from(options.deadlineOrPreviousBlockhash) : undefined
+    )
+  }
+
+  private static encodeProxyCall(
+    planner: RoutePlanner,
+    inputToken: string,
+    inputAmount: BigNumber,
+    chainId: number,
+    urVersion: UniversalRouterVersion,
+    deadline?: BigNumberish
+  ): MethodParameters {
+    const { commands, inputs } = planner
+    const routerAddress = UNIVERSAL_ROUTER_ADDRESS(urVersion, chainId)
+    const resolvedDeadline = deadline
+      ? BigNumber.from(deadline)
+      : BigNumber.from(Math.floor(Date.now() / 1000) + DEFAULT_PROXY_DEADLINE_BUFFER_SECONDS) // 30 min default
+
+    const calldata = SwapRouter.PROXY_INTERFACE.encodeFunctionData('execute', [
+      routerAddress,
+      inputToken,
+      inputAmount,
+      commands,
+      inputs,
+      resolvedDeadline,
+    ])
+
+    return { calldata, value: BigNumber.from(0).toHexString() }
   }
 }

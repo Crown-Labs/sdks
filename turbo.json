@@ -1,59 +1,25 @@
 {
-  "tasks": {
-    "v2-sdk#build": {
-      "dependsOn": ["sdk-core#build"]
-    },
-    "v3-sdk#build": {
-      "dependsOn": ["sdk-core#build"]
-    },
-    "v4-sdk#build": {
-      "dependsOn": ["sdk-core#build", "v3-sdk#build"]
-    },
-    "router-sdk#build": {
-      "dependsOn": ["v2-sdk#build"]
-    },
-    "universal-router-sdk#build": {
-      "dependsOn": [
-        "sdk-core#build",
-        "v2-sdk#build",
-        "v3-sdk#build",
-        "v4-sdk#build",
-        "router-sdk#build"
-      ]
-    }
-  },
   "pipeline": {
-    "lint": {
-      "inputs": [
-        "sdks/*/src/**.ts",
-        "sdks/*/src/**.tsx"
-      ]
-    },
+    "lint": {},
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "yarn.lock",
-        "**/package.json",
-        "sdks/*/src/**.ts",
-        "sdks/*/src/**.tsx"
+      "dependsOn": [
+        "^build"
       ],
       "outputs": [
-        "sdks/*/dist/**"
+        "dist/**"
       ]
     },
     "test": {
       "dependsOn": [
         "build"
-      ],
-      "inputs": [
-        "sdks/*/dist/**"
       ]
-    },
-    "release": {
-      "dependsOn": []
     },
     "typecheck": {
       "dependsOn": []
     }
-  }
+  },
+  "globalDependencies": [
+    "bun.lock",
+    "scripts/fix-esm.js"
+  ]
 }

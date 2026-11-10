@@ -1,6 +1,6 @@
-// Kittycorn Universal Router SDK
 export { SwapRouter } from './swapRouter'
-export type { MigrateV3ToV4Options } from './swapRouter'
+export type { MigrateV3ToV4Options, SignedRouteOptions, EIP712Payload } from './swapRouter'
+export * from './types/encodeSwaps'
 export * from './entities'
 export * from './utils/routerTradeAdapter'
 export { RoutePlanner, CommandType, COMMAND_DEFINITION, Parser, Subparser } from './utils/routerCommands'
@@ -8,10 +8,22 @@ export type { CommandDefinition, ParamType } from './utils/routerCommands'
 export {
   UNIVERSAL_ROUTER_CREATION_BLOCK,
   UNIVERSAL_ROUTER_ADDRESS,
+  SWAP_PROXY_ADDRESS,
   ROUTER_AS_RECIPIENT,
   WETH_ADDRESS,
   UniversalRouterVersion,
+  isAtLeastV2_1_1,
 } from './utils/constants'
 export { CommandParser, GenericCommandParser } from './utils/commandParser'
 export type { UniversalRouterCommand, UniversalRouterCall, Param, CommandsDefinition } from './utils/commandParser'
 export type { Permit2Permit } from './utils/inputTokens'
+// toFeeList and friends stay internal: they are encoding helpers, not part of the package API
+export { normalizeEncodeSwapsSpec } from './utils/normalizeEncodeSwapsSpec'
+export { computeEncodeSwapsAmounts } from './utils/computeEncodeSwapsAmounts'
+export type { EncodeSwapsAmounts } from './utils/computeEncodeSwapsAmounts'
+export { validateEncodeSwaps } from './utils/validateEncodeSwaps'
+export { scalePortionFees, simulatePortionFeeDeduction } from './utils/portionFees'
+export type { ScaledPortionFee } from './utils/portionFees'
+export { NONCE_SKIP_CHECK, generateNonce, EXECUTE_SIGNED_TYPES, getUniversalRouterDomain } from './utils/eip712'
+
+export * from "./kittycorn"

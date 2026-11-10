@@ -1,26 +1,117 @@
-# @kittycorn-labs/sdk-core
+# @uniswap/sdk-core
 
-## 1.0.11
+## 7.22.0
+
+### Minor Changes
+
+- 54d79dd: Add Elysium (chain 99901), whose gas token is HYPE: the chain ID, WHYPE as the wrapped native, the V2, V3 and V4 core addresses, and Universal Router 2.1.2 and 2.2.0.
+
+## 7.21.0
+
+### Minor Changes
+
+- 74c9d3d: Set Base's average block time to 0.2 s for the Denim hard fork (200 ms blocks, live on Base mainnet since 2026-11-05), so `getAverageBlockTimeSecs` and `secondsToBlocks` give post-Denim block counts on Base.
+
+## 7.20.1
 
 ### Patch Changes
 
-- Added support Arbitrum network
+- baa5fad: Point `v4QuoterAddress` on Unichain Sepolia, Base Sepolia and Arbitrum Sepolia at the msgSender-capable V4Quoter deployments
 
-## 1.0.10
+## 7.20.0
+
+### Minor Changes
+
+- 0d47773: Register average block times for Sepolia, OP Sepolia, Arbitrum Sepolia, Base Sepolia, Zora Sepolia and Unichain Sepolia (measured on-chain), so `getAverageBlockTimeSecs` no longer throws for these listed testnets.
+
+## 7.19.6
 
 ### Patch Changes
 
-- test publish @kittycorn-labs/sdk-core
+- b5c4f36: Publish TypeScript sources and declaration maps so shipped sourcemaps resolve and go-to-definition opens the real source.
 
-## 1.0.9
+## 7.19.5
 
 ### Patch Changes
 
-- 7b00c0a: test publish sdks
-- 6bb2f2c: Migrate to workspace dependencies and add Changesets support
+- Point `v4QuoterAddress` at the V4Quoter deployments that implement `msgSender()` on Ethereum, Optimism, Arbitrum, Base, Unichain, Blast, Zora, Sepolia, Polygon, BNB, Avalanche, World Chain, Soneium and Ink, and `mixedRouteQuoterV2Address` at the MixedRouteQuoterV2 deployments that implement it on Ethereum, Optimism, Arbitrum, Base, Unichain, Zora, Polygon, BNB, Avalanche, World Chain, Soneium and Sepolia. The ABIs are unchanged; hooks that resolve the caller through `IMsgSender` (PermissionedHooks and third-party hooks) now work through both quoters.
 
-  - Added comprehensive CLAUDE.md documentation with repository guidelines
-  - Migrated all @kittycorn-labs internal package dependencies to use workspace references
-  - Replaced semantic-release with Changesets for better monorepo support
-  - Updated GitHub Actions workflow to use Changesets for releases
-  - Added proper SDK export headers for better identification
+## 7.19.4
+
+### Patch Changes
+
+- afd80aa: Add permissioned PositionManager and PermissionedHooks addresses for Base and Ink, and the UniversalRouter 2.2.0 deployments on Base and Ink
+
+## 7.19.3
+
+### Patch Changes
+
+- 358d9de: Update permissioned PositionManager addresses (redeploy with DELIVERY_GAS_LIMIT)
+
+## 7.19.2
+
+### Patch Changes
+
+- 9a52777: Arc (5042) average block time is 0.5s (measured on-chain), was 0.48.
+
+## 7.19.1
+
+### Patch Changes
+
+- 4600c8d: Update permissioned pools deployment addresses for mainnet and Sepolia
+
+## 7.19.0
+
+### Minor Changes
+
+- 8dc2570: Add canonical PermissionedHooks address (`permissionedV4HooksAddress`) for mainnet and Sepolia, sibling to `permissionedV4PositionManagerAddress`.
+
+### Patch Changes
+
+- 0b2b31c: Fix the Sepolia `tickLensAddress`, which pointed at the UniswapInterfaceMulticall contract (`0xD7F33bCdb21b359c8ee6F0251d30E94832baAd07`) instead of the TickLens deployment at `0x0b343475d44EC2b4b8243EBF81dc888BF0A14b36`, so any TickLens call on Sepolia reverted.
+
+## 7.18.0
+
+### Minor Changes
+
+- 4263dcf: Add Ink chain and Universal Router deployment config (v2.2.0 router also exposed as v2.1.1)
+
+## 7.17.0
+
+### Minor Changes
+
+- ca82bac: Add Robinhood (4663) and Arc (5042) chain and Universal Router deployment config.
+
+  Also corrects `ChainId.ROBINHOOD` from `46630` to `4663` to match the canonical Robinhood
+  mainnet chain ID used across Uniswap's backend and the contracts deployments repo. Robinhood
+  had no addresses wired up previously, so this is shipped as a minor bump.
+
+## 7.16.1
+
+### Patch Changes
+
+- Add mainnet permissioned V4 position manager address and update sepolia permissioned V4 position manager address (perm-pool redeploy)
+
+## 7.16.0
+
+### Minor Changes
+
+- Add UniversalRouterVersion V2_2_0 (Sepolia) with permissioned-pool support
+
+## 7.15.0
+
+### Minor Changes
+
+- 0e30be1: Add MegaETH chain and Universal Router deployment config
+
+## 7.13.0
+
+### Minor Changes
+
+- 58a58d0: Migrate build system from TSDX to tsc with separate CJS/ESM/types outputs. The new `exports` field ensures correct module resolution for all standard consumers (`import`/`require` of the package root). Deep subpath imports (e.g., `@uniswap/sdk-core/dist/...`) are no longer supported — all public APIs are re-exported from the package entry point. `tslib` is now a runtime dependency (required by `importHelpers`). Minimum Node.js version is now 18.
+
+## 7.12.2
+
+### Patch Changes
+
+- 1779ed4: Test changeset workflow with dummy comment addition

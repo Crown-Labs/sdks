@@ -1,4 +1,4 @@
-import {ChainId} from "@uniswap/sdk-core";
+import {ChainId} from "@kittycorn-labs/sdk-core";
 import { Signer } from "ethers";
 import { ethers } from "hardhat";
 import { permit2Address } from "@uniswap/permit2-sdk";

@@ -1,4 +1,3 @@
-// Kittycorn SDK Core
 export * from './addresses'
 export * from './chains'
 export * from './constants'
