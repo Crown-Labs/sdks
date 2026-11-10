@@ -73,7 +73,7 @@ For an upstream sync, review the six retained packages, update source versions i
 Ethers v5 currently pins a vulnerable WebSocket dependency. Applications consuming these packages must put the following override in their **root** package.json (dependency-package overrides are ignored by npm):
 
 ```json
-{ "overrides": { "ws": "8.21.0" } }
+{ "overrides": { "@ethersproject/providers": { "ws": "8.21.0" } } }
 ```
 
 Run `npm install` and `npm audit` after adding it. This repository already applies the override. A clean consumer install was checked with the same setting. It must remain until upstream Ethers v5 updates its pin or the integration migrates to a compatible replacement.
