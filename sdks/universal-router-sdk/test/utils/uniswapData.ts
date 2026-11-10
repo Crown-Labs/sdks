@@ -14,7 +14,7 @@ import {
 import { Pool as V4Pool, Route as RouteV4, Trade as V4Trade } from '@kittycorn-labs/v4-sdk'
 import { SwapOptions } from '../../src'
 import { CurrencyAmount, TradeType, Ether, Token, Percent, Currency } from '@kittycorn-labs/sdk-core'
-import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
+import IUniswapV3Pool from '../fixtures/UniswapV3Pool.json'
 import { TEST_RECIPIENT_ADDRESS } from './addresses'
 import { encodeSqrtRatioX96 } from '@kittycorn-labs/v3-sdk'
 import { ZERO_ADDRESS } from '../../src/utils/constants'

@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import invariant from 'tiny-invariant'
 import { TradeType, WETH9 } from '@kittycorn-labs/sdk-core'
 import { MAX_FEE_RECIPIENTS, TokenTransferMode } from '../entities/actions/uniswap'

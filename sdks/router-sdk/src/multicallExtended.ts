@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi'
 import { BigintIsh } from '@kittycorn-labs/sdk-core'
-import IMulticallExtended from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IMulticallExtended.sol/IMulticallExtended.json'
+import IMulticallExtended from './abis/IMulticallExtended.json'
 import { Multicall, toHex } from '@kittycorn-labs/v3-sdk'
 
 // deadline or previousBlockhash

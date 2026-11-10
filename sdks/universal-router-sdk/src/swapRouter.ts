@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant'
-import UniversalRouter from '@uniswap/universal-router/artifacts/contracts/UniversalRouter.sol/UniversalRouter.json'
+import UniversalRouter from './abis/UniversalRouter.json'
 import { Interface } from '@ethersproject/abi'
-import { BigNumber, BigNumberish } from 'ethers'
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import {
   MethodParameters,
   Multicall,

@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers'
+import { BigNumberish } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@kittycorn-labs/sdk-core'
 import { type PathKey, type PoolKey } from '@kittycorn-labs/v4-sdk'
 import { RouterBalanceInput, TokenTransferMode } from '../entities/actions/uniswap'

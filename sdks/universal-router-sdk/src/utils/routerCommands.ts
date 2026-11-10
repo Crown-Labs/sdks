@@ -1,4 +1,4 @@
-import { defaultAbiCoder } from 'ethers/lib/utils'
+import { defaultAbiCoder } from '@ethersproject/abi'
 import { UniversalRouterVersion, isAtLeastV2_1_1 } from './constants'
 import { AcrossV4DepositV3Params } from '../entities/actions/across'
 

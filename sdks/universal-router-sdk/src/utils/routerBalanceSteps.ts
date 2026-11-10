@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant'
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { CONTRACT_BALANCE, ETH_ADDRESS } from './constants'
 import { SwapStep, V4Action } from '../types/encodeSwaps'
 

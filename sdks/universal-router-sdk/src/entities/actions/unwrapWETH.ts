@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant'
-import { BigNumberish } from 'ethers'
+import { BigNumberish } from '@ethersproject/bignumber'
 import { RoutePlanner, CommandType } from '../../utils/routerCommands'
 import { encodeInputTokenOptions, Permit2Permit } from '../../utils/inputTokens'
 import { Command, RouterActionType, TradeConfig } from '../Command'

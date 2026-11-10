@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Fraction, Percent } from '@kittycorn-labs/sdk-core'
 import { FeeOptions } from '@kittycorn-labs/v3-sdk'
 import { encodeFee1e18, encodeFeeBips } from './numbers'

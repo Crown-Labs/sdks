@@ -1,6 +1,6 @@
 import { BigintIsh, Token } from '@kittycorn-labs/sdk-core'
 import { Interface } from '@ethersproject/abi'
-import ISelfPermit from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json'
+import ISelfPermit from './abis/ISelfPermit.json'
 import { toHex } from './utils'
 
 export interface StandardPermitArguments {

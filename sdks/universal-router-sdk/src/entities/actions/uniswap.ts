@@ -42,7 +42,7 @@ import {
 import { getCurrencyAddress } from '../../utils/getCurrencyAddress'
 import { encodeFeeBips, encodeFee1e18 } from '../../utils/numbers'
 import { scalePortionFees, simulatePortionFeeDeduction } from '../../utils/portionFees'
-import { BigNumber, BigNumberish } from 'ethers'
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TPool } from '@kittycorn-labs/router-sdk'
 
 export type FlatFeeOptions = {

@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import JSBI from 'jsbi'
 import bn from 'bignumber.js'
 import { Percent } from '@kittycorn-labs/sdk-core'

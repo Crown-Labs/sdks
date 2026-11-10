@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import invariant from 'tiny-invariant'
 import { TradeType } from '@kittycorn-labs/sdk-core'
 import { NormalizedSwapSpecification } from '../types/encodeSwaps'

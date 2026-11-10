@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi'
 import { Currency, CurrencyAmount, Percent, Token, TradeType, validateAndParseAddress, WETH9 } from '@kittycorn-labs/sdk-core'
-import ISwapRouter02 from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/ISwapRouter02.sol/ISwapRouter02.json'
+import ISwapRouter02 from './abis/ISwapRouter02.json'
 import { Trade as V2Trade } from '@kittycorn-labs/v2-sdk'
 import {
   encodeRouteToPath,

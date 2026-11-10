@@ -1,5 +1,6 @@
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
-import { ethers } from 'ethers'
+import { hexlify } from '@ethersproject/bytes'
+import { randomBytes as secureRandomBytes } from '@ethersproject/random'
 
 export const EIP712_DOMAIN_NAME = 'UniversalRouter'
 export const EIP712_DOMAIN_VERSION = '2'
@@ -30,11 +31,11 @@ export function getUniversalRouterDomain(chainId: number, verifyingContract: str
 
 /**
  * Generate a random nonce for signed execution
- * Uses ethers.utils.randomBytes for secure randomness
+ * Uses secureRandomBytes for secure randomness
  */
 export function generateNonce(): string {
-  const randomBytes = ethers.utils.randomBytes(32)
-  return ethers.utils.hexlify(randomBytes)
+  const randomBytes = secureRandomBytes(32)
+  return hexlify(randomBytes)
 }
 
 /**

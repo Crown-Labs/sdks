@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi'
 import invariant from 'tiny-invariant'
-import IApproveAndCall from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IApproveAndCall.sol/IApproveAndCall.json'
+import IApproveAndCall from './abis/IApproveAndCall.json'
 import { Currency, Percent, Token } from '@kittycorn-labs/sdk-core'
 import {
   MintSpecificOptions,

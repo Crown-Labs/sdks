@@ -1,7 +1,7 @@
 import { BigintIsh, Token, validateAndParseAddress } from '@kittycorn-labs/sdk-core'
 import { MethodParameters, toHex } from './utils/calldata'
 import { defaultAbiCoder, Interface } from '@ethersproject/abi'
-import IUniswapV3Staker from '@uniswap/v3-staker/artifacts/contracts/UniswapV3Staker.sol/UniswapV3Staker.json'
+import IUniswapV3Staker from './abis/UniswapV3Staker.json'
 import { Pool } from './entities'
 import { Multicall } from './multicall'
 

@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi'
 import { Percent, Token, validateAndParseAddress } from '@kittycorn-labs/sdk-core'
-import IPeripheryPaymentsWithFeeExtended from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IPeripheryPaymentsWithFeeExtended.sol/IPeripheryPaymentsWithFeeExtended.json'
+import IPeripheryPaymentsWithFeeExtended from './abis/IPeripheryPaymentsWithFeeExtended.json'
 import { FeeOptions, Payments, toHex } from '@kittycorn-labs/v3-sdk'
 import JSBI from 'jsbi'
 

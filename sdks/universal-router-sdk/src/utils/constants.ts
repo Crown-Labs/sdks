@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 
 // Members must stay declared oldest-to-newest: the isAtLeast* helpers derive their version
 // ordering from this declaration order.

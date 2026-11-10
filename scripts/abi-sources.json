@@ -1,0 +1,175 @@
+[
+  {
+    "package": "@uniswap/v2-core",
+    "version": "1.0.1",
+    "artifact": "build/UniswapV2Pair.json",
+    "fields": [
+      "abi",
+      "bytecode"
+    ],
+    "output": "sdks/v2-sdk/test/fixtures/UniswapV2Pair.json",
+    "sha256": "34c6e9c91f3b4c17cfaf0d984fe8b88eb82e8c2cf32e0ad4d34499cd9fa60f5b"
+  },
+  {
+    "package": "@uniswap/v3-core",
+    "version": "1.0.0",
+    "artifact": "artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json",
+    "fields": [
+      "abi",
+      "bytecode"
+    ],
+    "output": "sdks/v3-sdk/test/fixtures/UniswapV3Pool.json",
+    "sha256": "2fc3e9bf17dd014b58ea76116a380a8d94323a856dbaa9480954d83c6e8824cf"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/interfaces/IMulticall.sol/IMulticall.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/IMulticall.json",
+    "sha256": "67d503767bb7ee143ca546bc64ff22b37cf4d7cee4ffbb9bea3a09869e6913f7"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/NonfungiblePositionManager.json",
+    "sha256": "31a7e89bfcc766e8b3e4ca416b59b248b8cf0c73dea2ac05ffee865038a3f785"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/interfaces/IPeripheryPaymentsWithFee.sol/IPeripheryPaymentsWithFee.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/IPeripheryPaymentsWithFee.json",
+    "sha256": "91e72409dec514267665934f7904fed540de8c9e005771a50290d60c317969b7"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/lens/Quoter.sol/Quoter.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/Quoter.json",
+    "sha256": "64b9a383542fe5708ed16ffe536e712889bb977a570afb83235499a481f30e41"
+  },
+  {
+    "package": "@uniswap/swap-router-contracts",
+    "version": "1.3.1",
+    "artifact": "artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/QuoterV2.json",
+    "sha256": "e611c890ec8487df72f7f8800a4d4794b90912a38d7d59c2c949407de7f38821"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/ISelfPermit.json",
+    "sha256": "01cb4bd92c32e4f6c902f90c957d8d9754bb1239c7cba1b213c4a76d4835df4f"
+  },
+  {
+    "package": "@uniswap/v3-staker",
+    "version": "1.0.0",
+    "artifact": "artifacts/contracts/UniswapV3Staker.sol/UniswapV3Staker.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/UniswapV3Staker.json",
+    "sha256": "1595cbd4c726b327824bb55e34170697e65d545d739e34a12c81d1d1cfb2ec46"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/SwapRouter.sol/SwapRouter.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v3-sdk/src/abis/SwapRouter.json",
+    "sha256": "f73f5011351548c8cc5464c3f7eb37f87bef31f4ff725f5f2ab4caff9f2d71ed"
+  },
+  {
+    "package": "@uniswap/v3-periphery",
+    "version": "1.4.4",
+    "artifact": "artifacts/contracts/interfaces/IMulticall.sol/IMulticall.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/v4-sdk/src/abis/IMulticall.json",
+    "sha256": "67d503767bb7ee143ca546bc64ff22b37cf4d7cee4ffbb9bea3a09869e6913f7"
+  },
+  {
+    "package": "@uniswap/swap-router-contracts",
+    "version": "1.3.1",
+    "artifact": "artifacts/contracts/interfaces/IApproveAndCall.sol/IApproveAndCall.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/router-sdk/src/abis/IApproveAndCall.json",
+    "sha256": "7549ec92abf56b5dbe8fadd647a7259519d9025cd65bbc962c8c6cd674be5b0e"
+  },
+  {
+    "package": "@uniswap/swap-router-contracts",
+    "version": "1.3.1",
+    "artifact": "artifacts/contracts/interfaces/IMulticallExtended.sol/IMulticallExtended.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/router-sdk/src/abis/IMulticallExtended.json",
+    "sha256": "a8f53be3bc8bac431fa787ceacfd875fe33e2f2af64a89768998963dccd7d904"
+  },
+  {
+    "package": "@uniswap/swap-router-contracts",
+    "version": "1.3.1",
+    "artifact": "artifacts/contracts/interfaces/IPeripheryPaymentsWithFeeExtended.sol/IPeripheryPaymentsWithFeeExtended.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/router-sdk/src/abis/IPeripheryPaymentsWithFeeExtended.json",
+    "sha256": "1097c1fad36072b6bcce0616ef0e2da816c2d6d107793dcecb8b29d840cbee3e"
+  },
+  {
+    "package": "@uniswap/swap-router-contracts",
+    "version": "1.3.1",
+    "artifact": "artifacts/contracts/interfaces/ISwapRouter02.sol/ISwapRouter02.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/router-sdk/src/abis/ISwapRouter02.json",
+    "sha256": "c60b2a9f70b55a6bfc96d5141879834dad57588b3819e57e4f9c14d53ea208bb"
+  },
+  {
+    "package": "@uniswap/universal-router",
+    "version": "2.1.0",
+    "artifact": "artifacts/contracts/UniversalRouter.sol/UniversalRouter.json",
+    "fields": [
+      "abi"
+    ],
+    "output": "sdks/universal-router-sdk/src/abis/UniversalRouter.json",
+    "sha256": "5df3ab3d066b2adc479114df09f0fe3333aa0ae3a4b1307b888c32d68d815e2e"
+  },
+  {
+    "package": "@uniswap/v3-core",
+    "version": "1.0.0",
+    "artifact": "artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json",
+    "fields": [
+      "abi",
+      "bytecode"
+    ],
+    "output": "sdks/universal-router-sdk/test/fixtures/UniswapV3Pool.json",
+    "sha256": "2fc3e9bf17dd014b58ea76116a380a8d94323a856dbaa9480954d83c6e8824cf"
+  }
+]

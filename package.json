@@ -1,18 +1,6 @@
 {
   "name": "sdks",
   "version": "0.0.0",
-  "dependencies": {
-    "@babel/runtime": "7.18.9",
-    "@changesets/cli": "2.30.0",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "danger": "11.2.6",
-    "eslint": "^8.57.0",
-    "eslint-plugin-prettier": "^3.4.1",
-    "husky": "^8.0.3",
-    "check-dependency-version-consistency": "^4.1.0",
-    "syncpack": "^8.5.14",
-    "turbo": "1.10.16"
-  },
   "engines": {
     "node": ">=22"
   },
@@ -20,26 +8,27 @@
   "private": true,
   "trustedDependencies": [],
   "scripts": {
-    "g:check:deps:mismatch": "check-dependency-version-consistency --ignore-dep @typescript-eslint/parser --ignore-dep typescript",
-    "g:build": "turbo run build --filter=\"@kittycorn-labs/*\"",
-    "g:lint": "turbo run lint",
+    "g:build": "node scripts/build.js",
+    "g:test": "bun test sdks/sdk-core/src sdks/v2-sdk/src sdks/v3-sdk/src sdks/v4-sdk/src sdks/router-sdk/src sdks/universal-router-sdk/src sdks/universal-router-sdk/test/unit sdks/universal-router-sdk/test/utils",
+    "g:pack": "node scripts/pack.js",
     "g:release": "node scripts/pack.js --publish",
-    "g:test": "bun test sdks/sdk-core/src sdks/v2-sdk/src sdks/v3-sdk/src sdks/v4-sdk/src sdks/router-sdk/src sdks/universal-router-sdk/src/kittycorn.test.ts",
-    "g:typecheck": "turbo run typecheck",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "sdk": "bun run --filter",
-    "postinstall": "husky",
-    "g:pack": "node scripts/pack.js"
+    "g:version": "node scripts/version.js",
+    "g:abis": "node scripts/abis.js",
+    "g:audit": "bun audit"
   },
   "workspaces": [
-    "sdks/*",
-    "sdks/uniswapx-sdk/integration"
+    "sdks/sdk-core",
+    "sdks/v2-sdk",
+    "sdks/v3-sdk",
+    "sdks/v4-sdk",
+    "sdks/router-sdk",
+    "sdks/universal-router-sdk"
   ],
-  "overrides": {
-    "eslint-config-prettier": "^9.1.0"
+  "devDependencies": {
+    "typescript": "4.9.5",
+    "prettier": "2.8.8"
   },
-  "resolutions": {
-    "elliptic": "6.6.1"
+  "overrides": {
+    "ws": "8.21.0"
   }
 }

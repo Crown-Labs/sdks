@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers'
+import { BigNumberish } from '@ethersproject/bignumber'
 
 /**
  * Parameters for Across V4 Deposit V3 command

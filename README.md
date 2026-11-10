@@ -27,7 +27,7 @@ The following six `@kittycorn-labs` packages share version **2.0.0** and are rel
 5. `router-sdk`
 6. `universal-router-sdk`
 
-Other upstream workspaces are private and are not published. Permit2 uses the official `@uniswap/permit2-sdk` package. The Universal Router Solidity repository does not need its own npm release.
+Unused upstream workspaces have been removed from this repository. V2/V3 SDKs remain because shared trade types and the router depend on them. Permit2 uses the official `@uniswap/permit2-sdk` package. The Universal Router Solidity repository does not need its own npm release.
 
 After building and testing, publish using an npm account/token authorized for `@kittycorn-labs`:
 
@@ -35,7 +35,7 @@ After building and testing, publish using an npm account/token authorized for `@
 bun run g:release
 ```
 
-This is the only command above that publishes. Alternatively, manually run **Release Kittycorn SDKs** in GitHub Actions with `NPM_TOKEN` in the `npm-release` environment. Normal pushes and PRs only validate. Package versions are immutable on npm; use `bun run changeset` and `bun run version-packages` for subsequent releases, then regenerate `bun.lock` and test again. An interrupted release may partially publish; inspect npm before retrying and never republish an existing version.
+This is the only command above that publishes. Alternatively, manually run **Release Kittycorn SDKs** in GitHub Actions with `NPM_TOKEN` in the `npm-release` environment. Normal pushes and PRs only validate. Package versions are immutable on npm; use `bun run g:version <next-version>` for subsequent releases, then regenerate `bun.lock` and test again. An interrupted release may partially publish; inspect npm before retrying and never republish an existing version.
 
 ## Kittycorn integration
 
@@ -54,3 +54,28 @@ Standard Universal Router builders reject Kittycorn conversion edges instead of 
 Keep sibling directories `sdks`, `smart-order-router`, and `universal-router`. Build/pack SDKs first, then install/build/test SOR against these tarballs. SOR's `npm run check:fork` deploys the new Universal Router on local Anvil, executes quotes through real Permit2 and current Kittycorn contracts, checks balances/limits/refunds, and restores its snapshots.
 
 Publish these SDKs before publishing SOR. For on-chain deployment, follow [Universal Router instructions](https://github.com/Crown-Labs/universal-router/tree/feat/kittycorn). Existing Bank, Tokenize contracts, and pools do not need redeployment.
+
+## Maintenance scope
+
+Only the six packages above are maintained. Builds run in dependency order without Turbo, Babel, Changesets, or a second Solidity toolchain. Upstream Universal Router mainnet/fork tests are not maintained in this SDK repository; offline encoding tests remain, and real Kittycorn execution is checked by SOR on a Base Sepolia Anvil fork.
+
+Runtime contract interfaces are checked-in ABI snapshots, not dependencies on complete Solidity npm packages. `scripts/abi-sources.json` records the exact source package/version/artifact and SHA-256 for every snapshot. The JSON ABI is interface data from the named Uniswap packages; consult each source package for its original license. Bytecode fixtures are test-only and excluded from published packages.
+
+```sh
+bun run g:abis
+bun run g:abis --verify-upstream
+```
+
+For an upstream sync, review the six retained packages, update source versions in the manifest only when required, run `bun run g:abis --refresh`, inspect the ABI diff, then build/test/pack and run SOR integration tests. Do not restore removed workspaces/toolchains automatically. ABI verification downloads pinned artifacts without installing or executing their dependencies.
+
+## Dependency security
+
+Ethers v5 currently pins a vulnerable WebSocket dependency. Applications consuming these packages must put the following override in their **root** package.json (dependency-package overrides are ignored by npm):
+
+```json
+{ "overrides": { "ws": "8.21.0" } }
+```
+
+Run `npm install` and `npm audit` after adding it. This repository already applies the override. A clean consumer install was checked with the same setting. It must remain until upstream Ethers v5 updates its pin or the integration migrates to a compatible replacement.
+
+A Low advisory remains in Ethers v5's transitive `elliptic` dependency ([GHSA-848j-6mx2-7j84](https://github.com/advisories/GHSA-848j-6mx2-7j84)); upstream reports no patched version. Our production code builds quotes/calldata and uses external RPC signers; it does not generate ECDSA signatures from user private keys. This is a scope assessment, not a fix or a zero-vulnerability claim. Do not use Ethers v5 local-wallet signing as a workaround for deployment keystores.
