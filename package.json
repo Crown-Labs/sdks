@@ -14,7 +14,8 @@
     "g:release": "node scripts/pack.js --publish",
     "g:version": "node scripts/version.js",
     "g:abis": "node scripts/abis.js",
-    "g:audit": "bun audit"
+    "g:audit": "bun audit",
+    "g:test:compat": "bun test sdks/v4-sdk/src/compatibility.test.ts sdks/router-sdk/src/kittycorn.test.ts sdks/universal-router-sdk/src/kittycorn.test.ts"
   },
   "workspaces": [
     "sdks/sdk-core",
