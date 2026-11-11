@@ -24,6 +24,8 @@ export function buildKittycornMethodParameters(
   if (/^0x0{39}[012]$/i.test(recipient)) throw new Error('Invalid Kittycorn recipient')
   if (options.slippageTolerance.lessThan(0) || !options.slippageTolerance.lessThan(1))
     throw new Error('Slippage must be between zero (inclusive) and 100% (exclusive)')
+  if (trade.inputAmount.currency.isNative || trade.outputAmount.currency.isNative)
+    throw new Error('Native ETH requires buildKittycornUniversalMethodParameters')
   const input = config.tokens.find((t) => t.underlying.equals(trade.inputAmount.currency))
   const output = config.tokens.find((t) => t.underlying.equals(trade.outputAmount.currency))
   if (!input || !output || input === output)
