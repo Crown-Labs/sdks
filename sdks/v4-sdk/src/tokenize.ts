@@ -5,7 +5,7 @@ import { Pool } from './entities/pool'
 export const KITTYCORN_BASE_SEPOLIA = {
   chainId: ChainId.BASE_SEPOLIA,
   bank: '0xcc331eC1d6CF4542F9eB988B49249cfa163081dc',
-  router: '0x137a906E06EC20808c8F156F9024196427429220',
+  router: '0x02D353c5cA5e316bBd99FAC6a481eB8b778Ea67d',
   quoter: '0x9fEcb19a660d1d6d3aD7a33A7e9BeB01A9EE24aB',
   tokens: [
     {
