@@ -1,8 +1,21 @@
 import { ChainId, Currency, Token } from '@kittycorn-labs/sdk-core'
 import { Pool } from './entities/pool'
 
+export interface KittycornTokenizePair {
+  underlying: Token
+  tokenize: Token
+}
+
+export interface KittycornDeployment {
+  chainId: ChainId
+  bank: string
+  router: string
+  quoter: string
+  tokens: KittycornTokenizePair[]
+}
+
 /** Current Kittycorn deployment. Legacy rebasing deployments are intentionally unsupported. */
-export const KITTYCORN_BASE_SEPOLIA = {
+export const KITTYCORN_BASE_SEPOLIA: KittycornDeployment = {
   chainId: ChainId.BASE_SEPOLIA,
   bank: '0xcc331eC1d6CF4542F9eB988B49249cfa163081dc',
   router: '0x137a906E06EC20808c8F156F9024196427429220',
@@ -23,11 +36,37 @@ export const KITTYCORN_BASE_SEPOLIA = {
   ],
 }
 
+/** Adding a chain is one entry here. */
+export const KITTYCORN_DEPLOYMENTS: { [chainId: number]: KittycornDeployment } = {
+  [KITTYCORN_BASE_SEPOLIA.chainId]: KITTYCORN_BASE_SEPOLIA,
+}
+
+export function getKittycornDeployment(chainId: number): KittycornDeployment | undefined {
+  return KITTYCORN_DEPLOYMENTS[chainId]
+}
+
+function findPair(
+  chainId: number,
+  token: Pick<Token, 'address'>,
+  side: keyof KittycornTokenizePair
+): KittycornTokenizePair | undefined {
+  if (!token.address) return undefined
+  const address = token.address.toLowerCase()
+  return getKittycornDeployment(chainId)?.tokens.find((pair) => pair[side].address.toLowerCase() === address)
+}
+
+export function getSupportUnderlyingByTokenize(chainId: number, token: Pick<Token, 'address'>): Token | undefined {
+  return findPair(chainId, token, 'tokenize')?.underlying
+}
+
+export function getSupportTokenizeByUnderlying(chainId: number, token: Pick<Token, 'address'>): Token | undefined {
+  return findPair(chainId, token, 'underlying')?.tokenize
+}
+
 /** Conversion edges connect actual underlying/share currencies; they are not AMM liquidity. */
 export function getTokenizePairs(chainId: number): [Currency, Currency, number, number, string][] {
-  if (chainId !== KITTYCORN_BASE_SEPOLIA.chainId) return []
-  const pairs: [Currency, Currency][] = KITTYCORN_BASE_SEPOLIA.tokens.map((t) => [t.underlying, t.tokenize])
-  return pairs.map(([a, b]) => [a, b, 0, 1, '0x0000000000000000000000000000000000000000'])
+  const tokens = getKittycornDeployment(chainId)?.tokens ?? []
+  return tokens.map((t) => [t.underlying, t.tokenize, 0, 1, '0x0000000000000000000000000000000000000000'])
 }
 
 /** Recognize only registered conversion edges, never arbitrary pools containing a tToken. */
