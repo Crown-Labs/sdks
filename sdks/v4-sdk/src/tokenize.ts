@@ -17,21 +17,21 @@ export interface KittycornDeployment {
 /** Current Kittycorn deployment. Legacy rebasing deployments are intentionally unsupported. */
 export const KITTYCORN_BASE_SEPOLIA: KittycornDeployment = {
   chainId: ChainId.BASE_SEPOLIA,
-  bank: '0xcc331eC1d6CF4542F9eB988B49249cfa163081dc',
-  router: '0x137a906E06EC20808c8F156F9024196427429220',
-  quoter: '0x9fEcb19a660d1d6d3aD7a33A7e9BeB01A9EE24aB',
+  bank: '0x421Cb4490c79727EC961c8fD214a98474425BDdE',
+  router: '0xEd7BE201640f0A06dEfE6f13E6da1905137CC9e1',
+  quoter: '0xB6b03E004E784E0DFc0109Dd506eDf81db37a241',
   tokens: [
     {
       underlying: new Token(84532, '0xba50Cd2A20f6DA35D788639E581bca8d0B5d4D5f', 6, 'USDC'),
-      tokenize: new Token(84532, '0x0B4104691a6a006F0134d507aAe6d35854BaD924', 6, 'tUSDC'),
+      tokenize: new Token(84532, '0x9fFfc7710Fd0Df623A4007904516Db6B323710a7', 6, 'tUSDC'),
     },
     {
       underlying: new Token(84532, '0x0a215D8ba66387DCA84B284D18c3B4ec3de6E54a', 6, 'USDT'),
-      tokenize: new Token(84532, '0x94572cD65df8DAa3A8Da96277FfA2a22ee71b5dC', 6, 'tUSDT'),
+      tokenize: new Token(84532, '0xAf6adc15309E143De39D3Ae8b9Ed2f829e9B0bf2', 6, 'tUSDT'),
     },
     {
       underlying: new Token(84532, '0x4200000000000000000000000000000000000006', 18, 'WETH'),
-      tokenize: new Token(84532, '0xd09EDDa7a0495eAc6B921fb9408d2Ae55220EbC0', 18, 'tWETH'),
+      tokenize: new Token(84532, '0x54270025deF2F08333cFBb8a68D9A94b6Ac20f20', 18, 'tWETH'),
     },
   ],
 }
